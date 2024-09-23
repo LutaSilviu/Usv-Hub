@@ -20,3 +20,12 @@ class AttendanceLoaded extends AttendanceState {
   @override
   List<Object> get props => [attendanceAndCourses];
 }
+
+class AttendanceError extends AttendanceState {
+  final String errorMessage;
+
+  const AttendanceError({required this.errorMessage});
+
+  @override
+  List<Object> get props => [errorMessage];
+}

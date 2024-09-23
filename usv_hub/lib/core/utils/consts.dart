@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
 
 class AppTextSize {
   static const double small = 12.0;
@@ -122,6 +121,8 @@ class AppImages {
 
 class AppErrorMessages {
   static const String noCoursesFound = "No courses found";
+
+  static const String ups = "Ups, something went wrong";
 }
 
 class AppModels {
@@ -137,6 +138,7 @@ class AppModels {
 class AppArguments {
   static const gradeEntity = "GradeEntity";
   static const courseEntity = "CourseEntity";
+  static const attendanceEntity = "AttendanceEntity";
 }
 
 class AppCollections {

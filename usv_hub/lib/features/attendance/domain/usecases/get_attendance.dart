@@ -6,12 +6,12 @@ import 'package:usv_hub/features/attendance/domain/repositories/attendance_repos
 import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 
 class GetAttendance extends Usecase<
-    Future<Either<Failure, Map<AttendanceEntity, CourseEntity>>>, void> {
+    Either<Failure, Map<AttendanceEntity, CourseEntity>>, void> {
   final AttendanceRepository _repository;
 
   GetAttendance(this._repository);
   @override
-  Future<Future<Either<Failure, Map<AttendanceEntity, CourseEntity>>>> call(
+  Future<Either<Failure, Map<AttendanceEntity, CourseEntity>>> call(
       {void params}) async {
     return _repository.getAttendance();
   }

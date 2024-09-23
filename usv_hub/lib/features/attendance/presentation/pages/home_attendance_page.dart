@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
+import 'package:usv_hub/features/attendance/presentation/cubit/attendance_cubit.dart';
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_course_widget.dart';
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_search_field.dart';
 
@@ -39,27 +41,54 @@ class _HomeAttendancePageState extends State<HomeAttendancePage> {
                 ),
               ),
             ),
-            Expanded(
-              child: GridView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return CustomCourseWidget(
-                    image: AppImages.image1,
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRouteConst.attendanceDetailPage,
-                      );
-                    },
-                    title: 'Course $index',
-                    semester: 'Semester $index',
+            BlocBuilder(
+              builder: (BuildContext context, state) {
+                if (state is LoadingState) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state is AttendanceError) {
+                  return Center(child: Text(state.errorMessage));
+                }
+                if (state is AttendanceLoaded) {
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: state.attendanceAndCourses.length,
+                      itemBuilder: (context, index) {
+                        return CustomCourseWidget(
+                          image: AppImages.image1,
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRouteConst.attendanceDetailPage,
+                              arguments: {
+                                AppArguments.attendanceEntity: state
+                                    .attendanceAndCourses.keys
+                                    .elementAt(index),
+                              },
+                            );
+                          },
+                          title: state.attendanceAndCourses.values
+                              .elementAt(index)
+                              .title,
+                          semester: state.attendanceAndCourses.values
+                              .elementAt(index)
+                              .semester,
+                        );
+                      },
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.9,
+                      ),
+                    ),
                   );
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.9,
-                ),
-              ),
+                }
+                return const SizedBox(
+                  child: Center(
+                    child: Text(AppErrorMessages.ups),
+                  ),
+                );
+              },
             ),
           ],
         ),
