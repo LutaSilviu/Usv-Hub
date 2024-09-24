@@ -138,7 +138,6 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                   }
                 },
                 onPageChanged: (focusedDay) {
-                  // No need to call `setState()` here
                   _focusedDay = focusedDay;
                 },
               ),
