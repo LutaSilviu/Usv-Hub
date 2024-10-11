@@ -6,6 +6,9 @@ import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
 import 'package:usv_hub/features/grade/domain/repositories/grade_repository.dart';
 
+import 'package:injectable/injectable.dart';
+
+@LazySingleton(as: GradeRepository)
 class GradeRepoImpl extends GradeRepository {
   final GradeApiService _gradeApiService = GradeApiService();
   @override

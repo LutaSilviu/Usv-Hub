@@ -6,6 +6,9 @@ import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/grade/data/models/course_model.dart';
 import 'package:usv_hub/features/grade/data/models/grade_model.dart';
 
+import 'package:injectable/injectable.dart';
+
+@lazySingleton
 class GradeApiService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User? user = FirebaseAuth.instance.currentUser;
@@ -17,7 +20,7 @@ class GradeApiService {
 
       final docs = await _firestore
           .collection(AppCollections.gradeCollection)
-          .where(AppModels.studentId, isEqualTo: userId)
+          .where(AppFields.studentId, isEqualTo: userId)
           .get();
 
       for (var doc in docs.docs) {
@@ -25,7 +28,7 @@ class GradeApiService {
 
         final courseDocs = await _firestore
             .collection(AppCollections.courseCollection)
-            .where(AppModels.id, isEqualTo: model.courseId)
+            .where(AppFields.id, isEqualTo: model.courseId)
             .get();
 
         //relatia intre Grade si Course e 1 la 1,deci nu va putea fi mai mult de 1 curs per grade

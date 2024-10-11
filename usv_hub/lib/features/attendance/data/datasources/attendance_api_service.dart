@@ -4,7 +4,9 @@ import 'package:usv_hub/core/errors/exceptions.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/attendance/data/models/attendance_model.dart';
 import 'package:usv_hub/features/grade/data/models/course_model.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class AttendanceApiService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final User? user = FirebaseAuth.instance.currentUser;
@@ -14,7 +16,7 @@ class AttendanceApiService {
       Map<AttendanceModel, CourseModel> coursesAndAttendance = {};
       final result = await _firebaseFirestore
           .collection(AppCollections.attendanceCollection)
-          .where(AppModels.studentId, isEqualTo: user!.uid)
+          .where(AppFields.studentId, isEqualTo: user!.uid)
           .get();
 
       for (final doc in result.docs) {
@@ -23,7 +25,7 @@ class AttendanceApiService {
 
         final courseDocs = await _firebaseFirestore
             .collection(AppCollections.courseCollection)
-            .where(AppModels.id, isEqualTo: attendanceModel.courseId)
+            .where(AppFields.id, isEqualTo: attendanceModel.courseId)
             .get();
 
         //relatia intre Attendance si Course e 1 la 1,deci nu va putea fi mai mult de 1 curs per attendance

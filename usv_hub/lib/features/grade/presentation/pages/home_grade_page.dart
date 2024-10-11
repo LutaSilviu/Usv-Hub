@@ -20,6 +20,12 @@ class _HomeGradePageState extends State<HomeGradePage> {
   TextEditingController searchController = TextEditingController();
 
   @override
+  void initState() {
+    context.read<GradeCubit>().getCourses();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

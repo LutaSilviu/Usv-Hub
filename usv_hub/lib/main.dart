@@ -5,10 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usv_hub/core/utils/main_wraper.dart';
 import 'package:usv_hub/core/utils/on_generate_route.dart';
 import 'package:usv_hub/core/utils/theme.dart';
+import 'package:usv_hub/features/attendance/presentation/cubit/attendance_cubit.dart';
+import 'package:usv_hub/features/grade/presentation/cubit/grade_cubit.dart';
 import 'package:usv_hub/features/home/presentation/cubit/home_cubit/home_cubit.dart';
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
 import 'package:usv_hub/features/login/presentation/pages/login_page.dart';
+import 'package:usv_hub/features/schedule/presentation/cubit/schedule_cubit.dart';
 import 'package:usv_hub/global_bloc_observer.dart';
 import 'package:usv_hub/injection.dart';
 
@@ -41,6 +44,15 @@ class MyApp extends StatelessWidget {
           BlocProvider<HomeCubit>(
             lazy: false,
             create: (context) => getIt<HomeCubit>(),
+          ),
+          BlocProvider<GradeCubit>(
+            create: (context) => getIt<GradeCubit>(),
+          ),
+          BlocProvider<AttendanceCubit>(
+            create: (context) => getIt<AttendanceCubit>(),
+          ),
+          BlocProvider<ScheduleCubit>(
+            create: (context) => getIt<ScheduleCubit>(),
           ),
         ],
         child: SafeArea(

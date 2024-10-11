@@ -35,8 +35,7 @@ class CourseModel extends CourseEntity {
       classNumber: map['classNumber'] as int,
       courseCredits: map['courseCredits'] as int,
       semester: map['semester'] as String,
-      scheduleMap: Map<String, dynamic>.from(
-          (map['scheduleMap'] as Map<String, dynamic>)),
+      scheduleMap: map['scheduleMap'] as List<Map<String, dynamic>>,
     );
   }
 

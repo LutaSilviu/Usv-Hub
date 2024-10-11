@@ -7,7 +7,7 @@ class AttendanceEntity extends Equatable {
   final Map<int, bool> courseAttendance;
   final Map<int, bool> labortoryAttendance;
 
-  AttendanceEntity({
+  const AttendanceEntity({
     required this.id,
     required this.courseId,
     required this.studentId,
@@ -16,7 +16,6 @@ class AttendanceEntity extends Equatable {
   });
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         id,
         courseId,

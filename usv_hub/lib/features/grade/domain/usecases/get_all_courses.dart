@@ -7,6 +7,9 @@ import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
 import 'package:usv_hub/features/grade/domain/repositories/grade_repository.dart';
 
+import 'package:injectable/injectable.dart';
+
+@lazySingleton
 class GetAllCourses
     implements Usecase<Either<Failure, Map<GradeEntity, CourseEntity>>, void> {
   final GradeRepository _gradeRepository;

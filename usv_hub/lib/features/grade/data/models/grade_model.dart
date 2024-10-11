@@ -14,25 +14,25 @@ class GradeModel extends GradeEntity {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      AppModels.id: id,
-      AppModels.studentId: studentId,
-      AppModels.courseGrade: courseGrade,
-      AppModels.labGrade: labGrade,
-      AppModels.courseId: courseId,
+      AppFields.id: id,
+      AppFields.studentId: studentId,
+      AppFields.courseGrade: courseGrade,
+      AppFields.labGrade: labGrade,
+      AppFields.courseId: courseId,
     };
   }
 
   factory GradeModel.fromMap(Map<String, dynamic> map) {
     return GradeModel(
-      id: map[AppModels.id] as String,
-      studentId: map[AppModels.studentId] as String,
-      courseGrade: map[AppModels.courseGrade] != null
-          ? map[AppModels.courseGrade] as int
+      id: map[AppFields.id] as String,
+      studentId: map[AppFields.studentId] as String,
+      courseGrade: map[AppFields.courseGrade] != null
+          ? map[AppFields.courseGrade] as int
           : null,
-      labGrade: map[AppModels.labGrade] != null
-          ? map[AppModels.labGrade] as int
+      labGrade: map[AppFields.labGrade] != null
+          ? map[AppFields.labGrade] as int
           : null,
-      courseId: map[AppModels.courseId] as int,
+      courseId: map[AppFields.courseId] as int,
     );
   }
 

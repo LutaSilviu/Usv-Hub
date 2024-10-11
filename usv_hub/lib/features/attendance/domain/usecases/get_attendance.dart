@@ -5,6 +5,9 @@ import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.da
 import 'package:usv_hub/features/attendance/domain/repositories/attendance_repository.dart';
 import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 
+import 'package:injectable/injectable.dart';
+
+@lazySingleton
 class GetAttendance extends Usecase<
     Either<Failure, Map<AttendanceEntity, CourseEntity>>, void> {
   final AttendanceRepository _repository;

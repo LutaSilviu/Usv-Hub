@@ -10,7 +10,7 @@ class CourseEntity extends Equatable {
   final int classNumber;
   final int courseCredits;
   final String semester;
-  final Map<String, dynamic> scheduleMap;
+  final List<Map<String, dynamic>> scheduleMap;
 
   const CourseEntity({
     required this.id,

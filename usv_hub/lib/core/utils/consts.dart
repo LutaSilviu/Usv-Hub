@@ -125,14 +125,39 @@ class AppErrorMessages {
   static const String ups = "Ups, something went wrong";
 }
 
-class AppModels {
+class AppFields {
   //grade
 
-  static const id = 'Id';
-  static const studentId = 'StudentId';
-  static const courseGrade = 'CourseGrade';
-  static const labGrade = 'LabGrade';
-  static const courseId = 'CourseId';
+  static const String id = 'Id';
+  static const String studentId = 'StudentId';
+  static const String courseGrade = 'CourseGrade';
+  static const String labGrade = 'LabGrade';
+  static const String courseId = 'CourseId';
+  static const String semesterId = 'SemesterId';
+  static const String name = "Name";
+  static const String isActive = 'IsActive';
+
+  static const String classType = "ClassType";
+  static const String dayOfWeek = "DayOfWeek";
+  static const String startingHour = "StartingHour";
+  static const String endingHour = "EndingHour";
+  static const String classNumber = "ClassNumber";
+  static const String teacher = "Teacher";
+  static const String courseFrequency = "CourseFrequency";
+  static const String semester = "Semester";
+
+  //messaje
+  static const String messaje = 'Messaje';
+  static const String senderId = 'SenderId';
+  static const String reciverId = 'ReciverId';
+  static const String timeWhenSent = 'TimeWhenSent';
+
+  //contacts
+  static const String status = 'Status';
+  static const String senderName = 'SenderName';
+  static const String reciverName = 'ReciverName';
+  static const String person1 = 'Person1';
+  static const String person2 = 'Person2';
 }
 
 class AppArguments {
@@ -142,7 +167,42 @@ class AppArguments {
 }
 
 class AppCollections {
-  static const gradeCollection = 'Grades';
+  static const gradeCollection = 'Grade';
   static const attendanceCollection = 'Attendance';
-  static const courseCollection = 'Courses';
+  static const courseCollection = 'Course';
+  static const semesterCollection = 'Semester';
+  static const semesterXStudentCollection = 'SemesterXStudent';
+
+  static const String teacher = 'Teacher';
+  static const String student = 'Student';
+  static const String message = 'Message';
+  static const String contacts = 'Contacts';
+}
+
+enum ContactsStatus { active, pending }
+
+extension ContactsStatusToString on ContactsStatus {
+  String get stringValue {
+    switch (this) {
+      case ContactsStatus.active:
+        return 'Active';
+      case ContactsStatus.pending:
+        return 'Pending';
+      default:
+        return '';
+    }
+  }
+}
+
+extension StringToContactsStatus on String {
+  ContactsStatus? toContactsStatus() {
+    switch (toLowerCase()) {
+      case 'active':
+        return ContactsStatus.active;
+      case 'pending':
+        return ContactsStatus.pending;
+      default:
+        return null;
+    }
+  }
 }
