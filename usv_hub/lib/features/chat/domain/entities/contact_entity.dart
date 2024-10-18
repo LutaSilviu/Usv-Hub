@@ -15,6 +15,5 @@ class ContactEntity extends Equatable {
   });
 
   @override
-  // TODO: implement props
   List<Object?> get props => [contactName, person1, person2, status];
 }

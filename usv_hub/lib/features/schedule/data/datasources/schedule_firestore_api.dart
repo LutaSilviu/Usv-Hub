@@ -35,7 +35,8 @@ class ScheduleFirestoreApi {
         final CourseModel courseModel = CourseModel.fromMap(doc.data());
 
         for (final schedule in courseModel.scheduleMap) {
-          final ClassType classType = schedule[AppFields.classType];
+          String classTypeString = schedule[AppFields.classType];
+          final ClassType classType = classTypeString.toClassType()!;
           String teacherName = '';
 
           final teacher = await _firestore
@@ -58,10 +59,11 @@ class ScheduleFirestoreApi {
               dayOfWeek: schedule[AppFields.dayOfWeek],
               startingHour: schedule[AppFields.startingHour],
               endingHour: schedule[AppFields.endingHour],
-              classType: schedule[AppFields.classType],
-              sala: schedule[AppFields.classNumber],
+              classType: classType,
+              sala: schedule[AppFields.classWhereHeld],
               teacher: teacherName,
-              courseFrequency: schedule[AppFields.courseFrequency]);
+              courseFrequency: (schedule[AppFields.courseFrequency] as String)
+                  .toCourseFrequency()!);
           scheduleList.add(scheduleEntity);
         }
       }

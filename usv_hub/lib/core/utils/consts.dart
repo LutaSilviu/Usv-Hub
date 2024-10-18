@@ -128,7 +128,7 @@ class AppErrorMessages {
 class AppFields {
   //grade
 
-  static const String id = 'Id';
+  static const String id = 'id';
   static const String studentId = 'StudentId';
   static const String courseGrade = 'CourseGrade';
   static const String labGrade = 'LabGrade';
@@ -141,10 +141,14 @@ class AppFields {
   static const String dayOfWeek = "DayOfWeek";
   static const String startingHour = "StartingHour";
   static const String endingHour = "EndingHour";
-  static const String classNumber = "ClassNumber";
+  static const String numberOfCourses = "NumberOfCourses";
   static const String teacher = "Teacher";
-  static const String courseFrequency = "CourseFrequency";
+  static const String teacherId = "TeacherId";
+  static const String assistentId = "AssistentId";
+  static const String courseFrequency = "CourseFreq";
   static const String semester = "Semester";
+  static const String courseCredits = "CourseCredits";
+  static const String schedule = "Schedule";
 
   //messaje
   static const String messaje = 'Messaje';
@@ -158,12 +162,24 @@ class AppFields {
   static const String reciverName = 'ReciverName';
   static const String person1 = 'Person1';
   static const String person2 = 'Person2';
+
+  //events
+  static const String departamentId = 'DepartamentId';
+  static const String title = 'Title';
+  static const String startTime = 'StartTime';
+  static const String endTime = 'EndTime';
+  static const String classWhereHeld = 'ClassWhereHeld';
+  static const String supporterName = 'SupporterName';
+
+  static const String courseAttendance = 'CourseAttendance';
+  static const String labortoryAttendance = 'LaboratoryAttendance';
 }
 
 class AppArguments {
   static const gradeEntity = "GradeEntity";
   static const courseEntity = "CourseEntity";
   static const attendanceEntity = "AttendanceEntity";
+  static const contactEntity = "ContactEntity";
 }
 
 class AppCollections {
@@ -177,6 +193,7 @@ class AppCollections {
   static const String student = 'Student';
   static const String message = 'Message';
   static const String contacts = 'Contacts';
+  static const String events = 'Events';
 }
 
 enum ContactsStatus { active, pending }

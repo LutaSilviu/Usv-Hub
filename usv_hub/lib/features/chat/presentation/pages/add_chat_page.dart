@@ -51,7 +51,6 @@ class _AddChatPageState extends State<AddChatPage> {
                       );
                     },
                     title: 'Course $index',
-                    semester: 'Semester $index',
                   );
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

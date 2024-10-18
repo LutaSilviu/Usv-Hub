@@ -23,14 +23,15 @@ class ChatRepoImpl extends ChatRepo {
     }
   }
 
-  @override
-  Future<Either<Failure, List<MessageEntity>>> getAllMessages(String id) async {
-    try {
-      return Right(await _chatFirestoreApi.getAllMessages(id));
-    } on MediumException catch (e) {
-      return Left(MediumFailure(message: e.message));
-    }
-  }
+  // @override
+  // Stream<Either<Failure, List<MessageEntity>>> getAllMessages(
+  //     String id) async* {
+  //   try {
+  //     return await _chatFirestoreApi.getMessages(id);
+  //   } on MediumException catch (e) {
+  //     yield Left(MediumFailure(message: e.message));
+  //   }
+  // }
 
   @override
   Future<Either<Failure, void>> sendMesage(MessageEntity mesajeEntity) async {

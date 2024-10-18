@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 
 class CourseModel extends CourseEntity {
@@ -8,34 +9,43 @@ class CourseModel extends CourseEntity {
       required super.teacherId,
       required super.assistentId,
       required super.title,
-      required super.classNumber,
+      required super.numberOfCourses,
       required super.courseCredits,
       required super.scheduleMap,
-      required super.semester});
+      required super.semesterId});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'teacherId': teacherId,
-      'assistentId': assistentId,
-      'title': title,
-      'classNumber': classNumber,
-      'courseCredits': courseCredits,
-      'scheduleMap': scheduleMap,
-      'semester': semester,
+      AppFields.id: id,
+      AppFields.teacherId: teacherId,
+      AppFields.assistentId: assistentId,
+      AppFields.title: title,
+      AppFields.numberOfCourses: numberOfCourses,
+      AppFields.courseCredits: courseCredits,
+      AppFields.schedule: scheduleMap,
+      AppFields.semester: semesterId,
     };
   }
 
   factory CourseModel.fromMap(Map<String, dynamic> map) {
     return CourseModel(
-      id: map['id'] as String,
-      teacherId: map['teacherId'] as String,
-      assistentId: map['assistentId'] as String,
-      title: map['title'] as String,
-      classNumber: map['classNumber'] as int,
-      courseCredits: map['courseCredits'] as int,
-      semester: map['semester'] as String,
-      scheduleMap: map['scheduleMap'] as List<Map<String, dynamic>>,
+      id: map[AppFields.id] as String,
+      teacherId: map[AppFields.teacherId] as String,
+      assistentId: map[AppFields.assistentId] as String,
+      title: map[AppFields.title] as String,
+      numberOfCourses: map[AppFields.numberOfCourses] as int,
+      courseCredits: map[AppFields.courseCredits] as int,
+      semesterId: map[AppFields.semesterId] as String,
+      scheduleMap: (map[AppFields.schedule] as List<dynamic>).map((e) {
+        return {
+          AppFields.classWhereHeld: e[AppFields.classWhereHeld],
+          AppFields.classType: e[AppFields.classType],
+          AppFields.dayOfWeek: e[AppFields.dayOfWeek],
+          AppFields.startingHour: e[AppFields.startingHour],
+          AppFields.endingHour: e[AppFields.endingHour],
+          AppFields.courseFrequency: e[AppFields.courseFrequency],
+        };
+      }).toList(),
     );
   }
 

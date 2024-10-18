@@ -105,7 +105,6 @@ class _HomeGradePageState extends State<HomeGradePage> {
                             );
                           },
                           title: course.title,
-                          semester: course.semester,
                         );
                       },
                       gridDelegate:

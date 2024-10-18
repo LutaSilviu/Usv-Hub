@@ -4,8 +4,8 @@ class AttendanceEntity extends Equatable {
   final String id;
   final String courseId;
   final String studentId;
-  final Map<int, bool> courseAttendance;
-  final Map<int, bool> labortoryAttendance;
+  final Map<String, bool> courseAttendance;
+  final Map<String, bool> labortoryAttendance;
 
   const AttendanceEntity({
     required this.id,

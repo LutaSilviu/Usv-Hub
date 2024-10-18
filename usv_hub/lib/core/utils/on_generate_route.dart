@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_home_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_info_page.dart';
+import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/attendance_details_page.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/home_attendance_page.dart';
 import 'package:usv_hub/features/chat/presentation/pages/add_chat_page.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_page.dart';
 import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
+import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
+import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
 import 'package:usv_hub/features/grade/presentation/pages/grade_detail_page.dart';
 import 'package:usv_hub/features/grade/presentation/pages/home_grade_page.dart';
 import 'package:usv_hub/features/home/presentation/pages/home_page.dart';
@@ -23,11 +26,33 @@ class OnGenerateRoute {
       case AppRouteConst.grades:
         return routeBuilder(const HomeGradePage());
       case AppRouteConst.gradeDetailPage:
-        return routeBuilder(const GradeDetailPage());
+        if (settings.arguments != null) {
+          Map arg = settings.arguments as Map;
+          GradeEntity grade = arg[AppArguments.gradeEntity];
+          CourseEntity course = arg[AppArguments.courseEntity];
+          return routeBuilder(GradeDetailPage(
+            grade: grade,
+            course: course,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
       case AppRouteConst.attendance:
         return routeBuilder(const HomeAttendancePage());
       case AppRouteConst.attendanceDetailPage:
-        return routeBuilder(const AttendanceDetailsPage());
+        if (settings.arguments != null) {
+          Map arg = settings.arguments as Map;
+          AttendanceEntity attendanceEntity =
+              arg[AppArguments.attendanceEntity];
+          CourseEntity course = arg[AppArguments.courseEntity];
+          return routeBuilder(AttendanceDetailsPage(
+            attendanceEntity: attendanceEntity,
+            course: course,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+
       case AppRouteConst.schedule:
         return routeBuilder(const ScheduleHomePage());
       case AppRouteConst.assignments:
@@ -48,4 +73,17 @@ class OnGenerateRoute {
 
 dynamic routeBuilder(Widget page) {
   return MaterialPageRoute(builder: (_) => page);
+}
+
+class ErrorPage extends StatelessWidget {
+  const ErrorPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(AppErrorMessages.noCoursesFound),
+      ),
+    );
+  }
 }

@@ -7,9 +7,9 @@ class CourseEntity extends Equatable {
   final String teacherId;
   final String assistentId;
   final String title;
-  final int classNumber;
+  final int numberOfCourses;
   final int courseCredits;
-  final String semester;
+  final String semesterId;
   final List<Map<String, dynamic>> scheduleMap;
 
   const CourseEntity({
@@ -17,10 +17,10 @@ class CourseEntity extends Equatable {
     required this.teacherId,
     required this.assistentId,
     required this.title,
-    required this.classNumber,
+    required this.numberOfCourses,
     required this.courseCredits,
     required this.scheduleMap,
-    required this.semester,
+    required this.semesterId,
   });
 
   @override
@@ -29,9 +29,9 @@ class CourseEntity extends Equatable {
         teacherId,
         assistentId,
         title,
-        classNumber,
+        numberOfCourses,
         courseCredits,
         scheduleMap,
-        semester
+        semesterId
       ];
 }

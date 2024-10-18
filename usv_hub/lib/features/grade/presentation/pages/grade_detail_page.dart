@@ -7,17 +7,16 @@ import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
 
 class GradeDetailPage extends StatelessWidget {
   const GradeDetailPage({
+    required this.grade,
+    required this.course,
     super.key,
   });
 
   final String title = AppTextConst.gradeDetailPage;
-
+  final GradeEntity grade;
+  final CourseEntity course;
   @override
   Widget build(BuildContext context) {
-    final Map arg = ModalRoute.of(context)!.settings.arguments as Map;
-    final GradeEntity grade = arg[AppArguments.gradeEntity];
-    final CourseEntity course = arg[AppArguments.courseEntity];
-
     return Scaffold(
       body: Background(
         child: Column(
@@ -44,7 +43,7 @@ class GradeDetailPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 68.h),
-            DetailWidget(title: "Class number: ${course.classNumber}"),
+            DetailWidget(title: "Number of courses: ${course.numberOfCourses}"),
             DetailWidget(title: "Course credits: ${course.courseCredits}"),
             DetailWidget(
               title: grade.courseGrade != null

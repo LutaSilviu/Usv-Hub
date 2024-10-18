@@ -6,12 +6,10 @@ class CustomCourseWidget extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.title,
-    required this.semester,
     required this.image,
   });
   final void Function()? onTap;
   final String title;
-  final String semester;
   final String image;
   @override
   Widget build(BuildContext context) {
@@ -41,8 +39,8 @@ class CustomCourseWidget extends StatelessWidget {
                         image,
                       ),
                     ),
+                    SizedBox(height: 30.h),
                     Text(title),
-                    Text(semester),
                   ],
                 );
               },

@@ -5,7 +5,7 @@ class GradeEntity extends Equatable {
   final String studentId;
   final int? courseGrade;
   final int? labGrade;
-  final int courseId;
+  final String courseId;
 
   const GradeEntity({
     required this.id,

@@ -4,17 +4,16 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
+import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 
 class AttendanceDetailsPage extends StatelessWidget {
-  const AttendanceDetailsPage({super.key});
+  const AttendanceDetailsPage(
+      {super.key, required this.attendanceEntity, required this.course});
   final String title = 'Attendance Detail Page';
+  final AttendanceEntity attendanceEntity;
+  final CourseEntity course;
   @override
   Widget build(BuildContext context) {
-    final Map arg = ModalRoute.of(context)!.settings.arguments as Map;
-
-    final AttendanceEntity attendanceEntity =
-        arg[AppArguments.attendanceEntity];
-
     final courseProcentage = (attendanceEntity.courseAttendance.values
                 .where((element) => element == true)
                 .length /
@@ -67,16 +66,17 @@ class AttendanceDetailsPage extends StatelessWidget {
                   vertical: 40.h,
                 ),
                 child: GridView.builder(
-                  itemCount: 14,
+                  itemCount: course.numberOfCourses,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 7,
+                      crossAxisCount: course.numberOfCourses ~/ 2,
                       crossAxisSpacing: 20.w,
                       mainAxisSpacing: 20.h),
                   itemBuilder: (context, index) {
                     Color color;
                     if (attendanceEntity.courseAttendance.keys
-                        .contains(index + 1)) {
-                      if (attendanceEntity.courseAttendance[index + 1]!) {
+                        .contains((index + 1).toString())) {
+                      if (attendanceEntity
+                          .courseAttendance[(index + 1).toString()]!) {
                         color = AppColors.attendancePresent;
                       } else {
                         color = AppColors.attendanceAbsent;
@@ -117,13 +117,13 @@ class AttendanceDetailsPage extends StatelessWidget {
               child: LinearPercentIndicator(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 trailing: Text(
-                  '$courseProcentage%',
+                  '${courseProcentage.round()}%',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 lineHeight: 20.h,
-                percent: courseProcentage,
+                percent: courseProcentage / 100,
                 progressColor: AppColors.attendancePresent,
                 backgroundColor: AppColors.attendanceAbsent,
               ),
@@ -144,16 +144,17 @@ class AttendanceDetailsPage extends StatelessWidget {
                   vertical: 40.h,
                 ),
                 child: GridView.builder(
-                  itemCount: 14,
+                  itemCount: course.numberOfCourses,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 7,
+                      crossAxisCount: course.numberOfCourses ~/ 2,
                       crossAxisSpacing: 20.w,
                       mainAxisSpacing: 20.h),
                   itemBuilder: (context, index) {
                     Color color;
                     if (attendanceEntity.labortoryAttendance.keys
-                        .contains(index + 1)) {
-                      if (attendanceEntity.labortoryAttendance[index + 1]!) {
+                        .contains((index + 1).toString())) {
+                      if (attendanceEntity
+                          .labortoryAttendance[(index + 1).toString()]!) {
                         color = AppColors.attendancePresent;
                       } else {
                         color = AppColors.attendanceAbsent;
@@ -194,13 +195,13 @@ class AttendanceDetailsPage extends StatelessWidget {
               child: LinearPercentIndicator(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 trailing: Text(
-                  '$labProcentage%',
+                  '${labProcentage.round()}%',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 lineHeight: 20.h,
-                percent: labProcentage,
+                percent: labProcentage / 100,
                 progressColor: AppColors.attendancePresent,
                 backgroundColor: AppColors.attendanceAbsent,
               ),

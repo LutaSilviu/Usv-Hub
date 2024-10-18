@@ -32,7 +32,7 @@ class GradeModel extends GradeEntity {
       labGrade: map[AppFields.labGrade] != null
           ? map[AppFields.labGrade] as int
           : null,
-      courseId: map[AppFields.courseId] as int,
+      courseId: map[AppFields.courseId] as String,
     );
   }
 

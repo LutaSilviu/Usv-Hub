@@ -33,6 +33,7 @@ class CustomTextField extends StatelessWidget {
           filled: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
           ),
         ),
       ),

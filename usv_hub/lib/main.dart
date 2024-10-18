@@ -48,9 +48,6 @@ class MyApp extends StatelessWidget {
           BlocProvider<GradeCubit>(
             create: (context) => getIt<GradeCubit>(),
           ),
-          BlocProvider<AttendanceCubit>(
-            create: (context) => getIt<AttendanceCubit>(),
-          ),
           BlocProvider<ScheduleCubit>(
             create: (context) => getIt<ScheduleCubit>(),
           ),
@@ -83,3 +80,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
