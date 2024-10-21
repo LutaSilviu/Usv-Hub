@@ -36,8 +36,14 @@ class ChatRepoImpl extends ChatRepo {
   @override
   Future<Either<Failure, void>> sendMesage(MessageEntity mesajeEntity) async {
     try {
-      return Right(
-          await _chatFirestoreApi.sendMesage(mesajeEntity as MesajeModel));
+      MesajeModel model = MesajeModel(
+        id: mesajeEntity.id,
+        text: mesajeEntity.text,
+        senderId: mesajeEntity.senderId,
+        contactId: mesajeEntity.contactId,
+        timeWhenSent: mesajeEntity.timeWhenSent,
+      );
+      return Right(await _chatFirestoreApi.sendMesage(model));
     } on MediumException catch (e) {
       return Left(MediumFailure(message: e.message));
     }

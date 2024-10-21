@@ -7,14 +7,13 @@ import 'package:usv_hub/features/chat/domain/repositories/chat_repo.dart';
 
 @LazySingleton()
 class GetContactsUsecase
-    extends Usecase<Future<Either<Failure, List<ContactEntity>>>, void> {
+    extends Usecase<Either<Failure, List<ContactEntity>>, void> {
   final ChatRepo _chatRepo;
 
   GetContactsUsecase(this._chatRepo);
 
   @override
-  Future<Future<Either<Failure, List<ContactEntity>>>> call(
-      {required void params}) async {
+  Future<Either<Failure, List<ContactEntity>>> call({void params}) async {
     return _chatRepo.getAllContacts();
   }
 }

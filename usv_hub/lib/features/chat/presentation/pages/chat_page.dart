@@ -12,7 +12,8 @@ import 'package:usv_hub/features/login/presentation/widgets/custom_text_field.da
 import 'package:usv_hub/injection.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  const ChatPage({super.key, required this.contact});
+  final ContactEntity contact;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -29,8 +30,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Map arg = ModalRoute.of(context)!.settings.arguments as Map;
-    final ContactEntity contact = arg[AppArguments.contactEntity];
+    final contact = widget.contact;
     final userId = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       appBar: AppBar(
@@ -45,10 +45,7 @@ class _ChatPageState extends State<ChatPage> {
             children: [
               Expanded(
                 child: StreamBuilder(
-                    stream: getIt<GetAllMessages>().call(
-                        params: contact.person1 == userId
-                            ? contact.person2
-                            : contact.person1),
+                    stream: getIt<GetAllMessages>().call(params: contact.id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
@@ -87,7 +84,7 @@ class _ChatPageState extends State<ChatPage> {
                                 margin: const EdgeInsets.all(8),
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: index % 2 == 0
+                                  color: messages[index].senderId == userId
                                       ? Theme.of(context)
                                           .colorScheme
                                           .primaryContainer
@@ -95,10 +92,10 @@ class _ChatPageState extends State<ChatPage> {
                                           .colorScheme
                                           .secondaryContainer,
                                   borderRadius: BorderRadius.only(
-                                    topLeft: index % 2 == 0
+                                    topLeft: messages[index].senderId == userId
                                         ? const Radius.circular(8)
                                         : Radius.zero,
-                                    topRight: index % 2 != 0
+                                    topRight: messages[index].senderId != userId
                                         ? const Radius.circular(8)
                                         : Radius.zero,
                                     bottomLeft: const Radius.circular(8),
@@ -107,7 +104,7 @@ class _ChatPageState extends State<ChatPage> {
                                 ),
                                 child: Text(
                                   softWrap: true,
-                                  messages[index].messaje,
+                                  messages[index].text,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
@@ -132,17 +129,16 @@ class _ChatPageState extends State<ChatPage> {
                       onPressed: () {
                         MessageEntity messageEntity = MessageEntity(
                             id: '',
-                            messaje: controller.text,
+                            text: controller.text,
                             senderId: userId,
-                            reciverId: contact.person1 == userId
-                                ? contact.person2
-                                : contact.person1,
+                            contactId: contact.id,
                             timeWhenSent: DateTime.now());
                         context
                             .read<MessagesCubit>()
                             .sendMessaje(messageEntity);
+                        controller.clear();
                       },
-                      icon: Icon(Icons.send)),
+                      icon: const Icon(Icons.send)),
                 ],
               )
             ],

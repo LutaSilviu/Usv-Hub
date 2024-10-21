@@ -34,6 +34,7 @@ import 'features/chat/domain/usecases/get_all_messages.dart' as _i365;
 import 'features/chat/domain/usecases/get_contacts_usecase.dart' as _i229;
 import 'features/chat/domain/usecases/send_message_usecase.dart' as _i72;
 import 'features/chat/presentation/cubit/contacts/contacts_cubit.dart' as _i392;
+import 'features/chat/presentation/cubit/messages/messages_cubit.dart' as _i73;
 import 'features/events/data/datasources/event_service_api.dart' as _i242;
 import 'features/events/data/repositories/event_repo_impl.dart' as _i877;
 import 'features/events/domain/repositories/event_repo.dart' as _i351;
@@ -114,10 +115,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i877.EventRepoImpl(gh<_i242.EventServiceApi>()));
     gh.lazySingleton<_i229.GetContactsUsecase>(
         () => _i229.GetContactsUsecase(gh<_i359.ChatRepo>()));
-    gh.lazySingleton<_i72.GetContactsUsecase>(
-        () => _i72.GetContactsUsecase(gh<_i359.ChatRepo>()));
-    gh.factory<_i392.ContactsCubit>(
-        () => _i392.ContactsCubit(gh<_i359.ChatRepo>()));
+    gh.lazySingleton<_i72.SendMessageUsecase>(
+        () => _i72.SendMessageUsecase(gh<_i359.ChatRepo>()));
     gh.factory<_i698.AssigmentsCubit>(
         () => _i698.AssigmentsCubit(gh<_i548.GetAssigmentsUsecase>()));
     gh.lazySingleton<_i901.ScheduleRepo>(
@@ -126,6 +125,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i61.AttendanceCubit(gh<_i521.GetAttendance>()));
     gh.factory<_i772.GradeCubit>(
         () => _i772.GradeCubit(gh<_i650.GetAllCourses>()));
+    gh.factory<_i392.ContactsCubit>(
+        () => _i392.ContactsCubit(gh<_i229.GetContactsUsecase>()));
+    gh.factory<_i73.MessagesCubit>(
+        () => _i73.MessagesCubit(gh<_i72.SendMessageUsecase>()));
     gh.lazySingleton<_i331.GetEventsUsecase>(
         () => _i331.GetEventsUsecase(gh<_i351.EventRepo>()));
     gh.lazySingleton<_i23.GetStudentSchedule>(

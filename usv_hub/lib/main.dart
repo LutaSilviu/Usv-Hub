@@ -6,6 +6,8 @@ import 'package:usv_hub/core/utils/main_wraper.dart';
 import 'package:usv_hub/core/utils/on_generate_route.dart';
 import 'package:usv_hub/core/utils/theme.dart';
 import 'package:usv_hub/features/attendance/presentation/cubit/attendance_cubit.dart';
+import 'package:usv_hub/features/chat/data/models/mesaje_model.dart';
+import 'package:usv_hub/features/chat/presentation/cubit/messages/messages_cubit.dart';
 import 'package:usv_hub/features/grade/presentation/cubit/grade_cubit.dart';
 import 'package:usv_hub/features/home/presentation/cubit/home_cubit/home_cubit.dart';
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
@@ -51,6 +53,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<ScheduleCubit>(
             create: (context) => getIt<ScheduleCubit>(),
           ),
+          BlocProvider<MessagesCubit>(
+            create: (context) => getIt<MessagesCubit>(),
+          ),
         ],
         child: SafeArea(
           child: MaterialApp(
@@ -81,4 +86,5 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
+//flutter pub get
+//flutter pub run build_runner watch --delete-conflicting-outputs

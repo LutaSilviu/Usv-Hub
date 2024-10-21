@@ -6,6 +6,7 @@ import 'package:usv_hub/features/assigments/presentation/pages/assigments_info_p
 import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/attendance_details_page.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/home_attendance_page.dart';
+import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
 import 'package:usv_hub/features/chat/presentation/pages/add_chat_page.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_page.dart';
 import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
@@ -71,7 +72,15 @@ class OnGenerateRoute {
         }
 
       case AppRouteConst.chat:
-        return routeBuilder(const ChatPage());
+        if (settings.arguments != null) {
+          final ContactEntity contact = settings.arguments! as ContactEntity;
+          return routeBuilder(ChatPage(
+            contact: contact,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+
       case AppRouteConst.addChat:
         return routeBuilder(const AddChatPage());
       case AppRouteConst.eventsHomePage:

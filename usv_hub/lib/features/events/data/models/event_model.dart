@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/events/domain/entities/event_entity.dart';
 
@@ -18,8 +19,8 @@ class EventModel extends EventEntity {
       AppFields.id: id,
       AppFields.departamentId: departamentId,
       AppFields.title: title,
-      AppFields.startTime: startTime.millisecondsSinceEpoch,
-      AppFields.endTime: endTime.millisecondsSinceEpoch,
+      AppFields.startTime: Timestamp.fromDate(startTime),
+      AppFields.endTime: Timestamp.fromDate(endTime),
       AppFields.classWhereHeld: classWhereHeld,
       AppFields.supporterName: supporterName,
     };
@@ -30,10 +31,8 @@ class EventModel extends EventEntity {
       id: map[AppFields.id] as String,
       departamentId: map[AppFields.departamentId] as String,
       title: map[AppFields.title] as String,
-      startTime:
-          DateTime.fromMillisecondsSinceEpoch(map[AppFields.startTime] as int),
-      endTime:
-          DateTime.fromMillisecondsSinceEpoch(map[AppFields.endTime] as int),
+      startTime: (map[AppFields.startTime] as Timestamp).toDate(),
+      endTime: (map[AppFields.endTime] as Timestamp).toDate(),
       classWhereHeld: map[AppFields.classWhereHeld] as String,
       supporterName: map[AppFields.supporterName] as String,
     );

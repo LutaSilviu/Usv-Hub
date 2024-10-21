@@ -154,11 +154,46 @@ class _EventsHomePageState extends State<EventsHomePage> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: ListTile(
-                                title: Text(selectedList[index].title),
-                                subtitle:
-                                    Text(selectedList[index].classWhereHeld),
-                                trailing: Text(
-                                    selectedList[index].startTime.toString()),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      selectedList[index].title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      selectedList[index].supporterName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Row(
+                                  children: [
+                                    Text(
+                                      '${selectedList[index].startTime.hour}:${selectedList[index].startTime.minute} - ${selectedList[index].endTime.hour}:${selectedList[index].endTime.minute}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    if (selectedList[index].classWhereHeld !=
+                                        '')
+                                      Text(
+                                        selectedList[index].classWhereHeld,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                  ],
+                                ),
                               ),
                             );
                           },

@@ -152,7 +152,7 @@ class AppFields {
   static const String schedule = "Schedule";
 
   //messaje
-  static const String messaje = 'Messaje';
+  static const String text = 'Text';
   static const String senderId = 'SenderId';
   static const String reciverId = 'ReciverId';
   static const String timeWhenSent = 'TimeWhenSent';
@@ -176,6 +176,8 @@ class AppFields {
   static const String labortoryAttendance = 'LaboratoryAttendance';
 
   static const String description = 'Description';
+
+  static const String contactId = 'ContactId';
 }
 
 class AppArguments {
@@ -201,7 +203,7 @@ class AppCollections {
   static const String events = 'Events';
 }
 
-enum ContactsStatus { active, pending }
+enum ContactsStatus { active, pending, inactive }
 
 extension ContactsStatusToString on ContactsStatus {
   String get stringValue {
@@ -210,6 +212,9 @@ extension ContactsStatusToString on ContactsStatus {
         return 'Active';
       case ContactsStatus.pending:
         return 'Pending';
+      case ContactsStatus.inactive:
+        return 'Inactive';
+
       default:
         return '';
     }
@@ -223,6 +228,8 @@ extension StringToContactsStatus on String {
         return ContactsStatus.active;
       case 'pending':
         return ContactsStatus.pending;
+      case 'inactive':
+        return ContactsStatus.inactive;
       default:
         return null;
     }

@@ -36,26 +36,6 @@ class HomePage extends StatelessWidget {
             icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
-          BlocBuilder<LoginCubit, LoginState>(
-            builder: (context, state) {
-              return IconButton(
-                style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                      backgroundColor: WidgetStateProperty.all<Color>(
-                        Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                icon: const Icon(Icons.logout),
-                onPressed: () {
-                  context.read<LoginCubit>().logout();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    AppRouteConst.login,
-                    (route) => false,
-                  );
-                },
-              );
-            },
-          ),
         ],
       ),
       body: Background(

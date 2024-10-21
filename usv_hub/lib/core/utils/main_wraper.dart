@@ -9,6 +9,7 @@ import 'package:usv_hub/features/chat/presentation/pages/chat_home_page.dart';
 import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 import 'package:usv_hub/features/home/presentation/pages/home_page.dart';
+import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
 
 class MainWrapper extends StatelessWidget {
   const MainWrapper({super.key});
@@ -43,8 +44,8 @@ class MainWrapper extends StatelessWidget {
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.school,
-                text: 'Grade',
+                icon: Icons.chat,
+                text: 'Chat',
               ),
               GButton(
                 icon: Icons.calendar_month,
@@ -151,9 +152,21 @@ class CustomDrawer extends StatelessWidget {
             text: AppTextConst.appSettings,
             icon: Icons.settings,
           ),
-          const DrawerItem(
-            text: AppTextConst.logout,
-            icon: Icons.logout,
+          BlocBuilder<LoginCubit, LoginState>(
+            builder: (context, state) {
+              return DrawerItem(
+                text: AppTextConst.logout,
+                icon: Icons.logout,
+                onTap: () {
+                  context.read<LoginCubit>().logout();
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRouteConst.login,
+                    (route) => false,
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
@@ -166,29 +179,35 @@ class DrawerItem extends StatelessWidget {
     super.key,
     required this.text,
     required this.icon,
+    this.onTap,
   });
   final String text;
   final IconData icon;
+  final Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-          ),
-          SizedBox(
-            width: 25.w,
-          ),
-          Text(
-            text,
-            style: TextStyle(
-              color: AppColors.white,
-              fontSize: 20.sp,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Row(
+          children: [
+            Icon(
+              icon,
             ),
-          ),
-        ],
+            SizedBox(
+              width: 25.w,
+            ),
+            Text(
+              text,
+              style: TextStyle(
+                color: AppColors.white,
+                fontSize: 20.sp,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,32 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/chat/domain/entities/messaje_entity.dart';
 
 class MesajeModel extends MessageEntity {
   const MesajeModel({
     required super.id,
-    required super.messaje,
+    required super.text,
     required super.senderId,
-    required super.reciverId,
+    required super.contactId,
     required super.timeWhenSent,
   });
 
   factory MesajeModel.fromJson(Map<String, dynamic> json) {
     return MesajeModel(
       id: json[AppFields.id],
-      messaje: json[AppFields.messaje],
+      text: json[AppFields.text],
       senderId: json[AppFields.senderId],
-      reciverId: json[AppFields.reciverId],
-      timeWhenSent: json[AppFields.timeWhenSent],
+      contactId: json[AppFields.contactId],
+      timeWhenSent: (json[AppFields.timeWhenSent] as Timestamp).toDate(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       AppFields.id: id,
-      AppFields.messaje: messaje,
+      AppFields.text: text,
       AppFields.senderId: senderId,
-      AppFields.reciverId: reciverId,
-      AppFields.timeWhenSent: timeWhenSent,
+      AppFields.contactId: contactId,
+      AppFields.timeWhenSent: Timestamp.fromDate(timeWhenSent),
     };
   }
 }

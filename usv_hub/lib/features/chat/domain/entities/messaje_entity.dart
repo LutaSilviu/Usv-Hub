@@ -2,25 +2,25 @@ import 'package:equatable/equatable.dart';
 
 class MessageEntity extends Equatable {
   final String id;
-  final String messaje;
+  final String text;
   final String senderId;
-  final String reciverId;
+  final String contactId;
   final DateTime timeWhenSent;
 
   const MessageEntity({
     required this.id,
-    required this.messaje,
+    required this.text,
     required this.senderId,
-    required this.reciverId,
+    required this.contactId,
     required this.timeWhenSent,
   });
 
   @override
   List<Object?> get props => [
         id,
-        messaje,
+        text,
         senderId,
-        reciverId,
+        contactId,
         timeWhenSent,
       ];
 }

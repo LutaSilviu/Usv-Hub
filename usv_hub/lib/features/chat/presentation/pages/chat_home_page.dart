@@ -69,6 +69,11 @@ class ChatHomePage extends StatelessWidget {
                 );
               }
               if (state is ContactsLoaded) {
+                if (state.contacts.isEmpty) {
+                  return const Center(
+                    child: Text('No contacts'),
+                  );
+                }
                 return ListView.builder(
                     padding: EdgeInsets.all(8.h),
                     itemCount: state.contacts.length,
@@ -95,9 +100,7 @@ class ChatHomePage extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             AppRouteConst.chat,
-                            arguments: {
-                              AppArguments.contactEntity: state.contacts[index]
-                            },
+                            arguments: state.contacts[index],
                           );
                         },
                       );
