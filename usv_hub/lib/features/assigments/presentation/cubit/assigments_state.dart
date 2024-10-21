@@ -8,3 +8,23 @@ abstract class AssigmentsState extends Equatable {
 }
 
 class AssigmentsInitial extends AssigmentsState {}
+
+class AssigmentsLoading extends AssigmentsState {}
+
+class AssigmentsLoaded extends AssigmentsState {
+  final Map<AssigmentEntity, CourseEntity> assigments;
+
+  const AssigmentsLoaded(this.assigments);
+
+  @override
+  List<Object> get props => [assigments];
+}
+
+class AssigmentsError extends AssigmentsState {
+  final String message;
+
+  const AssigmentsError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

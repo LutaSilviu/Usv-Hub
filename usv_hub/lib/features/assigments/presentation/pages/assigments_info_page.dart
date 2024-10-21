@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usv_hub/core/utils/background.dart';
+import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/grade/presentation/pages/grade_detail_page.dart';
 import 'package:usv_hub/features/login/presentation/widgets/custom_elevated_button.dart';
 
 class AssigmentInfoPage extends StatelessWidget {
-  const AssigmentInfoPage({super.key});
+  const AssigmentInfoPage({super.key, required this.assigmentEntity});
   final String title = 'Assigment Info Page';
+  final AssigmentEntity assigmentEntity;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,23 +40,27 @@ class AssigmentInfoPage extends StatelessWidget {
             SizedBox(height: 40.h),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const DetailWidget(
-                        title:
-                            "Classnumberddddddddddddddddddddddddddddddddddddddddddddddddddnumberddddddddddddddddddddddddddddddddddddddddddddddddddnumberddddddddddddddddddddddddddddddddddddddddddddddddddnumberddddddddddddddddddddddddddddddddddddddddddddddddddnumberddddddddddddddddddddddddddddddddddddddddddddddddddnumberddddddddddddddddddddddddddddddddddddddddddddddddddnumberdddddddddddddddddddddddddddddddddddddddddddddddddd numberdddddddddddddddddddddddddddddddddddddddddddddddddd:"),
-                    CustomElevatedButton(
-                      onPressed: () {},
-                      text: 'Add Homework',
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
-                    ),
-                    CustomElevatedButton(
-                      onPressed: () {},
-                      text: 'Submit',
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                    ),
-                  ],
+                child: DetailWidget(
+                  title: assigmentEntity.description,
                 ),
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomElevatedButton(
+                    onPressed: () {},
+                    text: 'Add Homework',
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                  ),
+                  CustomElevatedButton(
+                    onPressed: () {},
+                    text: 'Submit',
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                  ),
+                ],
               ),
             ),
           ],

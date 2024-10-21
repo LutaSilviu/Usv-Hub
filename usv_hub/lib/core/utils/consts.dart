@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 
 class AppTextSize {
   static const double small = 12.0;
@@ -173,6 +174,8 @@ class AppFields {
 
   static const String courseAttendance = 'CourseAttendance';
   static const String labortoryAttendance = 'LaboratoryAttendance';
+
+  static const String description = 'Description';
 }
 
 class AppArguments {
@@ -180,11 +183,13 @@ class AppArguments {
   static const courseEntity = "CourseEntity";
   static const attendanceEntity = "AttendanceEntity";
   static const contactEntity = "ContactEntity";
+  static const assigmentEntity = "AssigmentEntity";
 }
 
 class AppCollections {
   static const gradeCollection = 'Grade';
   static const attendanceCollection = 'Attendance';
+  static const assignmentCollection = 'Assignment';
   static const courseCollection = 'Course';
   static const semesterCollection = 'Semester';
   static const semesterXStudentCollection = 'SemesterXStudent';
@@ -222,4 +227,14 @@ extension StringToContactsStatus on String {
         return null;
     }
   }
+}
+
+class DaysOfWeek {
+  static const String luni = 'Luni';
+  static const String marti = 'Marti';
+  static const String miercuri = 'Miercuri';
+  static const String joi = 'Joi';
+  static const String vineri = 'Vineri';
+  static const String sambata = 'Sambata';
+  static const String duminica = 'Duminica';
 }

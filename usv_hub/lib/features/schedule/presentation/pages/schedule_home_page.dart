@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:usv_hub/core/utils/background.dart';
+import 'package:usv_hub/core/utils/functions.dart';
 import 'package:usv_hub/features/schedule/domain/entities/schedule_entity.dart';
 import 'package:usv_hub/features/schedule/presentation/cubit/schedule_cubit.dart';
 
@@ -171,7 +170,24 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: ListTile(
-                                  title: Text('${value[index].courseTitle}'),
+                                  title: Text(
+                                    value[index].courseTitle,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  trailing: Text(
+                                    value[index].sala,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  subtitle: Text(
+                                    '${dayFromInt(value[index].dayOfWeek)} ${value[index].startingHour} - ${value[index].endingHour}',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               );
                             },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usv_hub/core/utils/consts.dart';
+import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_home_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_info_page.dart';
 import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
@@ -58,7 +59,17 @@ class OnGenerateRoute {
       case AppRouteConst.assignments:
         return routeBuilder(const AssigmentsHomePage());
       case AppRouteConst.assigmentInfoPage:
-        return routeBuilder(const AssigmentInfoPage());
+        if (settings.arguments != null) {
+          AssigmentEntity asssigmentEntity =
+              settings.arguments as AssigmentEntity;
+
+          return routeBuilder(AssigmentInfoPage(
+            assigmentEntity: asssigmentEntity,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+
       case AppRouteConst.chat:
         return routeBuilder(const ChatPage());
       case AppRouteConst.addChat:

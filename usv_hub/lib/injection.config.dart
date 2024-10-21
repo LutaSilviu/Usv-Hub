@@ -11,6 +11,14 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import 'features/assigments/data/datasources/assigments_api_service.dart'
+    as _i424;
+import 'features/assigments/data/repositories/assigments_repo_impl.dart'
+    as _i632;
+import 'features/assigments/domain/repositories/assigments_repo.dart' as _i12;
+import 'features/assigments/domain/usecases/get_assigments_usecase.dart'
+    as _i548;
+import 'features/assigments/presentation/cubit/assigments_cubit.dart' as _i698;
 import 'features/attendance/data/datasources/attendance_api_service.dart'
     as _i240;
 import 'features/attendance/data/repositories/attendance_repo_impl.dart'
@@ -77,12 +85,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i507.AuthenticationValidator());
     gh.lazySingleton<_i654.ScheduleFirestoreApi>(
         () => _i654.ScheduleFirestoreApi());
+    gh.lazySingleton<_i424.AssigmentsApiService>(
+        () => _i424.AssigmentsApiService());
     gh.lazySingleton<_i17.AuthRepo>(
         () => _i1007.AuthRepoImpl(gh<_i285.AuthenticationFirestoreApi>()));
     gh.lazySingleton<_i864.AuthUseCase>(() => _i864.AuthUseCase(
           authRepo: gh<_i17.AuthRepo>(),
           fieldValidator: gh<_i507.AuthenticationValidator>(),
         ));
+    gh.lazySingleton<_i12.AssigmentsRepo>(
+        () => _i632.AssigmentsRepoImpl(gh<_i424.AssigmentsApiService>()));
     gh.lazySingleton<_i359.ChatRepo>(
         () => _i843.ChatRepoImpl(gh<_i1028.ChatFirestoreApi>()));
     gh.lazySingleton<_i535.GradeRepository>(() => _i34.GradeRepoImpl());
@@ -96,6 +108,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i521.GetAttendance(gh<_i114.AttendanceRepository>()));
     gh.factory<_i774.LoginCubit>(
         () => _i774.LoginCubit(authUseCase: gh<_i864.AuthUseCase>()));
+    gh.lazySingleton<_i548.GetAssigmentsUsecase>(
+        () => _i548.GetAssigmentsUsecase(gh<_i12.AssigmentsRepo>()));
     gh.lazySingleton<_i351.EventRepo>(
         () => _i877.EventRepoImpl(gh<_i242.EventServiceApi>()));
     gh.lazySingleton<_i229.GetContactsUsecase>(
@@ -104,16 +118,20 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i72.GetContactsUsecase(gh<_i359.ChatRepo>()));
     gh.factory<_i392.ContactsCubit>(
         () => _i392.ContactsCubit(gh<_i359.ChatRepo>()));
+    gh.factory<_i698.AssigmentsCubit>(
+        () => _i698.AssigmentsCubit(gh<_i548.GetAssigmentsUsecase>()));
     gh.lazySingleton<_i901.ScheduleRepo>(
         () => _i707.ScheduleRepoImpl(gh<_i654.ScheduleFirestoreApi>()));
     gh.factory<_i61.AttendanceCubit>(
         () => _i61.AttendanceCubit(gh<_i521.GetAttendance>()));
-    gh.factory<_i132.EventsCubit>(
-        () => _i132.EventsCubit(gh<_i331.GetEventsUsecase>()));
     gh.factory<_i772.GradeCubit>(
         () => _i772.GradeCubit(gh<_i650.GetAllCourses>()));
+    gh.lazySingleton<_i331.GetEventsUsecase>(
+        () => _i331.GetEventsUsecase(gh<_i351.EventRepo>()));
     gh.lazySingleton<_i23.GetStudentSchedule>(
         () => _i23.GetStudentSchedule(gh<_i901.ScheduleRepo>()));
+    gh.factory<_i132.EventsCubit>(
+        () => _i132.EventsCubit(gh<_i331.GetEventsUsecase>()));
     gh.factory<_i211.ScheduleCubit>(
         () => _i211.ScheduleCubit(gh<_i23.GetStudentSchedule>()));
     return this;
