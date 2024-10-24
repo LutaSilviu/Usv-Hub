@@ -69,6 +69,19 @@ class AppTextConst {
   static const selectCourse = 'Select Course';
   static const courses = 'Courses';
   static const gradeDetailPage = 'Grade Detail Page';
+
+  static String phoneNumberDescription =
+      "Your current phone number is displayed below. You can easily update it by tapping the \"Edit\" button. Please ensure your number is correct to stay connected. ";
+  static String addressesDescriprion =
+      "Your saved addresses are listed below for easy access and updates. You can add a new address or edit existing ones by long pressing the respective address. Keeping your addresses up-to-date ensures smooth deliveries and communication.";
+
+  static String add = 'Add';
+
+  static String addAddresses = "Add a new Address";
+
+  static var newAddress = "New Address";
+
+  static String noAddressesFound = "No courses found";
 }
 
 class AppStringFailuresMessages {
@@ -109,6 +122,8 @@ class AppRouteConst {
   static const String addChat = '/addChat';
 
   static const String eventsHomePage = '/eventsHomePage';
+
+  static const String adresses = '/adresses';
 }
 
 class AppImages {
@@ -123,6 +138,7 @@ class AppErrorMessages {
   static const String noCoursesFound = "No courses found";
 
   static const String ups = "Ups, something went wrong";
+  static const String firebaseError = "Ups, something went wrong with Firebase";
 }
 
 class AppFields {
@@ -179,6 +195,10 @@ class AppFields {
   static const String contactId = 'ContactId';
 
   static const String email = "Email";
+
+  static const String userId = "UserId";
+
+  static var address = "Address";
 }
 
 class AppArguments {
@@ -202,6 +222,8 @@ class AppCollections {
   static const String message = 'Message';
   static const String contacts = 'Contacts';
   static const String events = 'Events';
+
+  static String addresses = "Addresses";
 }
 
 enum ContactsStatus { active, pending, inactive }

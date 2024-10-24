@@ -79,9 +79,9 @@ class _LoginPageState extends State<LoginPage> {
                 CustomElevatedButton(
                     onPressed: () {
                       context.read<LoginCubit>().login(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          );
+                          email: emailController.text,
+                          password: passwordController.text,
+                          context: context);
                     },
                     text: AppTextConst.login),
               ],

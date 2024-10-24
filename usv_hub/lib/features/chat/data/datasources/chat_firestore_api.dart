@@ -121,11 +121,8 @@ class ChatFirestoreApi {
 
   Future<void> createContact(ContactModel contacts) async {
     try {
-      final id = _firestore.collection(AppCollections.contacts).doc().id;
-
-      await _firestore
-          .collection(AppCollections.contacts)
-          .add(contacts.copyWith(id: id).toMap());
+      final docRef = _firestore.collection(AppCollections.contacts).doc();
+      await docRef.set(contacts.copyWith(id: docRef.id).toMap());
 
       return;
     } on FirebaseException catch (e) {

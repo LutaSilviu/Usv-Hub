@@ -9,6 +9,7 @@ import 'package:usv_hub/features/attendance/presentation/pages/home_attendance_p
 import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
 import 'package:usv_hub/features/chat/presentation/pages/add_chat_page.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_page.dart';
+import 'package:usv_hub/features/adresses/presentation/pages/adresses_page.dart';
 import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
 import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
@@ -23,6 +24,8 @@ class OnGenerateRoute {
     switch (settings.name) {
       case AppRouteConst.login:
         return routeBuilder(const LoginPage());
+      case AppRouteConst.adresses:
+        return routeBuilder(const AdressesPage());
       case AppRouteConst.home:
         return routeBuilder(const HomePage());
       case AppRouteConst.grades:

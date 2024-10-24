@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-
 import 'package:usv_hub/features/login/domain/usecases/auth_usecase.dart';
 
 part 'login_state.dart';
@@ -24,13 +24,18 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     emit(LoginLoading());
     try {
       await authUseCase.login(email: email, password: password).then((value) {
         value.fold(
           (l) => emit(LoginFailure(l.toString())),
-          (r) => emit(LoginSuccess()),
+          (r) async {
+            emit(LoginSuccess());
+          },
         );
       });
     } catch (e) {

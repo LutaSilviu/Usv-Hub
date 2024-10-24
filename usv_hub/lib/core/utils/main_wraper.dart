@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/test.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_home_page.dart';
@@ -10,9 +11,25 @@ import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 import 'package:usv_hub/features/home/presentation/pages/home_page.dart';
 import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
+import 'package:usv_hub/features/login/presentation/user_provider.dart/user_provider.dart';
 
-class MainWrapper extends StatelessWidget {
+class MainWrapper extends StatefulWidget {
   const MainWrapper({super.key});
+
+  @override
+  State<MainWrapper> createState() => _MainWrapperState();
+}
+
+class _MainWrapperState extends State<MainWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(
+      () {
+        if (mounted) context.read<UserProvider>().fetchUserEntity();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +43,7 @@ class MainWrapper extends StatelessWidget {
       const Center(
         child: EventsHomePage(),
       ),
-      Test(),
+      const Test(),
     ];
     return BlocBuilder<NavBarCubit, NavBarState>(
       builder: (context, state) {
@@ -76,99 +93,141 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      child: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.all(20.h),
-            child: Row(
+      child: Consumer<UserProvider>(
+        builder: (BuildContext context, UserProvider provider, Widget? child) {
+          if (provider.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (provider.user == null) {
+            return Column(
               children: [
-                CircleAvatar(
-                  radius: 30.r,
-                  backgroundImage: const AssetImage('assets/images/usv.png'),
+                const Center(
+                  child: Text('No user found'),
                 ),
-                SizedBox(
-                  width: 10.w,
+                BlocBuilder<LoginCubit, LoginState>(
+                  builder: (context, state) {
+                    return DrawerItem(
+                      text: AppTextConst.logout,
+                      icon: Icons.logout,
+                      onTap: () {
+                        context.read<LoginCubit>().logout();
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRouteConst.login,
+                          (route) => false,
+                        );
+                      },
+                    );
+                  },
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              ],
+            );
+          }
+          return ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.all(20.h),
+                child: Row(
                   children: [
-                    Text(
-                      'User Name',
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 20.sp,
-                      ),
+                    // CircleAvatar(
+                    //   radius: 30.r,
+                    //   backgroundImage:
+                    //       const AssetImage('assets/images/usv.png'),
+                    // ),
+                    Icon(
+                      Icons.person,
+                      size: 50.sp,
                     ),
-                    Text(
-                      'User email',
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 15.sp,
-                      ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          provider.user!.name,
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 20.sp,
+                          ),
+                        ),
+                        Text(
+                          provider.user!.email,
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Divider(
-            color: Theme.of(context).colorScheme.primaryFixed,
-            endIndent: 10.w,
-            indent: 10.w,
-          ),
-          const DrawerItem(
-            text: AppTextConst.personalData,
-            icon: Icons.person,
-          ),
-          const DrawerItem(
-            text: AppTextConst.addresses,
-            icon: Icons.location_on,
-          ),
-          const DrawerItem(
-            text: AppTextConst.emailAdress,
-            icon: Icons.email,
-          ),
-          const DrawerItem(
-            text: AppTextConst.phoneNumber,
-            icon: Icons.phone,
-          ),
-          const DrawerItem(
-            text: AppTextConst.languages,
-            icon: Icons.language,
-          ),
-          const DrawerItem(
-            text: AppTextConst.licenses,
-            icon: FontAwesomeIcons.file,
-          ),
-          const DrawerItem(
-            text: AppTextConst.publications,
-            icon: Icons.library_books,
-          ),
-          const DrawerItem(
-            text: AppTextConst.emergencyContacts,
-            icon: Icons.contact_phone,
-          ),
-          const DrawerItem(
-            text: AppTextConst.appSettings,
-            icon: Icons.settings,
-          ),
-          BlocBuilder<LoginCubit, LoginState>(
-            builder: (context, state) {
-              return DrawerItem(
-                text: AppTextConst.logout,
-                icon: Icons.logout,
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.primaryFixed,
+                endIndent: 10.w,
+                indent: 10.w,
+              ),
+              const DrawerItem(
+                text: AppTextConst.personalData,
+                icon: Icons.person,
+              ),
+              DrawerItem(
+                text: AppTextConst.addresses,
+                icon: Icons.location_on,
                 onTap: () {
-                  context.read<LoginCubit>().logout();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    AppRouteConst.login,
-                    (route) => false,
+                  Navigator.pushNamed(context, AppRouteConst.adresses);
+                },
+              ),
+              const DrawerItem(
+                text: AppTextConst.emailAdress,
+                icon: Icons.email,
+              ),
+              const DrawerItem(
+                text: AppTextConst.phoneNumber,
+                icon: Icons.phone,
+              ),
+              const DrawerItem(
+                text: AppTextConst.languages,
+                icon: Icons.language,
+              ),
+              const DrawerItem(
+                text: AppTextConst.licenses,
+                icon: FontAwesomeIcons.file,
+              ),
+              const DrawerItem(
+                text: AppTextConst.publications,
+                icon: Icons.library_books,
+              ),
+              const DrawerItem(
+                text: AppTextConst.emergencyContacts,
+                icon: Icons.contact_phone,
+              ),
+              const DrawerItem(
+                text: AppTextConst.appSettings,
+                icon: Icons.settings,
+              ),
+              BlocBuilder<LoginCubit, LoginState>(
+                builder: (context, state) {
+                  return DrawerItem(
+                    text: AppTextConst.logout,
+                    icon: Icons.logout,
+                    onTap: () {
+                      context.read<LoginCubit>().logout();
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRouteConst.login,
+                        (route) => false,
+                      );
+                    },
                   );
                 },
-              );
-            },
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

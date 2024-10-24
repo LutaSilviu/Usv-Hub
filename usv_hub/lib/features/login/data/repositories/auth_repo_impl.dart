@@ -1,7 +1,10 @@
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:usv_hub/core/errors/exceptions.dart';
+import 'package:usv_hub/core/errors/failures.dart';
 import 'package:usv_hub/core/utils/consts.dart';
+import 'package:usv_hub/features/chat/domain/entities/user.dart';
 import 'package:usv_hub/features/login/data/datasources/authentication_firestore_api.dart';
 import 'package:usv_hub/features/login/domain/repositories/auth_repo.dart';
 
@@ -39,6 +42,15 @@ class AuthRepoImpl extends AuthRepo {
       return authFirestoreApi.logout();
     } on FirebaseAuthException catch (error) {
       throw MediumException(runtimeType, error.message!);
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getUserEntity() async {
+    try {
+      return Right(await authFirestoreApi.getUserModel());
+    } on FirebaseAuthException catch (error) {
+      return Left(MediumFailure(message: error.message!));
     }
   }
 }

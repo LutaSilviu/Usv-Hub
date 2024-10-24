@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +8,6 @@ import 'package:usv_hub/features/attendance/presentation/widgets/custom_course_w
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_search_field.dart';
 import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
 import 'package:usv_hub/features/chat/presentation/cubit/potential_contacts/potential_contacts_cubit.dart';
-import 'package:usv_hub/injection.dart';
 
 class AddChatPage extends StatefulWidget {
   const AddChatPage({super.key, required this.contact});
@@ -79,7 +77,7 @@ class _AddChatPageState extends State<AddChatPage> {
                 if (state is PotentialContactsLoaded) {
                   if (state.contacts.isEmpty) {
                     return const Center(
-                      child: Text('No contacts '),
+                      child: Text('No contacts'),
                     );
                   }
                   return Expanded(
