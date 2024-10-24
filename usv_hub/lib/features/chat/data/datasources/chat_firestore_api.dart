@@ -5,15 +5,15 @@ import 'package:usv_hub/core/errors/exceptions.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/chat/data/models/contact_model.dart';
 import 'package:usv_hub/features/chat/data/models/mesaje_model.dart';
-import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
+import 'package:usv_hub/features/chat/data/models/user_model.dart';
 
 @LazySingleton()
 class ChatFirestoreApi {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final User? _user = FirebaseAuth.instance.currentUser;
 
-  Future<List<ContactEntity>> getAllContacts() async {
-    final List<ContactEntity> contacts = [];
+  Future<List<ContactModel>> getAllContacts() async {
+    final List<ContactModel> contacts = [];
 
     try {
       final response1 = await _firestore
@@ -44,7 +44,7 @@ class ChatFirestoreApi {
               .get()
               .then((value) => value.docs[0][AppFields.name]);
         }
-        ContactEntity contact = ContactModel.fromMap(doc.data(), name);
+        ContactModel contact = ContactModel.fromMap(doc.data(), name);
         contacts.add(contact);
       }
       return contacts;
@@ -57,17 +57,23 @@ class ChatFirestoreApi {
 
   // Functia pentru obtinerea stream-ului de mesaje
   Stream<List<MesajeModel>> getMessages(String contactId) {
-    // Mesajele unde utilizatorul este expeditor (sender)
-    final sentMessagesStream = _firestore
-        .collection(AppCollections.message)
-        .where(AppFields.contactId, isEqualTo: contactId)
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => MesajeModel.fromJson(doc.data()))
-              .toList(),
-        );
-    return sentMessagesStream;
+    try {
+      // Mesajele unde utilizatorul este expeditor (sender)
+      final sentMessagesStream = _firestore
+          .collection(AppCollections.message)
+          .where(AppFields.contactId, isEqualTo: contactId)
+          .snapshots()
+          .map(
+            (snapshot) => snapshot.docs
+                .map((doc) => MesajeModel.fromJson(doc.data()))
+                .toList(),
+          );
+      return sentMessagesStream;
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } catch (e) {
+      throw MediumException(runtimeType, e.toString());
+    }
   }
 
   Future<void> sendMesage(MesajeModel mesajeEntity) async {
@@ -86,6 +92,42 @@ class ChatFirestoreApi {
 
       // Save the message to Firestore using the generated ID
       await docRef.set(updatedMessage.toJson());
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } catch (e) {
+      throw MediumException(runtimeType, e.toString());
+    }
+  }
+
+  Future<List<UserModel>> getPotentialContacts(List<String> contacts) async {
+    try {
+      final response = await _firestore
+          .collection(AppCollections.teacher)
+          .where(AppFields.id, whereNotIn: contacts)
+          .get()
+          .then(
+            (value) => value.docs
+                .map((doc) => UserModel.fromJson(doc.data()))
+                .toList(),
+          );
+
+      return response;
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } catch (e) {
+      throw MediumException(runtimeType, e.toString());
+    }
+  }
+
+  Future<void> createContact(ContactModel contacts) async {
+    try {
+      final id = _firestore.collection(AppCollections.contacts).doc().id;
+
+      await _firestore
+          .collection(AppCollections.contacts)
+          .add(contacts.copyWith(id: id).toMap());
+
+      return;
     } on FirebaseException catch (e) {
       throw MediumException(runtimeType, e.message!);
     } catch (e) {

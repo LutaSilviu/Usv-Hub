@@ -13,7 +13,7 @@ class ContactModel extends ContactEntity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       AppFields.id: id,
-      AppFields.status: status.name,
+      AppFields.status: status.stringValue,
       AppFields.person1: person1,
       AppFields.person2: person2,
     };
@@ -26,6 +26,16 @@ class ContactModel extends ContactEntity {
       status: (map[AppFields.status] as String).toContactsStatus()!,
       person1: map[AppFields.person1] as String,
       person2: map[AppFields.person2] as String,
+    );
+  }
+
+  ContactModel copyWith({String? id, String? name}) {
+    return ContactModel(
+      id: id ?? this.id,
+      status: status,
+      person1: person1,
+      person2: person2,
+      contactName: name ?? contactName,
     );
   }
 }

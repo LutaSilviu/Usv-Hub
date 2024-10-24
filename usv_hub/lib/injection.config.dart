@@ -30,11 +30,15 @@ import 'features/attendance/presentation/cubit/attendance_cubit.dart' as _i61;
 import 'features/chat/data/datasources/chat_firestore_api.dart' as _i1028;
 import 'features/chat/data/repositories/chat_repo_impl.dart' as _i843;
 import 'features/chat/domain/repositories/chat_repo.dart' as _i359;
+import 'features/chat/domain/usecases/create_contact.dart' as _i791;
 import 'features/chat/domain/usecases/get_all_messages.dart' as _i365;
 import 'features/chat/domain/usecases/get_contacts_usecase.dart' as _i229;
+import 'features/chat/domain/usecases/get_potential_contacts.dart' as _i82;
 import 'features/chat/domain/usecases/send_message_usecase.dart' as _i72;
 import 'features/chat/presentation/cubit/contacts/contacts_cubit.dart' as _i392;
 import 'features/chat/presentation/cubit/messages/messages_cubit.dart' as _i73;
+import 'features/chat/presentation/cubit/potential_contacts/potential_contacts_cubit.dart'
+    as _i553;
 import 'features/events/data/datasources/event_service_api.dart' as _i242;
 import 'features/events/data/repositories/event_repo_impl.dart' as _i877;
 import 'features/events/domain/repositories/event_repo.dart' as _i351;
@@ -75,6 +79,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i604.HomeCubit>(() => _i604.HomeCubit());
     gh.factory<_i105.NavBarCubit>(() => _i105.NavBarCubit());
+    gh.lazySingleton<_i424.AssigmentsApiService>(
+        () => _i424.AssigmentsApiService());
     gh.lazySingleton<_i240.AttendanceApiService>(
         () => _i240.AttendanceApiService());
     gh.lazySingleton<_i1028.ChatFirestoreApi>(() => _i1028.ChatFirestoreApi());
@@ -86,8 +92,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i507.AuthenticationValidator());
     gh.lazySingleton<_i654.ScheduleFirestoreApi>(
         () => _i654.ScheduleFirestoreApi());
-    gh.lazySingleton<_i424.AssigmentsApiService>(
-        () => _i424.AssigmentsApiService());
     gh.lazySingleton<_i17.AuthRepo>(
         () => _i1007.AuthRepoImpl(gh<_i285.AuthenticationFirestoreApi>()));
     gh.lazySingleton<_i864.AuthUseCase>(() => _i864.AuthUseCase(
@@ -113,8 +117,12 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i548.GetAssigmentsUsecase(gh<_i12.AssigmentsRepo>()));
     gh.lazySingleton<_i351.EventRepo>(
         () => _i877.EventRepoImpl(gh<_i242.EventServiceApi>()));
+    gh.lazySingleton<_i791.CreateContact>(
+        () => _i791.CreateContact(gh<_i359.ChatRepo>()));
     gh.lazySingleton<_i229.GetContactsUsecase>(
         () => _i229.GetContactsUsecase(gh<_i359.ChatRepo>()));
+    gh.lazySingleton<_i82.GetPotentialContacts>(
+        () => _i82.GetPotentialContacts(gh<_i359.ChatRepo>()));
     gh.lazySingleton<_i72.SendMessageUsecase>(
         () => _i72.SendMessageUsecase(gh<_i359.ChatRepo>()));
     gh.factory<_i698.AssigmentsCubit>(
@@ -123,6 +131,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i707.ScheduleRepoImpl(gh<_i654.ScheduleFirestoreApi>()));
     gh.factory<_i61.AttendanceCubit>(
         () => _i61.AttendanceCubit(gh<_i521.GetAttendance>()));
+    gh.factory<_i553.PotentialContactsCubit>(() => _i553.PotentialContactsCubit(
+          gh<_i82.GetPotentialContacts>(),
+          gh<_i791.CreateContact>(),
+        ));
     gh.factory<_i772.GradeCubit>(
         () => _i772.GradeCubit(gh<_i650.GetAllCourses>()));
     gh.factory<_i392.ContactsCubit>(

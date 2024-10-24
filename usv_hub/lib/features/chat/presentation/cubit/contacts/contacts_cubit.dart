@@ -9,7 +9,10 @@ part 'contacts_state.dart';
 @injectable
 class ContactsCubit extends Cubit<ContactsState> {
   final GetContactsUsecase _chatRepo;
-  ContactsCubit(this._chatRepo) : super(ContactsInitial());
+
+  ContactsCubit(
+    this._chatRepo,
+  ) : super(ContactsInitial());
 
   Future<void> getContacts() async {
     emit(ContactsLoading());

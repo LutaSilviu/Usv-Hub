@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,71 +14,87 @@ class ChatHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<ContactsCubit>(
       create: (context) => getIt<ContactsCubit>()..getContacts(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(AppTextConst.chat),
-          leading: IconButton(
-            style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                  backgroundColor: WidgetStateProperty.all<Color>(
-                    Theme.of(context).colorScheme.primary,
-                  ),
+      child: BlocBuilder<ContactsCubit, ContactsState>(
+        builder: (context, state) {
+          if (state is ContactsLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is ContactsError) {
+            return Center(
+              child: Text(state.message),
+            );
+          }
+          if (state is ContactsLoaded) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text(AppTextConst.chat),
+                leading: IconButton(
+                  style: Theme.of(context).iconButtonTheme.style!.copyWith(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  tooltip:
+                      MaterialLocalizations.of(context).openAppDrawerTooltip,
                 ),
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-          ),
-          actions: [
-            IconButton(
-              style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                    backgroundColor: WidgetStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary,
-                    ),
+                actions: [
+                  IconButton(
+                    style: Theme.of(context).iconButtonTheme.style!.copyWith(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                            Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                    icon: const Icon(Icons.search),
+                    onPressed: () {},
                   ),
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-            IconButton(
-              style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                    backgroundColor: WidgetStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary,
-                    ),
+                  IconButton(
+                    style: Theme.of(context).iconButtonTheme.style!.copyWith(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                            Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                    icon: const Icon(Icons.notifications),
+                    onPressed: () {},
                   ),
-              icon: const Icon(Icons.notifications),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, AppRouteConst.addChat);
-          },
-          child: const Icon(Icons.add),
-        ),
-        body: Background(
-          child: BlocBuilder<ContactsCubit, ContactsState>(
-            builder: (context, state) {
-              if (state is ContactsLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (state is ContactsError) {
-                return Center(
-                  child: Text(state.message),
-                );
-              }
-              if (state is ContactsLoaded) {
-                if (state.contacts.isEmpty) {
-                  return const Center(
-                    child: Text('No contacts'),
-                  );
-                }
-                return ListView.builder(
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  final String userId = FirebaseAuth.instance.currentUser!.uid;
+                  final List<String> contact = [];
+                  for (var element in state.contacts) {
+                    if (element.person1 == userId) {
+                      contact.add(element.person2);
+                    } else {
+                      contact.add(element.person1);
+                    }
+                  }
+                  contact.add(userId);
+                  Navigator.pushNamed(context, AppRouteConst.addChat,
+                      arguments: contact);
+                },
+                child: const Icon(Icons.add),
+              ),
+              body: RefreshIndicator(
+                onRefresh: () {
+                  return context.read<ContactsCubit>().getContacts();
+                },
+                child: Background(
+                  child: ListView.builder(
                     padding: EdgeInsets.all(8.h),
                     itemCount: state.contacts.length,
                     itemBuilder: (context, index) {
+                      if (state.contacts.isEmpty) {
+                        return const Center(
+                          child: Text('No contacts'),
+                        );
+                      }
                       return ListTile(
                         titleTextStyle: Theme.of(context).textTheme.bodyLarge,
                         subtitleTextStyle:
@@ -104,12 +121,14 @@ class ChatHomePage extends StatelessWidget {
                           );
                         },
                       );
-                    });
-              }
-              return const SizedBox();
-            },
-          ),
-        ),
+                    },
+                  ),
+                ),
+              ),
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }

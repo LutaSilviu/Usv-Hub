@@ -24,14 +24,14 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
       create: (context) => getIt<AssigmentsCubit>()..getAssigments(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Assignments'),
+          title: const Text('Assignments'),
         ),
         body: Background(
           child: Center(
             child: BlocBuilder<AssigmentsCubit, AssigmentsState>(
               builder: (context, state) {
                 if (state is AssigmentsLoading) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 if (state is AssigmentsError) {
                   return Text(state.message);

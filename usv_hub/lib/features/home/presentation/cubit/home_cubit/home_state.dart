@@ -12,7 +12,7 @@ class HomeInitial extends HomeState {}
 class TriggerDrawer extends HomeState {
   final bool isDrawerOpen;
 
-  TriggerDrawer({this.isDrawerOpen = false});
+  const TriggerDrawer({this.isDrawerOpen = false});
 
   @override
   List<Object> get props => [isDrawerOpen];

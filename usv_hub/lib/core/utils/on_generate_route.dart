@@ -82,7 +82,15 @@ class OnGenerateRoute {
         }
 
       case AppRouteConst.addChat:
-        return routeBuilder(const AddChatPage());
+        if (settings.arguments != null) {
+          final List<String> contact = settings.arguments! as List<String>;
+          return routeBuilder(AddChatPage(
+            contact: contact,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+
       case AppRouteConst.eventsHomePage:
         return routeBuilder(const EventsHomePage());
       default:

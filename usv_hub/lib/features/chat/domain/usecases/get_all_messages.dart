@@ -8,7 +8,7 @@ class GetAllMessages {
 
   GetAllMessages(this._chatRepo);
 
-  Stream<List<MessageEntity>> call({required String params}) {
-    return _chatRepo.getMessages(params);
+  Stream<List<MessageEntity>> call({required String params}) async* {
+    yield* _chatRepo.getMessages(params);
   }
 }

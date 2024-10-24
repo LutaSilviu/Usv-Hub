@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 
 class AppTextSize {
   static const double small = 12.0;
@@ -178,6 +177,8 @@ class AppFields {
   static const String description = 'Description';
 
   static const String contactId = 'ContactId';
+
+  static const String email = "Email";
 }
 
 class AppArguments {

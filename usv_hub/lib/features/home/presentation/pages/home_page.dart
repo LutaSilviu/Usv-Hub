@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:usv_hub/core/utils/background.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/home/presentation/widgets/main_button.dart';
-import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
