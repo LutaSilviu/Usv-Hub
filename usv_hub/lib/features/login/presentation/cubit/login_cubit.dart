@@ -10,9 +10,8 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginState> {
   final AuthUseCase authUseCase;
   LoginCubit({required this.authUseCase}) : super(LoginInitial());
-
   //appStarted
-  Future<void> checkLogin() async {
+  Future<void> checkLogin(BuildContext context) async {
     emit(LoginLoading());
 
     final result = await authUseCase.isLoggedIn();

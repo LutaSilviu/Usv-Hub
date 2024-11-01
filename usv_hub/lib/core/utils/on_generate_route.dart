@@ -17,6 +17,7 @@ import 'package:usv_hub/features/grade/presentation/pages/grade_detail_page.dart
 import 'package:usv_hub/features/grade/presentation/pages/home_grade_page.dart';
 import 'package:usv_hub/features/home/presentation/pages/home_page.dart';
 import 'package:usv_hub/features/login/presentation/pages/login_page.dart';
+import 'package:usv_hub/features/personal_data/presentation/pages/personal_data_page.dart';
 import 'package:usv_hub/features/schedule/presentation/pages/schedule_home_page.dart';
 
 class OnGenerateRoute {
@@ -26,6 +27,8 @@ class OnGenerateRoute {
         return routeBuilder(const LoginPage());
       case AppRouteConst.adresses:
         return routeBuilder(const AdressesPage());
+      case AppRouteConst.personalData:
+        return routeBuilder(const PersonalDataPage());
       case AppRouteConst.home:
         return routeBuilder(const HomePage());
       case AppRouteConst.grades:
@@ -111,7 +114,7 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text(AppErrorMessages.noCoursesFound),
       ),

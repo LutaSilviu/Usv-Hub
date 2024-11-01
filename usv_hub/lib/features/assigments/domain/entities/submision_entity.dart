@@ -4,22 +4,23 @@ class SubmisionEntity extends Equatable {
   final String id;
   final String assigmentId;
   final String studentId;
-  final String title;
-  final String description;
-  final DateTime startingDate;
-  final DateTime endingTime;
+  final String downloadUrl;
+  final DateTime postDate;
 
-  const SubmisionEntity(this.id, this.assigmentId, this.studentId, this.title,
-      this.description, this.startingDate, this.endingTime);
+  const SubmisionEntity(
+    this.id,
+    this.assigmentId,
+    this.studentId,
+    this.downloadUrl,
+    this.postDate,
+  );
 
   @override
   List<Object?> get props => [
         id,
         assigmentId,
         studentId,
-        title,
-        description,
-        startingDate,
-        endingTime
+        downloadUrl,
+        postDate,
       ];
 }

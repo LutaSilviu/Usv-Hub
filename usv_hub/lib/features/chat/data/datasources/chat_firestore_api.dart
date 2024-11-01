@@ -31,19 +31,37 @@ class ChatFirestoreApi {
 
       for (final doc in response) {
         String name;
+        QuerySnapshot<Map<String, dynamic>> result;
         if (doc[AppFields.person1] == _user.uid) {
-          name = await _firestore
+          result = await _firestore
               .collection(AppCollections.teacher)
               .where(AppFields.id, isEqualTo: doc[AppFields.person2])
-              .get()
-              .then((value) => value.docs[0][AppFields.name]);
+              .get();
+          if (result.docs.isNotEmpty) {
+            name = result.docs[0][AppFields.name];
+          } else {
+            result = await _firestore
+                .collection(AppCollections.student)
+                .where(AppFields.id, isEqualTo: doc[AppFields.person2])
+                .get();
+            name = result.docs[0][AppFields.name];
+          }
         } else {
-          name = await _firestore
+          result = await _firestore
               .collection(AppCollections.teacher)
               .where(AppFields.id, isEqualTo: doc[AppFields.person1])
-              .get()
-              .then((value) => value.docs[0][AppFields.name]);
+              .get();
+          if (result.docs.isNotEmpty) {
+            name = result.docs[0][AppFields.name];
+          } else {
+            result = await _firestore
+                .collection(AppCollections.student)
+                .where(AppFields.id, isEqualTo: doc[AppFields.person1])
+                .get();
+            name = result.docs[0][AppFields.name];
+          }
         }
+
         ContactModel contact = ContactModel.fromMap(doc.data(), name);
         contacts.add(contact);
       }

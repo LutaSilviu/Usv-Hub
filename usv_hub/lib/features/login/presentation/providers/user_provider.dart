@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/chat/domain/entities/user.dart';
 import 'package:usv_hub/features/login/domain/repositories/auth_repo.dart';
 
@@ -10,6 +11,14 @@ class UserProvider extends ChangeNotifier {
   bool isLoading = false;
   String? errorMessage;
   UserEntity? user;
+  SelectedType _selectedType = SelectedType.none;
+
+  SelectedType get selectedType => _selectedType;
+
+  void selectType(SelectedType type) {
+    _selectedType = type;
+    notifyListeners();
+  }
 
   get getUser => user;
   get getIsLoading => isLoading;
@@ -32,7 +41,8 @@ class UserProvider extends ChangeNotifier {
         errorMessage = l.message;
       },
       (r) {
-        user = r;
+        _selectedType = r.keys.first;
+        user = r.values.first;
       },
     );
     isLoading = false;

@@ -46,7 +46,7 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> getUserEntity() async {
+  Future<Either<Failure, Map<SelectedType, UserEntity>>> getUserEntity() async {
     try {
       return Right(await authFirestoreApi.getUserModel());
     } on FirebaseAuthException catch (error) {

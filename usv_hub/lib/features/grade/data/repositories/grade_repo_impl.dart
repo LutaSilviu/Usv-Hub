@@ -15,7 +15,7 @@ class GradeRepoImpl extends GradeRepository {
   Future<Either<Failure, Map<GradeEntity, CourseEntity>>>
       getAllCourses() async {
     try {
-      return Right(await _gradeApiService.getAllCourses());
+      return Right(await _gradeApiService.getAllCoursesForStudent());
     } on MediumException catch (e) {
       return Left(MediumFailure(message: e.message));
     }

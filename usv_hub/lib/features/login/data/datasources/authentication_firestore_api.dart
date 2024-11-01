@@ -33,13 +33,21 @@ class AuthenticationFirestoreApi {
     return currentUser != null;
   }
 
-  Future<UserModel> getUserModel() async {
+  Future<Map<SelectedType, UserModel>> getUserModel() async {
     try {
-      final response = await _firestore
+      var response = await _firestore
           .collection(AppCollections.student)
           .doc(_firebaseAuth.currentUser!.uid)
           .get();
-      return UserModel.fromJson(response.data()!);
+      if (response.data() != null) {
+        return {SelectedType.student: UserModel.fromJson(response.data()!)};
+      } else {
+        response = await _firestore
+            .collection(AppCollections.teacher)
+            .doc(_firebaseAuth.currentUser!.uid)
+            .get();
+        return {SelectedType.teacher: UserModel.fromJson(response.data()!)};
+      }
     } on FirebaseAuthException catch (e) {
       throw e.message!;
     }

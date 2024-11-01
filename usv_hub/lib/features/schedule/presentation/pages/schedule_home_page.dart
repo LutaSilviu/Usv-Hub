@@ -20,8 +20,20 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<ScheduleCubit>().getSchedule();
-    _selectedEvents = ValueNotifier(_getEventsForDay(1, []));
+    _selectedEvents =
+        ValueNotifier(_getEventsForDay(DateTime.now().weekday, []));
+    Future.microtask(() async {
+      if (mounted) await context.read<ScheduleCubit>().getSchedule();
+    }).then(
+      (_) {
+        if (mounted && context.read<ScheduleCubit>().state is ScheduleLoaded) {
+          final state = context.read<ScheduleCubit>().state as ScheduleLoaded;
+
+          _selectedEvents.value =
+              _getEventsForDay(DateTime.now().weekday, state.schedule);
+        }
+      },
+    );
   }
 
   @override

@@ -51,7 +51,7 @@ class AppTextConst {
   //drawer items
   static const personalData = 'Personal Data';
   static const addresses = 'Addresses';
-  static const emailAdress = 'Email Adress';
+  static const emailAdress = 'Email Address';
   static const phoneNumber = 'Phone Number';
   static const languages = 'Languages';
   static const licenses = 'Licenses';
@@ -74,8 +74,13 @@ class AppTextConst {
       "Your current phone number is displayed below. You can easily update it by tapping the \"Edit\" button. Please ensure your number is correct to stay connected. ";
   static String addressesDescriprion =
       "Your saved addresses are listed below for easy access and updates. You can add a new address or edit existing ones by long pressing the respective address. Keeping your addresses up-to-date ensures smooth deliveries and communication.";
+  static String personalDataDescriprion =
+      "Your saved personal information is listed down below.Each name has associated a type reprezenting the name's indicative.";
 
   static String add = 'Add';
+  static String fatherName = 'Father name';
+  static String userName = 'Your name';
+  static String motherName = 'Mother name';
 
   static String addAddresses = "Add a new Address";
 
@@ -124,6 +129,8 @@ class AppRouteConst {
   static const String eventsHomePage = '/eventsHomePage';
 
   static const String adresses = '/adresses';
+
+  static const String personalData = '/personalData';
 }
 
 class AppImages {
@@ -198,7 +205,18 @@ class AppFields {
 
   static const String userId = "UserId";
 
-  static var address = "Address";
+  static const String address = "Address";
+
+  static const String phoneNumber = "Phone Number";
+
+  static const String fatherName = "FatherName";
+
+  static const String motherName = "MotherName";
+
+  static const String assigmentId = "AssigmentId";
+  static const String downloadUrl = "DownloadUrl";
+  static const String postDate = "PostDate";
+  static const String endingTime = "EndingTime";
 }
 
 class AppArguments {
@@ -224,9 +242,13 @@ class AppCollections {
   static const String events = 'Events';
 
   static String addresses = "Addresses";
+
+  static String submission = "Submission";
 }
 
 enum ContactsStatus { active, pending, inactive }
+
+enum SelectedType { teacher, student, none }
 
 extension ContactsStatusToString on ContactsStatus {
   String get stringValue {

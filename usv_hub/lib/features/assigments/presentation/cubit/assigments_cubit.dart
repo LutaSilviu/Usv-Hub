@@ -11,7 +11,9 @@ part 'assigments_state.dart';
 class AssigmentsCubit extends Cubit<AssigmentsState> {
   final GetAssigmentsUsecase _getAssigmentsUsecase;
 
-  AssigmentsCubit(this._getAssigmentsUsecase) : super(AssigmentsInitial());
+  AssigmentsCubit(
+    this._getAssigmentsUsecase,
+  ) : super(AssigmentsInitial());
 
   Future<void> getAssigments() async {
     emit(AssigmentsLoading());

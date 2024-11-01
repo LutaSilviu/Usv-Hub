@@ -7,4 +7,5 @@ import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 abstract class AssigmentsRepo {
   Future<Either<Failure, Map<AssigmentEntity, CourseEntity>>> getAssigments();
   Future<Either<Failure, void>> postSubmission(SubmisionEntity submision);
+  Future<Either<Failure, bool>> hasSubbmision(String assigmentId);
 }
