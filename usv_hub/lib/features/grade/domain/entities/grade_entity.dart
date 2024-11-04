@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 class GradeEntity extends Equatable {
   final String id;
   final String studentId;
-  final int? courseGrade;
-  final int? labGrade;
+  final double? courseGrade;
+  final double? labGrade;
   final String courseId;
 
   const GradeEntity({

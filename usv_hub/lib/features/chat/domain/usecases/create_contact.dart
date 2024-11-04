@@ -7,7 +7,7 @@ import 'package:usv_hub/features/chat/domain/repositories/chat_repo.dart';
 
 @LazySingleton()
 class CreateContact extends Usecase<Either<Failure, void>, ContactEntity> {
-  ChatRepo _chatRepo;
+  final ChatRepo _chatRepo;
 
   CreateContact(this._chatRepo);
 

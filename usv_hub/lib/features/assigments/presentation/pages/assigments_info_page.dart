@@ -95,7 +95,7 @@ class AssigmentInfoPage extends StatelessWidget {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.close,
                                       )
                                     ],

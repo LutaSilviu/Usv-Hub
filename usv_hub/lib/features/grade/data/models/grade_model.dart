@@ -27,10 +27,10 @@ class GradeModel extends GradeEntity {
       id: map[AppFields.id] as String,
       studentId: map[AppFields.studentId] as String,
       courseGrade: map[AppFields.courseGrade] != null
-          ? map[AppFields.courseGrade] as int
+          ? map[AppFields.courseGrade] as double
           : null,
       labGrade: map[AppFields.labGrade] != null
-          ? map[AppFields.labGrade] as int
+          ? map[AppFields.labGrade] as double
           : null,
       courseId: map[AppFields.courseId] as String,
     );
@@ -40,4 +40,14 @@ class GradeModel extends GradeEntity {
 
   factory GradeModel.fromJson(String source) =>
       GradeModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  GradeModel copyWith(String? id) {
+    return GradeModel(
+      id: id ?? this.id,
+      studentId: studentId,
+      courseGrade: courseGrade,
+      labGrade: labGrade,
+      courseId: courseId,
+    );
+  }
 }

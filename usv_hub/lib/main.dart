@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/main_wraper.dart';
 import 'package:usv_hub/core/utils/on_generate_route.dart';
 import 'package:usv_hub/core/utils/theme.dart';
@@ -12,12 +11,13 @@ import 'package:usv_hub/features/assigments/presentation/providers/picked_files_
 
 import 'package:usv_hub/features/chat/presentation/cubit/messages/messages_cubit.dart';
 import 'package:usv_hub/features/chat/presentation/cubit/potential_contacts/potential_contacts_cubit.dart';
-import 'package:usv_hub/features/grade/presentation/cubit/grade_cubit.dart';
+import 'package:usv_hub/features/grade/presentation/cubit/add_grade/add_grade_cubit.dart';
+import 'package:usv_hub/features/grade/presentation/cubit/grade_courses/grade_cubit.dart';
+import 'package:usv_hub/features/grade/presentation/cubit/grade_students/grade_students_cubit.dart';
 import 'package:usv_hub/features/home/presentation/cubit/home_cubit/home_cubit.dart';
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
 import 'package:usv_hub/features/login/presentation/pages/login_page.dart';
-import 'package:usv_hub/features/login/presentation/pages/select_type.dart';
 import 'package:usv_hub/features/login/presentation/providers/user_provider.dart';
 import 'package:usv_hub/features/schedule/presentation/cubit/schedule_cubit.dart';
 import 'package:usv_hub/global_bloc_observer.dart';
@@ -68,8 +68,14 @@ class MyApp extends StatelessWidget {
           BlocProvider<AddressesCubit>(
             create: (context) => getIt<AddressesCubit>(),
           ),
+          BlocProvider<GradeStudentsCubit>(
+            create: (context) => getIt<GradeStudentsCubit>(),
+          ),
           ChangeNotifierProvider(
             create: (context) => getIt<UserProvider>(),
+          ),
+          BlocProvider<AddGradeCubit>(
+            create: (context) => getIt<AddGradeCubit>(),
           ),
           ChangeNotifierProvider(
             create: (context) => getIt<PickedFilesProvider>(),

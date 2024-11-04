@@ -20,6 +20,6 @@ class GetAllCourses
 
   @override
   Future<Either<Failure, Map<GradeEntity, CourseEntity>>> call({void params}) {
-    return _gradeRepository.getAllCourses();
+    return _gradeRepository.getAllCoursesForStudents();
   }
 }

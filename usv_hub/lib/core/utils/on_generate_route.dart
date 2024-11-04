@@ -13,8 +13,10 @@ import 'package:usv_hub/features/adresses/presentation/pages/adresses_page.dart'
 import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
 import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
+import 'package:usv_hub/features/grade/presentation/pages/add_grade_page.dart';
 import 'package:usv_hub/features/grade/presentation/pages/grade_detail_page.dart';
 import 'package:usv_hub/features/grade/presentation/pages/home_grade_page.dart';
+import 'package:usv_hub/features/grade/presentation/pages/view_students.dart';
 import 'package:usv_hub/features/home/presentation/pages/home_page.dart';
 import 'package:usv_hub/features/login/presentation/pages/login_page.dart';
 import 'package:usv_hub/features/personal_data/presentation/pages/personal_data_page.dart';
@@ -42,6 +44,30 @@ class OnGenerateRoute {
             grade: grade,
             course: course,
           ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+      case AppRouteConst.addGrade:
+        if (settings.arguments != null) {
+          Map arg = settings.arguments as Map;
+
+          return routeBuilder(AddGradePage(
+            isTeacher: arg[AppArguments.isTeacher],
+            student: arg[AppArguments.studentEntity],
+            courseId: arg[AppArguments.courseId],
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+      case AppRouteConst.viewStudents:
+        if (settings.arguments != null) {
+          Map arg = settings.arguments as Map;
+          return routeBuilder(
+            ViewStudents(
+              courseId: arg[AppArguments.courseId],
+              isTeacher: arg[AppArguments.isTeacher],
+            ),
+          );
         } else {
           return routeBuilder(const ErrorPage());
         }

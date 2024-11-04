@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
@@ -11,10 +13,12 @@ class AuthenticationFirestoreApi {
 
   Future<void> login({required String email, required String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      log(userCredential.user!.uid);
+      log(_firebaseAuth.currentUser!.uid);
     } on FirebaseAuthException catch (e) {
       throw e.message!;
     }

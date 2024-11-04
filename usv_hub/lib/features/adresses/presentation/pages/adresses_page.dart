@@ -70,8 +70,7 @@ class _AdressesPageState extends State<AdressesPage> {
 
                                 context.read<AddressesCubit>().editAddresses(
                                     state.addresses[index][AppFields.id]!,
-                                    state.addresses[index][AppFields.address]! +
-                                        "ads");
+                                    state.addresses[index][AppFields.address]!);
                               },
                               title: Text(
                                 style: Theme.of(context).textTheme.bodyMedium,
@@ -135,7 +134,7 @@ class AddDialog extends StatefulWidget {
 }
 
 class _AddDialogState extends State<AddDialog> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void dispose() {

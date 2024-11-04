@@ -67,8 +67,11 @@ class AppTextConst {
   static const chatInfoPage = 'Chat Info Page';
   static const message = 'Message';
   static const selectCourse = 'Select Course';
+  static const viewCoursesStudents = 'View Course\'s Students';
+  static const viewStudents = 'View Students';
   static const courses = 'Courses';
   static const gradeDetailPage = 'Grade Detail Page';
+  static const addGradePage = 'Add Grade Page';
 
   static String phoneNumberDescription =
       "Your current phone number is displayed below. You can easily update it by tapping the \"Edit\" button. Please ensure your number is correct to stay connected. ";
@@ -87,6 +90,12 @@ class AppTextConst {
   static var newAddress = "New Address";
 
   static String noAddressesFound = "No courses found";
+
+  static String courseGrade = "Course Grade";
+  static String labGrade = "Laboratory Grade";
+
+  static String invalidNumber = "Numbers that you have submitted are invalid";
+  static String emptyNumber = "You must enter numbers";
 }
 
 class AppStringFailuresMessages {
@@ -131,6 +140,10 @@ class AppRouteConst {
   static const String adresses = '/adresses';
 
   static const String personalData = '/personalData';
+
+  static const String viewStudents = '/viewStudents';
+
+  static const String addGrade = '/addGrade';
 }
 
 class AppImages {
@@ -225,6 +238,11 @@ class AppArguments {
   static const attendanceEntity = "AttendanceEntity";
   static const contactEntity = "ContactEntity";
   static const assigmentEntity = "AssigmentEntity";
+
+  static const String courseId = "CourseId";
+  static const String studentEntity = "StudentEntity";
+
+  static const String isTeacher = "IsTeacher";
 }
 
 class AppCollections {

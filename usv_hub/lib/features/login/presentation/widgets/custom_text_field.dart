@@ -8,17 +8,19 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     this.isPassword,
+    this.keyboardType,
   });
   final String hintText;
   final TextEditingController controller;
   final bool? isPassword;
+  final TextInputType? keyboardType;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextField(
         obscureText: isPassword ?? false,
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: keyboardType ?? TextInputType.emailAddress,
         controller: controller,
         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: AppColors.black,

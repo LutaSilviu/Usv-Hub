@@ -4,7 +4,7 @@ import 'package:usv_hub/features/assigments/domain/usecases/has_subbmision_useca
 
 @injectable
 class InfoProvider extends ChangeNotifier {
-  HasSubbmissionUsecase _hasSubbmissionUsecase;
+  final HasSubbmissionUsecase _hasSubbmissionUsecase;
 
   InfoProvider(this._hasSubbmissionUsecase);
 

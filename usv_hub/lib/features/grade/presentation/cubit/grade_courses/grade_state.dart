@@ -39,3 +39,11 @@ class ErrorState extends GradeState {
     required this.message,
   });
 }
+
+class TeacherCoursesLoadedState extends GradeState {
+  final Map<bool, CourseEntity> mapCoursesGrades;
+
+  const TeacherCoursesLoadedState({required this.mapCoursesGrades});
+  @override
+  List<Object> get props => [mapCoursesGrades];
+}

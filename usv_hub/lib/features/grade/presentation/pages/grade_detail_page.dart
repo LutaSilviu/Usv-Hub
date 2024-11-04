@@ -57,7 +57,7 @@ class GradeDetailPage extends StatelessWidget {
             DetailWidget(
               title: grade.labGrade != null && grade.courseGrade != null
                   ? "Final Grade: ${(grade.courseGrade! + grade.labGrade!) / 2}"
-                  : "Lab grade: No grade added yet",
+                  : "Final Grade: No grade added yet",
             ),
             DetailWidget(
               title: grade.labGrade != null && grade.courseGrade != null
@@ -72,8 +72,13 @@ class GradeDetailPage extends StatelessWidget {
 }
 
 class DetailWidget extends StatelessWidget {
-  const DetailWidget({super.key, required this.title});
+  const DetailWidget({
+    super.key,
+    required this.title,
+    this.height,
+  });
   final String title;
+  final double? height;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -82,12 +87,12 @@ class DetailWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
           SizedBox(
-            height: 48.h,
+            height: height ?? 48.h,
           ),
         ],
       ),
