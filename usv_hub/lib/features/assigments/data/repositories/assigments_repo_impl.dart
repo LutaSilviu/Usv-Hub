@@ -7,7 +7,6 @@ import 'package:usv_hub/features/assigments/data/models/subbmision_model.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/domain/entities/submision_entity.dart';
 import 'package:usv_hub/features/assigments/domain/repositories/assigments_repo.dart';
-import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 
 @LazySingleton(as: AssigmentsRepo)
 class AssigmentsRepoImpl extends AssigmentsRepo {
@@ -16,10 +15,10 @@ class AssigmentsRepoImpl extends AssigmentsRepo {
   AssigmentsRepoImpl(this._assigmentsApiService);
 
   @override
-  Future<Either<Failure, Map<AssigmentEntity, CourseEntity>>>
-      getAssigments() async {
+  Future<Either<Failure, List<AssigmentEntity>>> getAssigments(
+      String courseId) async {
     try {
-      return Right(await _assigmentsApiService.getAssigments());
+      return Right(await _assigmentsApiService.getAssigments(courseId));
     } on MediumException catch (e) {
       return Left(MediumFailure(message: e.message));
     }

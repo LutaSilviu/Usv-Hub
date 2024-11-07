@@ -129,7 +129,7 @@ class AppRouteConst {
   static const String grades = '/grades';
   static const String gradeDetailPage = '/gradeDetailPage';
 
-  static const String attendance = '/attendance';
+  // static const String attendance = '/attendance';
   static const String attendanceDetailPage = '/attendanceDetailPage';
 
   static const String schedule = '/schedule';
@@ -151,6 +151,8 @@ class AppRouteConst {
 
   static const String addGrade = '/addGrade';
   static const String addAttandance = '/addAttandance';
+
+  static const String coursesPage = '/coursesPage';
 }
 
 class AppImages {
@@ -163,6 +165,7 @@ class AppImages {
 
 class AppErrorMessages {
   static const String noCoursesFound = "No courses found";
+  static const String noGradeFound = "No grade found";
 
   static const String ups = "Ups, something went wrong";
   static const String firebaseError = "Ups, something went wrong with Firebase";
@@ -320,7 +323,7 @@ class DaysOfWeek {
   static const String duminica = 'Duminica';
 }
 
-enum ProfesorType { teacher, assistent, both }
+enum ProfesorType { teacher, assistent, both, none }
 
 enum ClickType { grade, attendance }
 

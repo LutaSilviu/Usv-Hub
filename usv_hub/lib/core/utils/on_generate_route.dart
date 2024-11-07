@@ -3,25 +3,22 @@ import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_home_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_info_page.dart';
-import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/add_attendance_page.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/attendance_details_page.dart';
-import 'package:usv_hub/features/attendance/presentation/pages/home_attendance_page.dart';
 import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
 import 'package:usv_hub/features/chat/presentation/pages/add_chat_page.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_page.dart';
 import 'package:usv_hub/features/adresses/presentation/pages/adresses_page.dart';
 import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
-import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
-import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
+import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 import 'package:usv_hub/features/grade/presentation/pages/add_grade_page.dart';
 import 'package:usv_hub/features/grade/presentation/pages/grade_detail_page.dart';
-import 'package:usv_hub/features/grade/presentation/pages/home_grade_page.dart';
 import 'package:usv_hub/features/grade/presentation/pages/view_students.dart';
 import 'package:usv_hub/features/home/presentation/pages/home_page.dart';
 import 'package:usv_hub/features/login/presentation/pages/login_page.dart';
 import 'package:usv_hub/features/personal_data/presentation/pages/personal_data_page.dart';
 import 'package:usv_hub/features/schedule/presentation/pages/schedule_home_page.dart';
+import 'package:usv_hub/features/select_course/presentation/pages/select_course_page.dart';
 
 class OnGenerateRoute {
   static Route<dynamic>? route(RouteSettings settings) {
@@ -33,16 +30,24 @@ class OnGenerateRoute {
       case AppRouteConst.personalData:
         return routeBuilder(const PersonalDataPage());
       case AppRouteConst.home:
-        return routeBuilder(const HomePage());
-      case AppRouteConst.grades:
-        return routeBuilder(const HomeGradePage());
+        if (settings.arguments != null) {
+          final arg = settings.arguments as Map;
+
+          return routeBuilder(HomePage(
+            courseEntity: arg[AppArguments.courseEntity],
+            isTeacher: arg[AppArguments.isTeacher],
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+
+      // case AppRouteConst.grades:
+      //   return routeBuilder(const HomeGradePage());
       case AppRouteConst.gradeDetailPage:
         if (settings.arguments != null) {
           Map arg = settings.arguments as Map;
-          GradeEntity grade = arg[AppArguments.gradeEntity];
           CourseEntity course = arg[AppArguments.courseEntity];
           return routeBuilder(GradeDetailPage(
-            grade: grade,
             course: course,
           ));
         } else {
@@ -87,16 +92,12 @@ class OnGenerateRoute {
         } else {
           return routeBuilder(const ErrorPage());
         }
-      case AppRouteConst.attendance:
-        return routeBuilder(const HomeAttendancePage());
       case AppRouteConst.attendanceDetailPage:
         if (settings.arguments != null) {
           Map arg = settings.arguments as Map;
-          AttendanceEntity attendanceEntity =
-              arg[AppArguments.attendanceEntity];
+
           CourseEntity course = arg[AppArguments.courseEntity];
           return routeBuilder(AttendanceDetailsPage(
-            attendanceEntity: attendanceEntity,
             course: course,
           ));
         } else {
@@ -106,7 +107,18 @@ class OnGenerateRoute {
       case AppRouteConst.schedule:
         return routeBuilder(const ScheduleHomePage());
       case AppRouteConst.assignments:
-        return routeBuilder(const AssigmentsHomePage());
+        if (settings.arguments != null) {
+          Map arg = settings.arguments as Map;
+
+          CourseEntity courseEntity = arg[AppArguments.courseEntity];
+          ProfesorType isTeacher = arg[AppArguments.isTeacher];
+          return routeBuilder(AssigmentsHomePage(
+            courseEntity: courseEntity,
+            isTeacher: isTeacher,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
       case AppRouteConst.assigmentInfoPage:
         if (settings.arguments != null) {
           AssigmentEntity asssigmentEntity =
@@ -128,6 +140,8 @@ class OnGenerateRoute {
         } else {
           return routeBuilder(const ErrorPage());
         }
+      case AppRouteConst.coursesPage:
+        return routeBuilder(const SelectCoursePage());
 
       case AppRouteConst.addChat:
         if (settings.arguments != null) {

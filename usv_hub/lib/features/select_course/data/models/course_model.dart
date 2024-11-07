@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:usv_hub/core/utils/consts.dart';
-import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
+import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 
 class CourseModel extends CourseEntity {
   const CourseModel(

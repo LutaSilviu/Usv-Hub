@@ -37,7 +37,6 @@ import 'features/attendance/data/repositories/attendance_repo_impl.dart'
 import 'features/attendance/domain/repositories/attendance_repository.dart'
     as _i114;
 import 'features/attendance/domain/usecases/add_attandance.dart' as _i181;
-import 'features/attendance/domain/usecases/get_attendance.dart' as _i521;
 import 'features/attendance/domain/usecases/get_attendance_for_student.dart'
     as _i186;
 import 'features/attendance/presentation/cubit/attendance_cubit.dart' as _i61;
@@ -64,9 +63,6 @@ import 'features/grade/data/datasources/grade_api_service.dart' as _i1020;
 import 'features/grade/data/repositories/grade_repo_impl.dart' as _i34;
 import 'features/grade/domain/repositories/grade_repository.dart' as _i535;
 import 'features/grade/domain/usecases/add_student_grade.dart' as _i1037;
-import 'features/grade/domain/usecases/get_all_courses.dart' as _i650;
-import 'features/grade/domain/usecases/get_all_courses_for_teacher.dart'
-    as _i850;
 import 'features/grade/domain/usecases/get_student_grade.dart' as _i207;
 import 'features/grade/domain/usecases/get_students_for_course.dart' as _i559;
 import 'features/grade/presentation/cubit/add_grade/add_grade_cubit.dart'
@@ -92,6 +88,17 @@ import 'features/schedule/data/repositories/schedule_repo_impl.dart' as _i707;
 import 'features/schedule/domain/repositories/schedule_repo.dart' as _i901;
 import 'features/schedule/domain/usecases/get_student_schedule.dart' as _i23;
 import 'features/schedule/presentation/cubit/schedule_cubit.dart' as _i211;
+import 'features/select_course/data/datasources/course_api_service.dart'
+    as _i221;
+import 'features/select_course/data/repositories/courses_repo_impl.dart'
+    as _i763;
+import 'features/select_course/domain/repositories/courses_repository.dart'
+    as _i23;
+import 'features/select_course/domain/usecases/get_all_courses.dart' as _i221;
+import 'features/select_course/domain/usecases/get_all_courses_for_teacher.dart'
+    as _i681;
+import 'features/select_course/presentation/cubit/select_course_cubit.dart'
+    as _i363;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -121,6 +128,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i507.AuthenticationValidator());
     gh.lazySingleton<_i654.ScheduleFirestoreApi>(
         () => _i654.ScheduleFirestoreApi());
+    gh.lazySingleton<_i221.CourseApiService>(() => _i221.CourseApiService());
     gh.lazySingleton<_i17.AuthRepo>(
         () => _i1007.AuthRepoImpl(gh<_i285.AuthenticationFirestoreApi>()));
     gh.lazySingleton<_i864.AuthUseCase>(() => _i864.AuthUseCase(
@@ -131,27 +139,18 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i632.AssigmentsRepoImpl(gh<_i424.AssigmentsApiService>()));
     gh.lazySingleton<_i359.ChatRepo>(
         () => _i843.ChatRepoImpl(gh<_i1028.ChatFirestoreApi>()));
-    gh.lazySingleton<_i535.GradeRepository>(() => _i34.GradeRepoImpl());
+    gh.lazySingleton<_i23.CoursesRepository>(
+        () => _i763.CoursesRepoImpl(gh<_i221.CourseApiService>()));
     gh.lazySingleton<_i365.GetAllMessages>(
         () => _i365.GetAllMessages(gh<_i1028.ChatFirestoreApi>()));
-    gh.lazySingleton<_i650.GetAllCourses>(
-        () => _i650.GetAllCourses(gh<_i535.GradeRepository>()));
-    gh.lazySingleton<_i850.GetAllCoursesForTeacher>(
-        () => _i850.GetAllCoursesForTeacher(gh<_i535.GradeRepository>()));
-    gh.lazySingleton<_i559.GetStudentsForCourse>(
-        () => _i559.GetStudentsForCourse(gh<_i535.GradeRepository>()));
-    gh.lazySingleton<_i207.GetStudentGrade>(
-        () => _i207.GetStudentGrade(gh<_i535.GradeRepository>()));
-    gh.lazySingleton<_i1037.AddStudentGrade>(
-        () => _i1037.AddStudentGrade(gh<_i535.GradeRepository>()));
     gh.factory<_i170.UserProvider>(
         () => _i170.UserProvider(authRepo: gh<_i17.AuthRepo>()));
     gh.lazySingleton<_i533.AddressesRepo>(
         () => _i751.AddressesRepoImpl(gh<_i55.AddressesApiService>()));
+    gh.lazySingleton<_i221.GetAllCourses>(
+        () => _i221.GetAllCourses(gh<_i23.CoursesRepository>()));
     gh.lazySingleton<_i114.AttendanceRepository>(
         () => _i1059.AttendanceRepoImpl(gh<_i240.AttendanceApiService>()));
-    gh.lazySingleton<_i521.GetAttendance>(
-        () => _i521.GetAttendance(gh<_i114.AttendanceRepository>()));
     gh.lazySingleton<_i186.GetAttendanceForStudent>(
         () => _i186.GetAttendanceForStudent(gh<_i114.AttendanceRepository>()));
     gh.lazySingleton<_i181.AddAttandance>(
@@ -166,10 +165,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i291.PostSubbmisionUsecase(gh<_i12.AssigmentsRepo>()));
     gh.lazySingleton<_i351.EventRepo>(
         () => _i877.EventRepoImpl(gh<_i242.EventServiceApi>()));
-    gh.factory<_i442.GradeCubit>(() => _i442.GradeCubit(
-          gh<_i650.GetAllCourses>(),
-          gh<_i850.GetAllCoursesForTeacher>(),
-        ));
     gh.lazySingleton<_i791.CreateContact>(
         () => _i791.CreateContact(gh<_i359.ChatRepo>()));
     gh.lazySingleton<_i229.GetContactsUsecase>(
@@ -178,30 +173,22 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i82.GetPotentialContacts(gh<_i359.ChatRepo>()));
     gh.lazySingleton<_i72.SendMessageUsecase>(
         () => _i72.SendMessageUsecase(gh<_i359.ChatRepo>()));
-    gh.factory<_i698.AssigmentsCubit>(
-        () => _i698.AssigmentsCubit(gh<_i548.GetAssigmentsUsecase>()));
+    gh.lazySingleton<_i535.GradeRepository>(
+        () => _i34.GradeRepoImpl(gh<_i1020.GradeApiService>()));
     gh.lazySingleton<_i901.ScheduleRepo>(
         () => _i707.ScheduleRepoImpl(gh<_i654.ScheduleFirestoreApi>()));
-    gh.factory<_i52.GradeStudentsCubit>(
-        () => _i52.GradeStudentsCubit(gh<_i559.GetStudentsForCourse>()));
     gh.factory<_i215.InfoProvider>(
         () => _i215.InfoProvider(gh<_i878.HasSubbmissionUsecase>()));
     gh.factory<_i553.PotentialContactsCubit>(() => _i553.PotentialContactsCubit(
           gh<_i82.GetPotentialContacts>(),
           gh<_i791.CreateContact>(),
         ));
-    gh.factory<_i35.AddGradeCubit>(() => _i35.AddGradeCubit(
-          gh<_i207.GetStudentGrade>(),
-          gh<_i1037.AddStudentGrade>(),
-        ));
     gh.factory<_i564.AddAttendanceProvider>(() => _i564.AddAttendanceProvider(
           gh<_i186.GetAttendanceForStudent>(),
           gh<_i181.AddAttandance>(),
         ));
-    gh.factory<_i61.AttendanceCubit>(() => _i61.AttendanceCubit(
-          gh<_i521.GetAttendance>(),
-          gh<_i850.GetAllCoursesForTeacher>(),
-        ));
+    gh.lazySingleton<_i681.GetAllCoursesForTeacher>(
+        () => _i681.GetAllCoursesForTeacher(gh<_i23.CoursesRepository>()));
     gh.factory<_i392.ContactsCubit>(
         () => _i392.ContactsCubit(gh<_i229.GetContactsUsecase>()));
     gh.factory<_i79.PickedFilesProvider>(
@@ -212,12 +199,38 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i331.GetEventsUsecase(gh<_i351.EventRepo>()));
     gh.factory<_i408.AddressesCubit>(
         () => _i408.AddressesCubit(gh<_i533.AddressesRepo>()));
+    gh.lazySingleton<_i559.GetStudentsForCourse>(
+        () => _i559.GetStudentsForCourse(gh<_i535.GradeRepository>()));
+    gh.lazySingleton<_i207.GetStudentGrade>(
+        () => _i207.GetStudentGrade(gh<_i535.GradeRepository>()));
+    gh.lazySingleton<_i1037.AddStudentGrade>(
+        () => _i1037.AddStudentGrade(gh<_i535.GradeRepository>()));
     gh.lazySingleton<_i23.GetStudentSchedule>(
         () => _i23.GetStudentSchedule(gh<_i901.ScheduleRepo>()));
+    gh.factory<_i61.AttendanceCubit>(() => _i61.AttendanceCubit(
+          gh<_i186.GetAttendanceForStudent>(),
+          gh<_i681.GetAllCoursesForTeacher>(),
+        ));
+    gh.factory<_i698.AssigmentsCubit>(() => _i698.AssigmentsCubit(
+          gh<_i548.GetAssigmentsUsecase>(),
+          gh<_i681.GetAllCoursesForTeacher>(),
+        ));
+    gh.factory<_i363.SelectCourseCubit>(() => _i363.SelectCourseCubit(
+          gh<_i681.GetAllCoursesForTeacher>(),
+          gh<_i221.GetAllCourses>(),
+        ));
+    gh.factory<_i442.GradeCubit>(
+        () => _i442.GradeCubit(gh<_i207.GetStudentGrade>()));
+    gh.factory<_i52.GradeStudentsCubit>(
+        () => _i52.GradeStudentsCubit(gh<_i559.GetStudentsForCourse>()));
     gh.factory<_i132.EventsCubit>(
         () => _i132.EventsCubit(gh<_i331.GetEventsUsecase>()));
     gh.factory<_i211.ScheduleCubit>(
         () => _i211.ScheduleCubit(gh<_i23.GetStudentSchedule>()));
+    gh.factory<_i35.AddGradeCubit>(() => _i35.AddGradeCubit(
+          gh<_i207.GetStudentGrade>(),
+          gh<_i1037.AddStudentGrade>(),
+        ));
     return this;
   }
 }

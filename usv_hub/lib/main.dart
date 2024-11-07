@@ -7,7 +7,9 @@ import 'package:usv_hub/core/utils/main_wraper.dart';
 import 'package:usv_hub/core/utils/on_generate_route.dart';
 import 'package:usv_hub/core/utils/theme.dart';
 import 'package:usv_hub/features/adresses/presentation/cubit/adresses_cubit.dart';
+import 'package:usv_hub/features/assigments/presentation/cubit/assigments_cubit.dart';
 import 'package:usv_hub/features/assigments/presentation/providers/picked_files_provider.dart';
+import 'package:usv_hub/features/attendance/presentation/cubit/attendance_cubit.dart';
 
 import 'package:usv_hub/features/chat/presentation/cubit/messages/messages_cubit.dart';
 import 'package:usv_hub/features/chat/presentation/cubit/potential_contacts/potential_contacts_cubit.dart';
@@ -62,6 +64,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<MessagesCubit>(
             create: (context) => getIt<MessagesCubit>(),
           ),
+          BlocProvider<AssigmentsCubit>(
+            create: (context) => getIt<AssigmentsCubit>(),
+          ),
           BlocProvider<PotentialContactsCubit>(
             create: (context) => getIt<PotentialContactsCubit>(),
           ),
@@ -70,6 +75,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<GradeStudentsCubit>(
             create: (context) => getIt<GradeStudentsCubit>(),
+          ),
+          BlocProvider<AttendanceCubit>(
+            create: (context) => getIt<AttendanceCubit>(),
           ),
           ChangeNotifierProvider(
             create: (context) => getIt<UserProvider>(),

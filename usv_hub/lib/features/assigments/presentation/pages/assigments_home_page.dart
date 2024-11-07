@@ -6,11 +6,14 @@ import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/presentation/cubit/assigments_cubit.dart';
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_search_field.dart';
-import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
+import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 import 'package:usv_hub/injection.dart';
 
 class AssigmentsHomePage extends StatefulWidget {
-  const AssigmentsHomePage({super.key});
+  const AssigmentsHomePage(
+      {super.key, required this.courseEntity, required this.isTeacher});
+  final CourseEntity courseEntity;
+  final ProfesorType isTeacher;
 
   @override
   State<AssigmentsHomePage> createState() => _AssigmentsHomePageState();
@@ -21,7 +24,8 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AssigmentsCubit>()..getAssigments(),
+      create: (context) =>
+          getIt<AssigmentsCubit>()..getAssigments(widget.courseEntity.id),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Assignments'),
@@ -46,8 +50,8 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
                           itemBuilder: (context, index) {
                             return AssigmentsWidget(
                               assigmentEntity:
-                                  state.assigments.keys.elementAt(index),
-                              course: state.assigments.values.elementAt(index),
+                                  state.assigments.elementAt(index),
+                              course: widget.courseEntity,
                             );
                           },
                         ),

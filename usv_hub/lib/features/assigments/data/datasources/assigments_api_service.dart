@@ -5,50 +5,27 @@ import 'package:usv_hub/core/errors/exceptions.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/data/models/assigments_model.dart';
 import 'package:usv_hub/features/assigments/data/models/subbmision_model.dart';
-import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
-import 'package:usv_hub/features/grade/data/models/course_model.dart';
 
 @LazySingleton()
 class AssigmentsApiService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _firebaseAuth = FirebaseAuth.instance;
 
-  Future<Map<AssigmentEntity, CourseModel>> getAssigments() async {
+  Future<List<AssigmentsModel>> getAssigments(String courseId) async {
     try {
-      final String userId = _firebaseAuth.currentUser!.uid;
-      final Map<AssigmentsModel, CourseModel> assigments = {};
-      final courseResponse = await _firestore
-          .collection(AppCollections.semesterXStudentCollection)
+      final List<AssigmentsModel> assigments = [];
+
+      final response = await _firestore
+          .collection(AppCollections.assignmentCollection)
           .where(
-            AppFields.studentId,
-            isEqualTo: userId,
+            AppFields.courseId,
+            isEqualTo: courseId,
           )
-          .where(AppFields.isActive, isEqualTo: true)
           .get();
 
-      final semesterId = courseResponse.docs.first.get(AppFields.semesterId);
-
-      final courses = await _firestore
-          .collection(AppCollections.courseCollection)
-          .where(AppFields.semesterId, isEqualTo: semesterId)
-          .get();
-
-      for (final course in courses.docs) {
-        final CourseModel courseModel = CourseModel.fromMap(course.data());
-        final response = await _firestore
-            .collection(AppCollections.assignmentCollection)
-            .where(
-              AppFields.courseId,
-              isEqualTo: courseModel.id,
-            )
-            .get();
-
-        for (final doc in response.docs) {
-          final data = doc.data();
-
-          assigments.putIfAbsent(
-              AssigmentsModel.fromMap(data), () => courseModel);
-        }
+      for (final doc in response.docs) {
+        final data = doc.data();
+        assigments.add(AssigmentsModel.fromMap(data));
       }
 
       return assigments;

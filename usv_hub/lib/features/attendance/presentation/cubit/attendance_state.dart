@@ -13,12 +13,12 @@ class AttendanceInitial extends AttendanceState {}
 class LoadingState extends AttendanceState {}
 
 class AttendanceLoaded extends AttendanceState {
-  final Map<AttendanceEntity, CourseEntity> attendanceAndCourses;
+  final AttendanceEntity attendance;
   const AttendanceLoaded({
-    required this.attendanceAndCourses,
+    required this.attendance,
   });
   @override
-  List<Object> get props => [attendanceAndCourses];
+  List<Object> get props => [attendance];
 }
 
 class TeacherCoursesLoadedState extends AttendanceState {

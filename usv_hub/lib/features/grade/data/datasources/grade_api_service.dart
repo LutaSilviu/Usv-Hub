@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:usv_hub/core/errors/exceptions.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/chat/data/models/user_model.dart';
 
-import 'package:usv_hub/features/grade/data/models/course_model.dart';
 import 'package:usv_hub/features/grade/data/models/grade_model.dart';
 
 import 'package:injectable/injectable.dart';
@@ -12,74 +10,6 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class GradeApiService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _firebaseAuth = FirebaseAuth.instance;
-
-  Future<Map<GradeModel, CourseModel>> getAllCoursesForStudent() async {
-    try {
-      String userId = _firebaseAuth.currentUser!.uid;
-      Map<GradeModel, CourseModel> coursesAndGrades = {};
-
-      final docs = await _firestore
-          .collection(AppCollections.gradeCollection)
-          .where(AppFields.studentId, isEqualTo: userId)
-          .get();
-
-      for (var doc in docs.docs) {
-        GradeModel model = GradeModel.fromMap(doc.data());
-
-        final courseDocs = await _firestore
-            .collection(AppCollections.courseCollection)
-            .where(AppFields.id, isEqualTo: model.courseId)
-            .get();
-
-        //relatia intre Grade si Course e 1 la 1,deci nu va putea fi mai mult de 1 curs per grade
-        coursesAndGrades.putIfAbsent(
-            model, () => CourseModel.fromMap(courseDocs.docs.first.data()));
-      }
-
-      return coursesAndGrades;
-    } on FirebaseException catch (e) {
-      throw MediumException(runtimeType, e.message!);
-    }
-  }
-
-  Future<Map<ProfesorType, CourseModel>> getAllCoursesForTeacher() async {
-    try {
-      String userId = _firebaseAuth.currentUser!.uid;
-      Map<ProfesorType, CourseModel> coursesAndGrades = {};
-
-      final response1 = await _firestore
-          .collection(AppCollections.courseCollection)
-          .where(AppFields.teacherId, isEqualTo: userId)
-          .get();
-
-      for (var doc in response1.docs) {
-        final course = CourseModel.fromMap(doc.data());
-        if (course.assistentId != course.teacherId) {
-          coursesAndGrades.putIfAbsent(ProfesorType.teacher, () => course);
-        } else {
-          coursesAndGrades.putIfAbsent(ProfesorType.both, () => course);
-        }
-      }
-
-      final response2 = await _firestore
-          .collection(AppCollections.courseCollection)
-          .where(AppFields.assistentId, isEqualTo: userId)
-          .get();
-
-      for (var doc in response2.docs) {
-        final course = CourseModel.fromMap(doc.data());
-        if (course.assistentId != course.teacherId) {
-          coursesAndGrades.putIfAbsent(
-              ProfesorType.assistent, () => CourseModel.fromMap(doc.data()));
-        }
-      }
-
-      return coursesAndGrades;
-    } on FirebaseException catch (e) {
-      throw MediumException(runtimeType, e.message!);
-    }
-  }
 
   Future<List<UserModel>> getStudentsForCourse(String courseId) async {
     try {

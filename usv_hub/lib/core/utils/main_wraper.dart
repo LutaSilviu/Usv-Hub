@@ -9,9 +9,9 @@ import 'package:usv_hub/core/utils/test.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_home_page.dart';
 import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
-import 'package:usv_hub/features/home/presentation/pages/home_page.dart';
 import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
 import 'package:usv_hub/features/login/presentation/providers/user_provider.dart';
+import 'package:usv_hub/features/select_course/presentation/pages/select_course_page.dart';
 
 class MainWrapper extends StatefulWidget {
   const MainWrapper({super.key});
@@ -35,7 +35,7 @@ class _MainWrapperState extends State<MainWrapper> {
   Widget build(BuildContext context) {
     List<Widget> screens = [
       const Center(
-        child: HomePage(),
+        child: SelectCoursePage(),
       ),
       const Center(
         child: ChatHomePage(),

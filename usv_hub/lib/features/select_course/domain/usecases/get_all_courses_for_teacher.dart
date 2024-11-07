@@ -3,22 +3,22 @@ import 'package:dartz/dartz.dart';
 import 'package:usv_hub/core/errors/failures.dart';
 import 'package:usv_hub/core/usecase/usecase.dart';
 import 'package:usv_hub/core/utils/consts.dart';
-import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
-import 'package:usv_hub/features/grade/domain/repositories/grade_repository.dart';
+import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/features/select_course/domain/repositories/courses_repository.dart';
 
 @lazySingleton
 class GetAllCoursesForTeacher
     implements Usecase<Either<Failure, Map<ProfesorType, CourseEntity>>, void> {
-  final GradeRepository _gradeRepository;
+  final CoursesRepository _courseRepository;
 
   GetAllCoursesForTeacher(
-    this._gradeRepository,
+    this._courseRepository,
   );
 
   @override
   Future<Either<Failure, Map<ProfesorType, CourseEntity>>> call({void params}) {
-    return _gradeRepository.getAllCoursesForTeachers();
+    return _courseRepository.getAllCoursesForTeachers();
   }
 }

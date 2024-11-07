@@ -12,25 +12,14 @@ class GradeInitial extends GradeState {}
 
 class LoadingState extends GradeState {}
 
-class CoursesLoadedState extends GradeState {
-  final Map<GradeEntity, CourseEntity> mapCoursesGrades;
-  const CoursesLoadedState({
-    required this.mapCoursesGrades,
-  });
-
-  @override
-  List<Object> get props => [mapCoursesGrades];
-}
-
-class CourseSelected extends GradeState {
-  final CourseEntity course;
+class GradeLoadedState extends GradeState {
   final GradeEntity grade;
-  const CourseSelected({
-    required this.course,
+  const GradeLoadedState({
     required this.grade,
   });
+
   @override
-  List<Object> get props => [course, grade];
+  List<Object> get props => [];
 }
 
 class ErrorState extends GradeState {
@@ -38,12 +27,4 @@ class ErrorState extends GradeState {
   const ErrorState({
     required this.message,
   });
-}
-
-class TeacherCoursesLoadedState extends GradeState {
-  final Map<ProfesorType, CourseEntity> mapCoursesGrades;
-
-  const TeacherCoursesLoadedState({required this.mapCoursesGrades});
-  @override
-  List<Object> get props => [mapCoursesGrades];
 }

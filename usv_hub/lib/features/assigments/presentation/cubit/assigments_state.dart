@@ -12,12 +12,21 @@ class AssigmentsInitial extends AssigmentsState {}
 class AssigmentsLoading extends AssigmentsState {}
 
 class AssigmentsLoaded extends AssigmentsState {
-  final Map<AssigmentEntity, CourseEntity> assigments;
+  final List<AssigmentEntity> assigments;
 
   const AssigmentsLoaded(this.assigments);
 
   @override
   List<Object> get props => [assigments];
+}
+
+class CoursesLoaded extends AssigmentsState {
+  final Map<ProfesorType, CourseEntity> courses;
+
+  const CoursesLoaded(this.courses);
+
+  @override
+  List<Object> get props => [courses];
 }
 
 class AssigmentsError extends AssigmentsState {

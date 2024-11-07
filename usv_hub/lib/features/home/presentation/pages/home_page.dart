@@ -3,27 +3,20 @@ import 'package:usv_hub/core/utils/background.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/home/presentation/widgets/main_button.dart';
+import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage(
+      {super.key, required this.courseEntity, required this.isTeacher});
+
+  final CourseEntity courseEntity;
+  final ProfesorType isTeacher;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppTextConst.home),
-        leading: IconButton(
-          style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                backgroundColor: WidgetStateProperty.all<Color>(
-                  Theme.of(context).colorScheme.primary,
-                ),
-              ),
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-        ),
         actions: [
           IconButton(
             style: Theme.of(context).iconButtonTheme.style!.copyWith(
@@ -64,10 +57,18 @@ class HomePage extends StatelessWidget {
                         title: AppTextConst.grade,
                         icon: Icons.grading_rounded,
                         onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRouteConst.grades,
-                          );
+                          if (isTeacher == ProfesorType.teacher ||
+                              isTeacher == ProfesorType.assistent) {
+                          } else {
+                            Navigator.pushNamed(
+                              context,
+                              AppRouteConst.gradeDetailPage,
+                              arguments: {
+                                AppArguments.courseEntity: courseEntity,
+                                AppArguments.isTeacher: isTeacher,
+                              },
+                            );
+                          }
                         },
                       ),
                       MainButton(
@@ -76,7 +77,10 @@ class HomePage extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(
                             context,
-                            AppRouteConst.attendance,
+                            AppRouteConst.attendanceDetailPage,
+                            arguments: {
+                              AppArguments.courseEntity: courseEntity,
+                            },
                           );
                         },
                       ),
@@ -105,6 +109,10 @@ class HomePage extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             AppRouteConst.assignments,
+                            arguments: {
+                              AppArguments.courseEntity: courseEntity,
+                              AppArguments.isTeacher: isTeacher,
+                            },
                           );
                         },
                       ),

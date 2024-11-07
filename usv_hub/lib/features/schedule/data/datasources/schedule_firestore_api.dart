@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:usv_hub/core/errors/exceptions.dart';
 import 'package:usv_hub/core/utils/consts.dart';
-import 'package:usv_hub/features/grade/data/models/course_model.dart';
+import 'package:usv_hub/features/select_course/data/models/course_model.dart';
 import 'package:usv_hub/features/schedule/domain/entities/schedule_entity.dart';
 
 @LazySingleton()
