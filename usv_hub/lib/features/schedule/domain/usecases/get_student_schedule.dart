@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class GetStudentSchedule
-    implements Usecase<Either<Failure, List<ScheduleEntity>>, void> {
+    implements Usecase<Either<Failure, List<ScheduleEntity>>, bool> {
   final ScheduleRepo _scheduleRepo;
 
   GetStudentSchedule(
@@ -16,7 +16,7 @@ class GetStudentSchedule
   );
 
   @override
-  Future<Either<Failure, List<ScheduleEntity>>> call({void params}) {
-    return _scheduleRepo.getStudentSchedule();
+  Future<Either<Failure, List<ScheduleEntity>>> call({required bool params}) {
+    return _scheduleRepo.getSchedule(params);
   }
 }

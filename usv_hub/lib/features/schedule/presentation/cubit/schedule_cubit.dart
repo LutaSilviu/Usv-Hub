@@ -11,10 +11,10 @@ part 'schedule_state.dart';
 class ScheduleCubit extends Cubit<ScheduleState> {
   ScheduleCubit(this._getStudentSchedule) : super(ScheduleInitial());
   final GetStudentSchedule _getStudentSchedule;
-  Future<void> getSchedule() async {
+  Future<void> getSchedule(bool isTeacher) async {
     emit(LoadingState());
 
-    (await _getStudentSchedule.call()).fold(
+    (await _getStudentSchedule.call(params: isTeacher)).fold(
       (l) {
         emit(ErrorState(message: l.message));
       },

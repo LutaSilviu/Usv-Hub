@@ -12,8 +12,12 @@ class ScheduleRepoImpl extends ScheduleRepo {
   ScheduleRepoImpl(this.scheduleFirestoreApi);
 
   @override
-  Future<Either<Failure, List<ScheduleEntity>>> getStudentSchedule() async {
+  Future<Either<Failure, List<ScheduleEntity>>> getSchedule(
+      bool isTeacher) async {
     try {
+      if (isTeacher) {
+        return Right(await scheduleFirestoreApi.getTeacherSchedule());
+      }
       return Right(await scheduleFirestoreApi.getStudentSchedule());
     } on MediumFailure catch (e) {
       return Left(MediumFailure(message: e.message));

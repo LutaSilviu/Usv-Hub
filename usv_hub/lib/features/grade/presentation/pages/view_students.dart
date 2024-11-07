@@ -12,9 +12,13 @@ class ViewStudents extends StatefulWidget {
     super.key,
     required this.courseId,
     required this.isTeacher,
+    required this.clickType,
+    this.courseLenght,
   });
   final String courseId;
-  final bool isTeacher;
+  final ProfesorType isTeacher;
+  final ClickType clickType;
+  final int? courseLenght;
 
   @override
   State<ViewStudents> createState() => _ViewStudentsState();
@@ -24,12 +28,7 @@ class _ViewStudentsState extends State<ViewStudents> {
   TextEditingController searchController = TextEditingController();
 
   Future<void> loadData() async {
-    // final selectedType = context.read<UserProvider>().selectedType;
-    // if (selectedType == SelectedType.student) {
     await context.read<GradeStudentsCubit>().getStudents(widget.courseId);
-    // } else {
-    //   await context.read<GradeCubit>().getTeacherCourses();
-    // }
   }
 
   @override
@@ -141,16 +140,34 @@ class _ViewStudentsState extends State<ViewStudents> {
                                           .textTheme
                                           .bodyMedium!),
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      AppRouteConst.addGrade,
-                                      arguments: {
-                                        AppArguments.isTeacher:
-                                            widget.isTeacher,
-                                        AppArguments.studentEntity: student,
-                                        AppArguments.courseId: widget.courseId,
-                                      },
-                                    );
+                                    if (widget.clickType == ClickType.grade) {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRouteConst.addGrade,
+                                        arguments: {
+                                          AppArguments.isTeacher:
+                                              widget.isTeacher,
+                                          AppArguments.studentEntity: student,
+                                          AppArguments.courseId:
+                                              widget.courseId,
+                                        },
+                                      );
+                                    } else if (widget.clickType ==
+                                        ClickType.attendance) {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRouteConst.addAttandance,
+                                        arguments: {
+                                          AppArguments.isTeacher:
+                                              widget.isTeacher,
+                                          AppArguments.studentEntity: student,
+                                          AppArguments.courseId:
+                                              widget.courseId,
+                                          AppArguments.courseLenght:
+                                              widget.courseLenght,
+                                        },
+                                      );
+                                    }
                                   },
                                 );
                               },

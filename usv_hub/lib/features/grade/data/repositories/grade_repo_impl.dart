@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:usv_hub/core/errors/exceptions.dart';
 import 'package:usv_hub/core/errors/failures.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/chat/domain/entities/user.dart';
 import 'package:usv_hub/features/grade/data/datasources/grade_api_service.dart';
 import 'package:usv_hub/features/grade/data/models/grade_model.dart';
@@ -24,7 +25,7 @@ class GradeRepoImpl extends GradeRepository {
   }
 
   @override
-  Future<Either<Failure, Map<bool, CourseEntity>>>
+  Future<Either<Failure, Map<ProfesorType, CourseEntity>>>
       getAllCoursesForTeachers() async {
     try {
       return Right(await _gradeApiService.getAllCoursesForTeacher());

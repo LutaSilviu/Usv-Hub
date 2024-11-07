@@ -96,15 +96,7 @@ class _HomeGradePageState extends State<HomeGradePage> {
                         ),
                       ),
                     ),
-                    Consumer<UserProvider>(
-                      builder: (context, value, child) {
-                        if (value.selectedType == SelectedType.student) {
-                          return const StudentBody();
-                        } else {
-                          return const TeacherBody();
-                        }
-                      },
-                    ),
+                    const BodyWidget(),
                   ],
                 );
               }
@@ -114,8 +106,8 @@ class _HomeGradePageState extends State<HomeGradePage> {
   }
 }
 
-class StudentBody extends StatelessWidget {
-  const StudentBody({
+class BodyWidget extends StatelessWidget {
+  const BodyWidget({
     super.key,
   });
 
@@ -167,36 +159,6 @@ class StudentBody extends StatelessWidget {
             ),
           );
         }
-        return const Center(
-          child: Text("Ups!,there is nothing here to see!"),
-        );
-      },
-    );
-  }
-}
-
-class TeacherBody extends StatelessWidget {
-  const TeacherBody({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<GradeCubit, GradeState>(
-      listener: (context, state) {
-        if (state is ErrorState) {
-          CustomSnackbar.show(context, state.message);
-        }
-      },
-      builder: (context, state) {
-        if (state is LoadingState) {
-          return const CircularProgressIndicator();
-        }
-        if (state is ErrorState) {
-          return const Center(
-            child: Text("Ups!,there is nothing here to see!"),
-          );
-        }
         if (state is TeacherCoursesLoadedState) {
           return Expanded(
             child: GridView.builder(
@@ -204,7 +166,8 @@ class TeacherBody extends StatelessWidget {
               itemBuilder: (context, index) {
                 CourseEntity course =
                     state.mapCoursesGrades.values.elementAt(index);
-                bool isTeacher = state.mapCoursesGrades.keys.elementAt(index);
+                ProfesorType isTeacher =
+                    state.mapCoursesGrades.keys.elementAt(index);
                 return CustomCourseWidget(
                   image: AppImages.image1,
                   onTap: () {
@@ -214,6 +177,7 @@ class TeacherBody extends StatelessWidget {
                       arguments: {
                         AppArguments.courseId: course.id,
                         AppArguments.isTeacher: isTeacher,
+                        AppArguments.clickType: ClickType.grade,
                       },
                     );
                   },

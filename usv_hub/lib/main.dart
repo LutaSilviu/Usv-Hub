@@ -92,6 +92,9 @@ class MyApp extends StatelessWidget {
               '/': (context) {
                 return BlocBuilder<LoginCubit, LoginState>(
                   builder: (context, state) {
+                    if (state is LoginLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
                     if (state is LoginInitial) {
                       return const LoginPage();
                     } else if (state is LoginSuccess) {

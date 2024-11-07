@@ -37,6 +37,8 @@ ThemeData darkTheme() {
       primaryContainer: AppColors.primaryContainer,
       onPrimaryContainer: AppColors.onPrimaryContainer,
       secondaryContainer: AppColors.secondaryContainer,
+      outline: AppColors.outline,
+      outlineVariant: AppColors.outlineVariant,
     ),
     textTheme: darkTextTheme(),
     iconButtonTheme: IconButtonThemeData(

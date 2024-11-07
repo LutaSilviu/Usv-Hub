@@ -38,4 +38,14 @@ class AttendanceModel extends AttendanceEntity {
 
   factory AttendanceModel.fromJson(String source) =>
       AttendanceModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  copyWith(String id) {
+    return AttendanceModel(
+      id: id,
+      courseId: courseId,
+      studentId: studentId,
+      courseAttendance: courseAttendance,
+      labortoryAttendance: labortoryAttendance,
+    );
+  }
 }

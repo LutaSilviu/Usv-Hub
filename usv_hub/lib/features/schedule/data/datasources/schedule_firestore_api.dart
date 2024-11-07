@@ -9,10 +9,10 @@ import 'package:usv_hub/features/schedule/domain/entities/schedule_entity.dart';
 @LazySingleton()
 class ScheduleFirestoreApi {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final User? user = FirebaseAuth.instance.currentUser;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Future<List<ScheduleEntity>> getStudentSchedule() async {
     try {
-      final String userId = user!.uid;
+      final String userId = _firebaseAuth.currentUser!.uid;
       final List<ScheduleEntity> scheduleList = [];
 
       final response = await _firestore
@@ -67,6 +67,72 @@ class ScheduleFirestoreApi {
           scheduleList.add(scheduleEntity);
         }
       }
+      return scheduleList;
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } on Exception catch (e) {
+      throw MediumException(runtimeType, e.toString());
+    }
+  }
+
+  Future<List<ScheduleEntity>> getTeacherSchedule() async {
+    try {
+      final String userId = _firebaseAuth.currentUser!.uid;
+      final List<ScheduleEntity> scheduleList = [];
+
+      final coursesForTeacher = await _firestore
+          .collection(AppCollections.courseCollection)
+          .where(AppFields.teacherId, isEqualTo: userId)
+          .get();
+
+      final coursesForAssistent = await _firestore
+          .collection(AppCollections.courseCollection)
+          .where(AppFields.assistentId, isEqualTo: userId)
+          .get();
+
+      for (final doc in coursesForTeacher.docs) {
+        final CourseModel courseModel = CourseModel.fromMap(doc.data());
+
+        for (final schedule in courseModel.scheduleMap) {
+          String classTypeString = schedule[AppFields.classType];
+          final ClassType classType = classTypeString.toClassType()!;
+          if (classType == ClassType.curs) {
+            ScheduleEntity scheduleEntity = ScheduleEntity(
+                courseTitle: courseModel.title,
+                dayOfWeek: schedule[AppFields.dayOfWeek],
+                startingHour: schedule[AppFields.startingHour],
+                endingHour: schedule[AppFields.endingHour],
+                classType: classType,
+                sala: schedule[AppFields.classWhereHeld],
+                teacher: '',
+                courseFrequency: (schedule[AppFields.courseFrequency] as String)
+                    .toCourseFrequency()!);
+            scheduleList.add(scheduleEntity);
+          }
+        }
+      }
+      for (final doc in coursesForAssistent.docs) {
+        final CourseModel courseModel = CourseModel.fromMap(doc.data());
+
+        for (final schedule in courseModel.scheduleMap) {
+          String classTypeString = schedule[AppFields.classType];
+          final ClassType classType = classTypeString.toClassType()!;
+          if (classType == ClassType.laborator) {
+            ScheduleEntity scheduleEntity = ScheduleEntity(
+                courseTitle: courseModel.title,
+                dayOfWeek: schedule[AppFields.dayOfWeek],
+                startingHour: schedule[AppFields.startingHour],
+                endingHour: schedule[AppFields.endingHour],
+                classType: classType,
+                sala: schedule[AppFields.classWhereHeld],
+                teacher: '',
+                courseFrequency: (schedule[AppFields.courseFrequency] as String)
+                    .toCourseFrequency()!);
+            scheduleList.add(scheduleEntity);
+          }
+        }
+      }
+
       return scheduleList;
     } on FirebaseException catch (e) {
       throw MediumException(runtimeType, e.message!);

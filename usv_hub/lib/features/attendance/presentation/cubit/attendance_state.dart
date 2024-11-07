@@ -21,6 +21,14 @@ class AttendanceLoaded extends AttendanceState {
   List<Object> get props => [attendanceAndCourses];
 }
 
+class TeacherCoursesLoadedState extends AttendanceState {
+  final Map<ProfesorType, CourseEntity> mapCoursesGrades;
+
+  const TeacherCoursesLoadedState({required this.mapCoursesGrades});
+  @override
+  List<Object> get props => [mapCoursesGrades];
+}
+
 class AttendanceError extends AttendanceState {
   final String errorMessage;
 

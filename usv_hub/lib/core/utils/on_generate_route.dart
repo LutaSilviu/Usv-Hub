@@ -4,6 +4,7 @@ import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dar
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_home_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_info_page.dart';
 import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
+import 'package:usv_hub/features/attendance/presentation/pages/add_attendance_page.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/attendance_details_page.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/home_attendance_page.dart';
 import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
@@ -59,6 +60,19 @@ class OnGenerateRoute {
         } else {
           return routeBuilder(const ErrorPage());
         }
+      case AppRouteConst.addAttandance:
+        if (settings.arguments != null) {
+          Map arg = settings.arguments as Map;
+
+          return routeBuilder(AddAttandancePage(
+            isTeacher: arg[AppArguments.isTeacher],
+            student: arg[AppArguments.studentEntity],
+            courseId: arg[AppArguments.courseId],
+            courseLenght: arg[AppArguments.courseLenght],
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
       case AppRouteConst.viewStudents:
         if (settings.arguments != null) {
           Map arg = settings.arguments as Map;
@@ -66,6 +80,8 @@ class OnGenerateRoute {
             ViewStudents(
               courseId: arg[AppArguments.courseId],
               isTeacher: arg[AppArguments.isTeacher],
+              clickType: arg[AppArguments.clickType],
+              courseLenght: arg[AppArguments.courseLenght],
             ),
           );
         } else {

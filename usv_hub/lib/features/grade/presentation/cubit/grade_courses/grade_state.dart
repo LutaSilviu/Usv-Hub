@@ -41,7 +41,7 @@ class ErrorState extends GradeState {
 }
 
 class TeacherCoursesLoadedState extends GradeState {
-  final Map<bool, CourseEntity> mapCoursesGrades;
+  final Map<ProfesorType, CourseEntity> mapCoursesGrades;
 
   const TeacherCoursesLoadedState({required this.mapCoursesGrades});
   @override

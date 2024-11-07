@@ -36,8 +36,13 @@ import 'features/attendance/data/repositories/attendance_repo_impl.dart'
     as _i1059;
 import 'features/attendance/domain/repositories/attendance_repository.dart'
     as _i114;
+import 'features/attendance/domain/usecases/add_attandance.dart' as _i181;
 import 'features/attendance/domain/usecases/get_attendance.dart' as _i521;
+import 'features/attendance/domain/usecases/get_attendance_for_student.dart'
+    as _i186;
 import 'features/attendance/presentation/cubit/attendance_cubit.dart' as _i61;
+import 'features/attendance/presentation/providers/add_attendance_provider.dart'
+    as _i564;
 import 'features/chat/data/datasources/chat_firestore_api.dart' as _i1028;
 import 'features/chat/data/repositories/chat_repo_impl.dart' as _i843;
 import 'features/chat/domain/repositories/chat_repo.dart' as _i359;
@@ -127,8 +132,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i359.ChatRepo>(
         () => _i843.ChatRepoImpl(gh<_i1028.ChatFirestoreApi>()));
     gh.lazySingleton<_i535.GradeRepository>(() => _i34.GradeRepoImpl());
-    gh.lazySingleton<_i114.AttendanceRepository>(
-        () => _i1059.AttendanceRepoImpl(gh<_i240.AttendanceApiService>()));
     gh.lazySingleton<_i365.GetAllMessages>(
         () => _i365.GetAllMessages(gh<_i1028.ChatFirestoreApi>()));
     gh.lazySingleton<_i650.GetAllCourses>(
@@ -145,8 +148,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i170.UserProvider(authRepo: gh<_i17.AuthRepo>()));
     gh.lazySingleton<_i533.AddressesRepo>(
         () => _i751.AddressesRepoImpl(gh<_i55.AddressesApiService>()));
+    gh.lazySingleton<_i114.AttendanceRepository>(
+        () => _i1059.AttendanceRepoImpl(gh<_i240.AttendanceApiService>()));
     gh.lazySingleton<_i521.GetAttendance>(
         () => _i521.GetAttendance(gh<_i114.AttendanceRepository>()));
+    gh.lazySingleton<_i186.GetAttendanceForStudent>(
+        () => _i186.GetAttendanceForStudent(gh<_i114.AttendanceRepository>()));
+    gh.lazySingleton<_i181.AddAttandance>(
+        () => _i181.AddAttandance(gh<_i114.AttendanceRepository>()));
     gh.factory<_i774.LoginCubit>(
         () => _i774.LoginCubit(authUseCase: gh<_i864.AuthUseCase>()));
     gh.lazySingleton<_i548.GetAssigmentsUsecase>(
@@ -175,8 +184,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i707.ScheduleRepoImpl(gh<_i654.ScheduleFirestoreApi>()));
     gh.factory<_i52.GradeStudentsCubit>(
         () => _i52.GradeStudentsCubit(gh<_i559.GetStudentsForCourse>()));
-    gh.factory<_i61.AttendanceCubit>(
-        () => _i61.AttendanceCubit(gh<_i521.GetAttendance>()));
     gh.factory<_i215.InfoProvider>(
         () => _i215.InfoProvider(gh<_i878.HasSubbmissionUsecase>()));
     gh.factory<_i553.PotentialContactsCubit>(() => _i553.PotentialContactsCubit(
@@ -186,6 +193,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i35.AddGradeCubit>(() => _i35.AddGradeCubit(
           gh<_i207.GetStudentGrade>(),
           gh<_i1037.AddStudentGrade>(),
+        ));
+    gh.factory<_i564.AddAttendanceProvider>(() => _i564.AddAttendanceProvider(
+          gh<_i186.GetAttendanceForStudent>(),
+          gh<_i181.AddAttandance>(),
+        ));
+    gh.factory<_i61.AttendanceCubit>(() => _i61.AttendanceCubit(
+          gh<_i521.GetAttendance>(),
+          gh<_i850.GetAllCoursesForTeacher>(),
         ));
     gh.factory<_i392.ContactsCubit>(
         () => _i392.ContactsCubit(gh<_i229.GetContactsUsecase>()));

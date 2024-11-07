@@ -43,10 +43,10 @@ class GradeApiService {
     }
   }
 
-  Future<Map<bool, CourseModel>> getAllCoursesForTeacher() async {
+  Future<Map<ProfesorType, CourseModel>> getAllCoursesForTeacher() async {
     try {
       String userId = _firebaseAuth.currentUser!.uid;
-      Map<bool, CourseModel> coursesAndGrades = {};
+      Map<ProfesorType, CourseModel> coursesAndGrades = {};
 
       final response1 = await _firestore
           .collection(AppCollections.courseCollection)
@@ -54,8 +54,12 @@ class GradeApiService {
           .get();
 
       for (var doc in response1.docs) {
-        coursesAndGrades.putIfAbsent(
-            true, () => CourseModel.fromMap(doc.data()));
+        final course = CourseModel.fromMap(doc.data());
+        if (course.assistentId != course.teacherId) {
+          coursesAndGrades.putIfAbsent(ProfesorType.teacher, () => course);
+        } else {
+          coursesAndGrades.putIfAbsent(ProfesorType.both, () => course);
+        }
       }
 
       final response2 = await _firestore
@@ -64,8 +68,11 @@ class GradeApiService {
           .get();
 
       for (var doc in response2.docs) {
-        coursesAndGrades.putIfAbsent(
-            false, () => CourseModel.fromMap(doc.data()));
+        final course = CourseModel.fromMap(doc.data());
+        if (course.assistentId != course.teacherId) {
+          coursesAndGrades.putIfAbsent(
+              ProfesorType.assistent, () => CourseModel.fromMap(doc.data()));
+        }
       }
 
       return coursesAndGrades;

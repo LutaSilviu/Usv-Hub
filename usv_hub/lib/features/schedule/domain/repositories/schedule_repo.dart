@@ -3,5 +3,5 @@ import 'package:usv_hub/core/errors/failures.dart';
 import 'package:usv_hub/features/schedule/domain/entities/schedule_entity.dart';
 
 abstract class ScheduleRepo {
-  Future<Either<Failure, List<ScheduleEntity>>> getStudentSchedule();
+  Future<Either<Failure, List<ScheduleEntity>>> getSchedule(bool isTeacher);
 }

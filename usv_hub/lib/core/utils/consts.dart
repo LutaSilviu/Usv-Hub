@@ -27,6 +27,8 @@ class AppColors {
   static const Color primaryContainer = Color(0xFF26315E);
   static const Color secondaryContainer = Color.fromARGB(78, 255, 255, 255);
   static const Color onPrimaryContainer = Color(0xFF817DF6);
+  static const Color outline = Color(0xFFFFD5B9);
+  static const Color outlineVariant = Color(0xFFADE0FF);
 
   static const Color attendancePresent = Color(0xFF5AAC76);
   static const Color attendanceAbsent = Color(0xFFFB6F6F);
@@ -72,6 +74,7 @@ class AppTextConst {
   static const courses = 'Courses';
   static const gradeDetailPage = 'Grade Detail Page';
   static const addGradePage = 'Add Grade Page';
+  static const addAttandancePage = 'Add Attandance Page';
 
   static String phoneNumberDescription =
       "Your current phone number is displayed below. You can easily update it by tapping the \"Edit\" button. Please ensure your number is correct to stay connected. ";
@@ -93,6 +96,9 @@ class AppTextConst {
 
   static String courseGrade = "Course Grade";
   static String labGrade = "Laboratory Grade";
+
+  static String courseAttandance = "Course attendance:";
+  static String labAttendance = "Laboratory attendance:";
 
   static String invalidNumber = "Numbers that you have submitted are invalid";
   static String emptyNumber = "You must enter numbers";
@@ -144,6 +150,7 @@ class AppRouteConst {
   static const String viewStudents = '/viewStudents';
 
   static const String addGrade = '/addGrade';
+  static const String addAttandance = '/addAttandance';
 }
 
 class AppImages {
@@ -243,6 +250,10 @@ class AppArguments {
   static const String studentEntity = "StudentEntity";
 
   static const String isTeacher = "IsTeacher";
+
+  static const String clickType = "ClickType";
+
+  static const String courseLenght = "CourseLenght";
 }
 
 class AppCollections {
@@ -307,4 +318,41 @@ class DaysOfWeek {
   static const String vineri = 'Vineri';
   static const String sambata = 'Sambata';
   static const String duminica = 'Duminica';
+}
+
+enum ProfesorType { teacher, assistent, both }
+
+enum ClickType { grade, attendance }
+
+enum AttendanceStatus { present, absent, empty }
+
+extension AttendanceStatusToString on AttendanceStatus {
+  String get stringValue {
+    switch (this) {
+      case AttendanceStatus.present:
+        return 'Present';
+      case AttendanceStatus.absent:
+        return 'Absent';
+      case AttendanceStatus.empty:
+        return 'Empty';
+
+      default:
+        return '';
+    }
+  }
+}
+
+extension StringToAttendanceStatus on String {
+  AttendanceStatus get toAttendanceStatus {
+    switch (toLowerCase()) {
+      case 'present':
+        return AttendanceStatus.present;
+      case 'absent':
+        return AttendanceStatus.absent;
+      case 'empty':
+        return AttendanceStatus.empty;
+      default:
+        return AttendanceStatus.present;
+    }
+  }
 }

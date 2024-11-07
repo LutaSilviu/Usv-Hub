@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:usv_hub/core/utils/background.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/functions.dart';
+import 'package:usv_hub/features/login/presentation/providers/user_provider.dart';
 import 'package:usv_hub/features/schedule/domain/entities/schedule_entity.dart';
 import 'package:usv_hub/features/schedule/presentation/cubit/schedule_cubit.dart';
 
@@ -23,7 +25,11 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
     _selectedEvents =
         ValueNotifier(_getEventsForDay(DateTime.now().weekday, []));
     Future.microtask(() async {
-      if (mounted) await context.read<ScheduleCubit>().getSchedule();
+      if (mounted) {
+        bool isTeacher =
+            context.read<UserProvider>().selectedType == SelectedType.teacher;
+        await context.read<ScheduleCubit>().getSchedule(isTeacher);
+      }
     }).then(
       (_) {
         if (mounted && context.read<ScheduleCubit>().state is ScheduleLoaded) {
@@ -178,27 +184,73 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                                   vertical: 4.0,
                                 ),
                                 decoration: BoxDecoration(
-                                  border: Border.all(),
+                                  border: Border.all(
+                                    color: value[index].classType ==
+                                            ClassType.curs
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .outlineVariant
+                                        : Theme.of(context).colorScheme.outline,
+                                  ),
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: ListTile(
-                                  title: Text(
-                                    value[index].courseTitle,
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                    overflow: TextOverflow.ellipsis,
+                                  title: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        value[index].courseTitle,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        value[index].sala,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
-                                  trailing: Text(
-                                    value[index].sala,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  subtitle: Text(
-                                    '${dayFromInt(value[index].dayOfWeek)} ${value[index].startingHour} - ${value[index].endingHour}',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                    overflow: TextOverflow.ellipsis,
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '${dayFromInt(value[index].dayOfWeek)} ${value[index].startingHour} - ${value[index].endingHour}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            value[index]
+                                                .courseFrequency
+                                                .stringValue,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                      if (value[index].teacher.isNotEmpty)
+                                        Text(
+                                          value[index].teacher,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                    ],
                                   ),
                                 ),
                               );

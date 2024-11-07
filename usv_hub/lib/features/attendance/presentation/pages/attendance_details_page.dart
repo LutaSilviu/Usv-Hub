@@ -53,7 +53,7 @@ class AttendanceDetailsPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 30.w),
               child: Text(
-                "Course attendance:",
+                AppTextConst.courseAttandance,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -131,7 +131,7 @@ class AttendanceDetailsPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 30.w),
               child: Text(
-                "Laboratory attendance:",
+                AppTextConst.labAttendance,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

@@ -5,4 +5,9 @@ import 'package:usv_hub/features/grade/domain/entities/course_entity.dart';
 
 abstract class AttendanceRepository {
   Future<Either<Failure, Map<AttendanceEntity, CourseEntity>>> getAttendance();
+
+  Future<Either<Failure, void>> addAttendance(
+      AttendanceEntity attendanceEntity);
+  Future<Either<Failure, AttendanceEntity>> getAttendanceForStudent(
+      String studentId, String courseId);
 }

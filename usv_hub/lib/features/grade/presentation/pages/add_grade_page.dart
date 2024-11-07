@@ -20,7 +20,7 @@ class AddGradePage extends StatefulWidget {
   });
 
   final UserEntity student;
-  final bool isTeacher;
+  final ProfesorType isTeacher;
   final String courseId;
 
   @override
@@ -102,12 +102,12 @@ class _AddGradePageState extends State<AddGradePage> {
 
                     return Column(
                       children: [
-                        if (!widget.isTeacher)
+                        if (widget.isTeacher != ProfesorType.teacher)
                           EnterGradeWidget(
                             labController: labController,
                             title: AppTextConst.labGrade,
                           ),
-                        if (widget.isTeacher)
+                        if (widget.isTeacher != ProfesorType.teacher)
                           EnterGradeWidget(
                             labController: courseController,
                             title: AppTextConst.courseGrade,
