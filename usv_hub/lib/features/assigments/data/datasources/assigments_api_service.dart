@@ -11,11 +11,11 @@ import 'package:usv_hub/features/grade/data/models/course_model.dart';
 @LazySingleton()
 class AssigmentsApiService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final User? user = FirebaseAuth.instance.currentUser;
+  final _firebaseAuth = FirebaseAuth.instance;
 
   Future<Map<AssigmentEntity, CourseModel>> getAssigments() async {
     try {
-      final String userId = user!.uid;
+      final String userId = _firebaseAuth.currentUser!.uid;
       final Map<AssigmentsModel, CourseModel> assigments = {};
       final courseResponse = await _firestore
           .collection(AppCollections.semesterXStudentCollection)
@@ -61,7 +61,7 @@ class AssigmentsApiService {
 
   Future<void> postSubbmision(SubbmisionModel subbmisionModel) async {
     try {
-      final String userId = user!.uid;
+      final String userId = _firebaseAuth.currentUser!.uid;
       final docRef = _firestore.collection(AppCollections.submission).doc();
       docRef.set(subbmisionModel
           .copyWith(
@@ -78,7 +78,7 @@ class AssigmentsApiService {
 
   Future<bool> hasSubbmision(String assigmentId) async {
     try {
-      final String userId = user!.uid;
+      final String userId = _firebaseAuth.currentUser!.uid;
       final result = await _firestore
           .collection(AppCollections.submission)
           .where(AppFields.studentId, isEqualTo: userId)

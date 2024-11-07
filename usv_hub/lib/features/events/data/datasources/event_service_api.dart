@@ -8,14 +8,14 @@ import 'package:usv_hub/features/events/data/models/event_model.dart';
 @LazySingleton()
 class EventServiceApi {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String userId = FirebaseAuth.instance.currentUser!.uid;
+  final _firebaseAuth = FirebaseAuth.instance;
 
   Future<List<EventModel>> getEvents() async {
     try {
       List<EventModel> events = [];
       final semXStudDoc = await _firestore
           .collection(AppCollections.semesterXStudentCollection)
-          .where(AppFields.studentId, isEqualTo: userId)
+          .where(AppFields.studentId, isEqualTo: _firebaseAuth.currentUser!.uid)
           .where(AppFields.isActive, isEqualTo: true)
           .limit(1)
           .get();

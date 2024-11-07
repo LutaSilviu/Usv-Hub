@@ -10,7 +10,7 @@ import 'package:usv_hub/features/chat/data/models/user_model.dart';
 @LazySingleton()
 class ChatFirestoreApi {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final User? _user = FirebaseAuth.instance.currentUser;
+  final _firebaseAuth = FirebaseAuth.instance;
 
   Future<List<ContactModel>> getAllContacts() async {
     final List<ContactModel> contacts = [];
@@ -19,12 +19,12 @@ class ChatFirestoreApi {
       final response1 = await _firestore
           .collection(AppCollections.contacts)
           .where(AppFields.status, isEqualTo: ContactsStatus.active.stringValue)
-          .where(AppFields.person1, isEqualTo: _user!.uid)
+          .where(AppFields.person1, isEqualTo: _firebaseAuth.currentUser!.uid)
           .get();
       final response2 = await _firestore
           .collection(AppCollections.contacts)
           .where(AppFields.status, isEqualTo: ContactsStatus.active.stringValue)
-          .where(AppFields.person2, isEqualTo: _user.uid)
+          .where(AppFields.person2, isEqualTo: _firebaseAuth.currentUser!.uid)
           .get();
 
       final response = [...response1.docs, ...response2.docs];
@@ -32,7 +32,7 @@ class ChatFirestoreApi {
       for (final doc in response) {
         String name;
         QuerySnapshot<Map<String, dynamic>> result;
-        if (doc[AppFields.person1] == _user.uid) {
+        if (doc[AppFields.person1] == _firebaseAuth.currentUser!.uid) {
           result = await _firestore
               .collection(AppCollections.teacher)
               .where(AppFields.id, isEqualTo: doc[AppFields.person2])

@@ -7,14 +7,15 @@ import 'package:usv_hub/core/utils/consts.dart';
 @LazySingleton()
 class AddressesApiService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final String _userId = FirebaseAuth.instance.currentUser!.uid;
+  final _firebaseAuth = FirebaseAuth.instance;
 
   Future<List<Map<String, String>>> getAddresses() async {
     try {
+      final userId = _firebaseAuth.currentUser!.uid;
       final List<Map<String, String>> addresses = [];
       final response = await _firebaseFirestore
           .collection(AppCollections.addresses)
-          .where(AppFields.userId, isEqualTo: _userId)
+          .where(AppFields.userId, isEqualTo: userId)
           .orderBy(AppFields.address)
           .get();
 
@@ -35,12 +36,14 @@ class AddressesApiService {
 
   Future<Map<String, String>> postAddresses(String address) async {
     try {
+      final userId = _firebaseAuth.currentUser!.uid;
+
       final docRef =
           _firebaseFirestore.collection(AppCollections.addresses).doc();
 
       final Map<String, String> map = {
         AppFields.id: docRef.id,
-        AppFields.userId: _userId,
+        AppFields.userId: userId,
         AppFields.address: address,
       };
       await docRef.set(map);
