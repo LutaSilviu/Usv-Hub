@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_course_widget.dart';
@@ -18,95 +19,108 @@ class SelectCoursePage extends StatefulWidget {
 
 class _SelectCoursePageState extends State<SelectCoursePage> {
   TextEditingController searchController = TextEditingController();
-  SelectCourseCubit getData() {
-    bool isTeacher =
-        context.read<UserProvider>().selectedType == SelectedType.teacher;
-
+  SelectCourseCubit getData(bool isTeacher) {
     return getIt<SelectCourseCubit>()..getCourses(isTeacher);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getData(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(AppTextConst.selectCourse),
-          leading: IconButton(
-            style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                  backgroundColor: WidgetStateProperty.all<Color>(
-                    Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-          ),
-          actions: [
-            IconButton(
-              style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                    backgroundColor: WidgetStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary,
+    return Consumer<UserProvider>(
+      builder: (BuildContext context, UserProvider provider, Widget? child) {
+        if (provider.isLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (provider.user == null) {
+          return const Center(
+            child: Text('No user found'),
+          );
+        }
+        return BlocProvider(
+          create: (context) =>
+              getData(provider.selectedType == SelectedType.teacher),
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text(AppTextConst.selectCourse),
+              leading: IconButton(
+                style: Theme.of(context).iconButtonTheme.style!.copyWith(
+                      backgroundColor: WidgetStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.primary,
+                      ),
                     ),
-                  ),
-              icon: const Icon(Icons.notifications),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        body: Background(
-          child: Column(
-            children: [
-              CustomSearchField(searchController: searchController),
-              BlocBuilder<SelectCourseCubit, SelectCourseState>(
-                builder: (context, state) {
-                  if (state is CoursesLoading) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (state is CoursesError) {
-                    return Text(state.message);
-                  }
-                  if (state is CoursesLoaded) {
-                    return Expanded(
-                      child: GridView.builder(
-                        itemCount: state.courses.length,
-                        itemBuilder: (context, index) {
-                          ProfesorType isTeacher =
-                              state.courses.keys.elementAt(index);
-                          CourseEntity course =
-                              state.courses.values.elementAt(index);
-                          return CustomCourseWidget(
-                            image: AppImages.image1,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRouteConst.home,
-                                arguments: {
-                                  AppArguments.courseEntity: course,
-                                  AppArguments.isTeacher: isTeacher,
-                                },
-                              );
-                            },
-                            title: state.courses.values.elementAt(index).title,
-                          );
-                        },
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.9,
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              ),
+              actions: [
+                IconButton(
+                  style: Theme.of(context).iconButtonTheme.style!.copyWith(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                    );
-                  }
-                  return Container();
-                },
+                  icon: const Icon(Icons.notifications),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            body: Background(
+              child: Column(
+                children: [
+                  CustomSearchField(searchController: searchController),
+                  BlocBuilder<SelectCourseCubit, SelectCourseState>(
+                    builder: (context, state) {
+                      if (state is CoursesLoading) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (state is CoursesError) {
+                        return Text(state.message);
+                      }
+                      if (state is CoursesLoaded) {
+                        return Expanded(
+                          child: GridView.builder(
+                            itemCount: state.courses.length,
+                            itemBuilder: (context, index) {
+                              ProfesorType isTeacher =
+                                  state.courses.keys.elementAt(index);
+                              CourseEntity course =
+                                  state.courses.values.elementAt(index);
+                              return CustomCourseWidget(
+                                image: AppImages.image1,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRouteConst.home,
+                                    arguments: {
+                                      AppArguments.courseEntity: course,
+                                      AppArguments.isTeacher: isTeacher,
+                                    },
+                                  );
+                                },
+                                title:
+                                    state.courses.values.elementAt(index).title,
+                              );
+                            },
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.9,
+                            ),
+                          ),
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -107,6 +107,9 @@ class AssigmentInfoPage extends StatelessWidget {
                         ),
                         Consumer<InfoProvider>(builder: (BuildContext context,
                             InfoProvider provider, Widget? child) {
+                          if (provider.isLoading) {
+                            return const CircularProgressIndicator();
+                          }
                           if (!provider.hasSubbmision) {
                             return Column(
                               children: [

@@ -4,7 +4,6 @@ import 'package:usv_hub/core/errors/failures.dart';
 import 'package:usv_hub/core/usecase/usecase.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/domain/repositories/assigments_repo.dart';
-import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 
 @LazySingleton()
 class GetAssigmentsUsecase

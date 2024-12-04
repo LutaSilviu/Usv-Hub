@@ -33,18 +33,6 @@ class _MainWrapperState extends State<MainWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> screens = [
-      const Center(
-        child: SelectCoursePage(),
-      ),
-      const Center(
-        child: ChatHomePage(),
-      ),
-      const Center(
-        child: EventsHomePage(),
-      ),
-      const CampusImage(),
-    ];
     return BlocBuilder<NavBarCubit, NavBarState>(
       builder: (context, state) {
         return Scaffold(
@@ -77,7 +65,19 @@ class _MainWrapperState extends State<MainWrapper> {
               context.read<NavBarCubit>().changeIndex(index);
             },
           ),
-          body: screens[state.index],
+          body: switch (state.index) {
+            0 => const Center(
+                child: SelectCoursePage(),
+              ),
+            1 => const Center(
+                child: ChatHomePage(),
+              ),
+            2 => const Center(
+                child: EventsHomePage(),
+              ),
+            3 => const CampusImage(),
+            _ => Container(),
+          },
         );
       },
     );

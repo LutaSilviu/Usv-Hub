@@ -49,4 +49,14 @@ class AssigmentsRepoImpl extends AssigmentsRepo {
       return Left(MediumFailure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<SubbmisionModel, String>>> getSubbmisions(
+      String assigmentId) async {
+    try {
+      return Right(await _assigmentsApiService.getSubbmisions(assigmentId));
+    } on MediumException catch (e) {
+      return Left(MediumFailure(message: e.message));
+    }
+  }
 }

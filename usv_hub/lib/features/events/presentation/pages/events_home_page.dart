@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:usv_hub/core/utils/background.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/events/domain/entities/event_entity.dart';
 import 'package:usv_hub/features/events/presentation/cubit/events_cubit.dart';
+import 'package:usv_hub/features/login/presentation/providers/user_provider.dart';
 import 'package:usv_hub/injection.dart';
 
 class EventsHomePage extends StatefulWidget {
-  const EventsHomePage({super.key});
-
+  const EventsHomePage({
+    super.key,
+  });
   @override
   State<EventsHomePage> createState() => _EventsHomePageState();
 }
@@ -23,14 +27,18 @@ class _EventsHomePageState extends State<EventsHomePage> {
   final kLastDay = DateTime(
       DateTime.now().year, DateTime.now().month + 3, DateTime.now().day);
 
+  late bool isTeacher;
+
   @override
   Widget build(BuildContext context) {
+    isTeacher =
+        Provider.of<UserProvider>(context).selectedType == SelectedType.teacher;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Eventzz'),
+        title: const Text('Events'),
       ),
       body: BlocProvider(
-        create: (context) => getIt<EventsCubit>()..getEvents(),
+        create: (context) => getIt<EventsCubit>()..getEvents(isTeacher),
         child: Background(
           child: Padding(
             padding: EdgeInsets.only(top: 30.h),

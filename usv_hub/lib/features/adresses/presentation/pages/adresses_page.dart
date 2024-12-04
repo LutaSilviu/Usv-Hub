@@ -66,8 +66,6 @@ class _AdressesPageState extends State<AdressesPage> {
                           itemBuilder: (ctx, index) {
                             return ListTile(
                               onLongPress: () {
-                                //TODO: implement edit
-
                                 context.read<AddressesCubit>().editAddresses(
                                     state.addresses[index][AppFields.id]!,
                                     state.addresses[index][AppFields.address]!);

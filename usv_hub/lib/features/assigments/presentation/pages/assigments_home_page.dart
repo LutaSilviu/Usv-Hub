@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
-import 'package:usv_hub/features/assigments/presentation/cubit/assigments_cubit.dart';
+import 'package:usv_hub/features/assigments/presentation/cubits/assigments_cubit/assigments_cubit.dart';
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_search_field.dart';
 import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 import 'package:usv_hub/injection.dart';
@@ -52,6 +52,7 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
                               assigmentEntity:
                                   state.assigments.elementAt(index),
                               course: widget.courseEntity,
+                              isTeacher: widget.isTeacher,
                             );
                           },
                         ),
@@ -73,10 +74,12 @@ class AssigmentsWidget extends StatelessWidget {
   const AssigmentsWidget({
     required this.assigmentEntity,
     required this.course,
+    required this.isTeacher,
     super.key,
   });
   final AssigmentEntity assigmentEntity;
   final CourseEntity course;
+  final ProfesorType isTeacher;
 
   @override
   Widget build(BuildContext context) {
@@ -84,11 +87,21 @@ class AssigmentsWidget extends StatelessWidget {
       padding: EdgeInsets.all(10.h),
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            AppRouteConst.assigmentInfoPage,
-            arguments: assigmentEntity,
-          );
+          if (isTeacher == ProfesorType.none) {
+            Navigator.pushNamed(
+              context,
+              AppRouteConst.assigmentInfoPage,
+              arguments: assigmentEntity,
+            );
+          } else {
+            Navigator.pushNamed(
+              context,
+              AppRouteConst.viewSubmissions,
+              arguments: {
+                AppArguments.assigmentId: assigmentEntity.id,
+              },
+            );
+          }
         },
         child: Container(
           height: 100.h,

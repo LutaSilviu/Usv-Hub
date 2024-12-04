@@ -9,17 +9,14 @@ import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.da
 import 'package:usv_hub/features/attendance/domain/usecases/get_attendance_for_student.dart';
 import 'package:usv_hub/features/grade/domain/usecases/get_student_grade.dart';
 import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
-import 'package:usv_hub/features/select_course/domain/usecases/get_all_courses_for_teacher.dart';
 
 part 'attendance_state.dart';
 
 @injectable
 class AttendanceCubit extends Cubit<AttendanceState> {
   final GetAttendanceForStudent _attendance;
-  final GetAllCoursesForTeacher _allCoursesForTeacher;
   AttendanceCubit(
     this._attendance,
-    this._allCoursesForTeacher,
   ) : super(AttendanceInitial());
 
   Future<void> getAttendance(String courseId) async {
@@ -33,20 +30,6 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       (r) {
         ///CAN BE EMPTY!
         emit(AttendanceLoaded(attendance: r));
-      },
-    );
-  }
-
-  Future<void> getCoursesForTeacher() async {
-    emit(LoadingState());
-
-    (await _allCoursesForTeacher.call()).fold(
-      (l) {
-        emit(AttendanceError(errorMessage: l.message));
-      },
-      (r) {
-        ///CAN BE EMPTY!
-        emit(TeacherCoursesLoadedState(mapCoursesGrades: r));
       },
     );
   }

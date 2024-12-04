@@ -3,6 +3,7 @@ import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_home_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_info_page.dart';
+import 'package:usv_hub/features/assigments/presentation/pages/view_submissions_page.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/add_attendance_page.dart';
 import 'package:usv_hub/features/attendance/presentation/pages/attendance_details_page.dart';
 import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
@@ -148,6 +149,15 @@ class OnGenerateRoute {
           final List<String> contact = settings.arguments! as List<String>;
           return routeBuilder(AddChatPage(
             contact: contact,
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+      case AppRouteConst.viewSubmissions:
+        if (settings.arguments != null) {
+          final Map arg = settings.arguments! as Map;
+          return routeBuilder(ViewSubmissionPage(
+            assigmentId: arg[AppArguments.assigmentId],
           ));
         } else {
           return routeBuilder(const ErrorPage());

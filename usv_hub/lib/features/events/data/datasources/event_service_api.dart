@@ -42,4 +42,31 @@ class EventServiceApi {
       throw MediumException(runtimeType, e.message!);
     }
   }
+
+  Future<List<EventModel>> getEventsForTeacher() async {
+    try {
+      List<EventModel> events = [];
+
+      final depXTeacher = await _firestore
+          .collection(AppCollections.departamentXTeacher)
+          .where(AppFields.teacherId, isEqualTo: _firebaseAuth.currentUser!.uid)
+          .get();
+
+      for (final doc in depXTeacher.docs) {
+        final departamentId = doc.data()[AppFields.departamentId];
+        final eventsDoc = await _firestore
+            .collection(AppCollections.events)
+            .where(AppFields.departamentId, isEqualTo: departamentId)
+            .get();
+
+        for (final doc1 in eventsDoc.docs) {
+          events.add(EventModel.fromMap(doc1.data()));
+        }
+      }
+
+      return events;
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    }
+  }
 }

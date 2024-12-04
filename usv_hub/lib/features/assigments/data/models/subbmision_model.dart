@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/submision_entity.dart';
 
@@ -16,7 +17,7 @@ class SubbmisionModel extends SubmisionEntity {
       map[AppFields.assigmentId],
       map[AppFields.studentId],
       map[AppFields.downloadUrl],
-      map[AppFields.postDate],
+      (map[AppFields.postDate] as Timestamp).toDate(),
     );
   }
 
@@ -26,7 +27,7 @@ class SubbmisionModel extends SubmisionEntity {
       AppFields.assigmentId: assigmentId,
       AppFields.studentId: studentId,
       AppFields.downloadUrl: downloadUrl,
-      AppFields.postDate: postDate,
+      AppFields.postDate: Timestamp.fromDate(postDate),
     };
   }
 

@@ -110,7 +110,7 @@ class _AddAttandancePageState extends State<AddAttandancePage> {
                                 onSet: (AttendanceStatus attendanceStatus) {
                                   if (attendanceStatus ==
                                       AttendanceStatus.empty) {
-                                    value.removeAttendanceCourse();
+                                    value.removeAttendanceLab();
                                   } else {
                                     value.setAttendanceLab(attendanceStatus);
                                   }

@@ -92,7 +92,7 @@ class AppTextConst {
 
   static var newAddress = "New Address";
 
-  static String noAddressesFound = "No courses found";
+  static String noAddressesFound = "No addresses found";
 
   static String courseGrade = "Course Grade";
   static String labGrade = "Laboratory Grade";
@@ -148,6 +148,7 @@ class AppRouteConst {
   static const String personalData = '/personalData';
 
   static const String viewStudents = '/viewStudents';
+  static const String viewSubmissions = '/viewSubmissions';
 
   static const String addGrade = '/addGrade';
   static const String addAttandance = '/addAttandance';
@@ -250,6 +251,7 @@ class AppArguments {
   static const assigmentEntity = "AssigmentEntity";
 
   static const String courseId = "CourseId";
+  static const String assigmentId = "CourseId";
   static const String studentEntity = "StudentEntity";
 
   static const String isTeacher = "IsTeacher";
@@ -266,6 +268,7 @@ class AppCollections {
   static const courseCollection = 'Course';
   static const semesterCollection = 'Semester';
   static const semesterXStudentCollection = 'SemesterXStudent';
+  static const departamentXTeacher = 'DepartamentXTeacher';
 
   static const String teacher = 'Teacher';
   static const String student = 'Student';

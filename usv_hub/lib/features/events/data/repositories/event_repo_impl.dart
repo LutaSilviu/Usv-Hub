@@ -20,4 +20,15 @@ class EventRepoImpl extends EventRepo {
       ));
     }
   }
+
+  @override
+  Future<Either<Failure, List<EventEntity>>> getEventsForTeacher() async {
+    try {
+      return Right(await _eventServiceApi.getEventsForTeacher());
+    } on MediumException catch (e) {
+      return Left(MediumFailure(
+        message: e.message,
+      ));
+    }
+  }
 }

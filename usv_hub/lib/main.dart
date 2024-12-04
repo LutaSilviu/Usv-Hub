@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:usv_hub/core/utils/functions.dart';
 import 'package:usv_hub/core/utils/main_wraper.dart';
 import 'package:usv_hub/core/utils/on_generate_route.dart';
 import 'package:usv_hub/core/utils/theme.dart';
 import 'package:usv_hub/features/adresses/presentation/cubit/adresses_cubit.dart';
-import 'package:usv_hub/features/assigments/presentation/cubit/assigments_cubit.dart';
+import 'package:usv_hub/features/assigments/presentation/cubits/assigments_cubit/assigments_cubit.dart';
+import 'package:usv_hub/features/assigments/presentation/cubits/subbmision_cubit/submission_cubit.dart';
 import 'package:usv_hub/features/assigments/presentation/providers/picked_files_provider.dart';
 import 'package:usv_hub/features/attendance/presentation/cubit/attendance_cubit.dart';
 
@@ -30,6 +32,7 @@ void main() async {
   await Firebase.initializeApp();
   configureDependencies();
   Bloc.observer = GlobalBlocObserver();
+  await requestStoragePermission();
   runApp(const MyApp());
 }
 
@@ -58,11 +61,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<GradeCubit>(
             create: (context) => getIt<GradeCubit>(),
           ),
-          BlocProvider<ScheduleCubit>(
-            create: (context) => getIt<ScheduleCubit>(),
-          ),
           BlocProvider<MessagesCubit>(
             create: (context) => getIt<MessagesCubit>(),
+          ),
+          BlocProvider<SubmissionCubit>(
+            create: (context) => getIt<SubmissionCubit>(),
           ),
           BlocProvider<AssigmentsCubit>(
             create: (context) => getIt<AssigmentsCubit>(),
@@ -79,14 +82,17 @@ class MyApp extends StatelessWidget {
           BlocProvider<AttendanceCubit>(
             create: (context) => getIt<AttendanceCubit>(),
           ),
-          ChangeNotifierProvider(
-            create: (context) => getIt<UserProvider>(),
-          ),
           BlocProvider<AddGradeCubit>(
             create: (context) => getIt<AddGradeCubit>(),
           ),
+          BlocProvider<ScheduleCubit>(
+            create: (context) => getIt<ScheduleCubit>(),
+          ),
           ChangeNotifierProvider(
             create: (context) => getIt<PickedFilesProvider>(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => getIt<UserProvider>(),
           ),
         ],
         child: SafeArea(

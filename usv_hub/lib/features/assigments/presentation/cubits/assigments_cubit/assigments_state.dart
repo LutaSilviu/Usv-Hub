@@ -20,15 +20,6 @@ class AssigmentsLoaded extends AssigmentsState {
   List<Object> get props => [assigments];
 }
 
-class CoursesLoaded extends AssigmentsState {
-  final Map<ProfesorType, CourseEntity> courses;
-
-  const CoursesLoaded(this.courses);
-
-  @override
-  List<Object> get props => [courses];
-}
-
 class AssigmentsError extends AssigmentsState {
   final String message;
 

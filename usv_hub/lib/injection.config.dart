@@ -22,11 +22,16 @@ import 'features/assigments/data/repositories/assigments_repo_impl.dart'
 import 'features/assigments/domain/repositories/assigments_repo.dart' as _i12;
 import 'features/assigments/domain/usecases/get_assigments_usecase.dart'
     as _i548;
+import 'features/assigments/domain/usecases/get_submissions_usecase.dart'
+    as _i631;
 import 'features/assigments/domain/usecases/has_subbmision_usecase.dart'
     as _i878;
 import 'features/assigments/domain/usecases/post_subbmision_usecase.dart'
     as _i291;
-import 'features/assigments/presentation/cubit/assigments_cubit.dart' as _i698;
+import 'features/assigments/presentation/cubits/assigments_cubit/assigments_cubit.dart'
+    as _i346;
+import 'features/assigments/presentation/cubits/subbmision_cubit/submission_cubit.dart'
+    as _i577;
 import 'features/assigments/presentation/info_provider.dart' as _i215;
 import 'features/assigments/presentation/providers/picked_files_provider.dart'
     as _i79;
@@ -58,6 +63,8 @@ import 'features/events/data/datasources/event_service_api.dart' as _i242;
 import 'features/events/data/repositories/event_repo_impl.dart' as _i877;
 import 'features/events/domain/repositories/event_repo.dart' as _i351;
 import 'features/events/domain/usecases/get_events_usecase.dart' as _i331;
+import 'features/events/domain/usecases/get_teacher_events_usecase.dart'
+    as _i376;
 import 'features/events/presentation/cubit/events_cubit.dart' as _i132;
 import 'features/grade/data/datasources/grade_api_service.dart' as _i1020;
 import 'features/grade/data/repositories/grade_repo_impl.dart' as _i34;
@@ -151,14 +158,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i221.GetAllCourses(gh<_i23.CoursesRepository>()));
     gh.lazySingleton<_i114.AttendanceRepository>(
         () => _i1059.AttendanceRepoImpl(gh<_i240.AttendanceApiService>()));
-    gh.lazySingleton<_i186.GetAttendanceForStudent>(
-        () => _i186.GetAttendanceForStudent(gh<_i114.AttendanceRepository>()));
     gh.lazySingleton<_i181.AddAttandance>(
         () => _i181.AddAttandance(gh<_i114.AttendanceRepository>()));
+    gh.lazySingleton<_i186.GetAttendanceForStudent>(
+        () => _i186.GetAttendanceForStudent(gh<_i114.AttendanceRepository>()));
     gh.factory<_i774.LoginCubit>(
         () => _i774.LoginCubit(authUseCase: gh<_i864.AuthUseCase>()));
     gh.lazySingleton<_i548.GetAssigmentsUsecase>(
         () => _i548.GetAssigmentsUsecase(gh<_i12.AssigmentsRepo>()));
+    gh.lazySingleton<_i631.GetSubmissionsUsecase>(
+        () => _i631.GetSubmissionsUsecase(gh<_i12.AssigmentsRepo>()));
     gh.lazySingleton<_i878.HasSubbmissionUsecase>(
         () => _i878.HasSubbmissionUsecase(gh<_i12.AssigmentsRepo>()));
     gh.lazySingleton<_i291.PostSubbmisionUsecase>(
@@ -173,10 +182,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i82.GetPotentialContacts(gh<_i359.ChatRepo>()));
     gh.lazySingleton<_i72.SendMessageUsecase>(
         () => _i72.SendMessageUsecase(gh<_i359.ChatRepo>()));
+    gh.factory<_i346.AssigmentsCubit>(
+        () => _i346.AssigmentsCubit(gh<_i548.GetAssigmentsUsecase>()));
     gh.lazySingleton<_i535.GradeRepository>(
         () => _i34.GradeRepoImpl(gh<_i1020.GradeApiService>()));
     gh.lazySingleton<_i901.ScheduleRepo>(
         () => _i707.ScheduleRepoImpl(gh<_i654.ScheduleFirestoreApi>()));
+    gh.factory<_i61.AttendanceCubit>(
+        () => _i61.AttendanceCubit(gh<_i186.GetAttendanceForStudent>()));
     gh.factory<_i215.InfoProvider>(
         () => _i215.InfoProvider(gh<_i878.HasSubbmissionUsecase>()));
     gh.factory<_i553.PotentialContactsCubit>(() => _i553.PotentialContactsCubit(
@@ -197,24 +210,24 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i73.MessagesCubit(gh<_i72.SendMessageUsecase>()));
     gh.lazySingleton<_i331.GetEventsUsecase>(
         () => _i331.GetEventsUsecase(gh<_i351.EventRepo>()));
+    gh.lazySingleton<_i376.GetTeacherEventsUsecase>(
+        () => _i376.GetTeacherEventsUsecase(gh<_i351.EventRepo>()));
+    gh.factory<_i132.EventsCubit>(() => _i132.EventsCubit(
+          gh<_i331.GetEventsUsecase>(),
+          gh<_i376.GetTeacherEventsUsecase>(),
+        ));
     gh.factory<_i408.AddressesCubit>(
         () => _i408.AddressesCubit(gh<_i533.AddressesRepo>()));
+    gh.lazySingleton<_i1037.AddStudentGrade>(
+        () => _i1037.AddStudentGrade(gh<_i535.GradeRepository>()));
     gh.lazySingleton<_i559.GetStudentsForCourse>(
         () => _i559.GetStudentsForCourse(gh<_i535.GradeRepository>()));
     gh.lazySingleton<_i207.GetStudentGrade>(
         () => _i207.GetStudentGrade(gh<_i535.GradeRepository>()));
-    gh.lazySingleton<_i1037.AddStudentGrade>(
-        () => _i1037.AddStudentGrade(gh<_i535.GradeRepository>()));
     gh.lazySingleton<_i23.GetStudentSchedule>(
         () => _i23.GetStudentSchedule(gh<_i901.ScheduleRepo>()));
-    gh.factory<_i61.AttendanceCubit>(() => _i61.AttendanceCubit(
-          gh<_i186.GetAttendanceForStudent>(),
-          gh<_i681.GetAllCoursesForTeacher>(),
-        ));
-    gh.factory<_i698.AssigmentsCubit>(() => _i698.AssigmentsCubit(
-          gh<_i548.GetAssigmentsUsecase>(),
-          gh<_i681.GetAllCoursesForTeacher>(),
-        ));
+    gh.factory<_i577.SubmissionCubit>(
+        () => _i577.SubmissionCubit(gh<_i631.GetSubmissionsUsecase>()));
     gh.factory<_i363.SelectCourseCubit>(() => _i363.SelectCourseCubit(
           gh<_i681.GetAllCoursesForTeacher>(),
           gh<_i221.GetAllCourses>(),
@@ -223,8 +236,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i442.GradeCubit(gh<_i207.GetStudentGrade>()));
     gh.factory<_i52.GradeStudentsCubit>(
         () => _i52.GradeStudentsCubit(gh<_i559.GetStudentsForCourse>()));
-    gh.factory<_i132.EventsCubit>(
-        () => _i132.EventsCubit(gh<_i331.GetEventsUsecase>()));
     gh.factory<_i211.ScheduleCubit>(
         () => _i211.ScheduleCubit(gh<_i23.GetStudentSchedule>()));
     gh.factory<_i35.AddGradeCubit>(() => _i35.AddGradeCubit(

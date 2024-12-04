@@ -70,4 +70,32 @@ class AssigmentsApiService {
       throw MediumException(runtimeType, "Ups, something went wrong");
     }
   }
+
+  Future<Map<SubbmisionModel, String>> getSubbmisions(
+      String assigmentId) async {
+    try {
+      Map<SubbmisionModel, String> subbmisions = {};
+      final response = await _firestore
+          .collection(AppCollections.submission)
+          .where(AppFields.assigmentId, isEqualTo: assigmentId)
+          .get();
+
+      for (final doc in response.docs) {
+        final data = doc.data();
+        final student = await _firestore
+            .collection(AppCollections.student)
+            .doc(data[AppFields.studentId])
+            .get();
+        final String nume = student.data()![AppFields.name];
+
+        subbmisions.putIfAbsent(SubbmisionModel.fromMap(data), () => nume);
+      }
+
+      return subbmisions;
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } catch (e) {
+      throw MediumException(runtimeType, "Ups, something went wrong");
+    }
+  }
 }

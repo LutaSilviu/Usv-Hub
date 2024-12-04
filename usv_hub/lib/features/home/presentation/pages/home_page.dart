@@ -57,8 +57,18 @@ class HomePage extends StatelessWidget {
                         title: AppTextConst.grade,
                         icon: Icons.grading_rounded,
                         onPressed: () {
-                          if (isTeacher == ProfesorType.teacher ||
-                              isTeacher == ProfesorType.assistent) {
+                          if (!(isTeacher == ProfesorType.none)) {
+                            Navigator.pushNamed(
+                              context,
+                              AppRouteConst.viewStudents,
+                              arguments: {
+                                AppArguments.courseId: courseEntity.id,
+                                AppArguments.isTeacher: isTeacher,
+                                AppArguments.clickType: ClickType.grade,
+                                AppArguments.courseLenght:
+                                    courseEntity.numberOfCourses,
+                              },
+                            );
                           } else {
                             Navigator.pushNamed(
                               context,
@@ -75,13 +85,27 @@ class HomePage extends StatelessWidget {
                         title: AppTextConst.attendance,
                         icon: Icons.checklist,
                         onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRouteConst.attendanceDetailPage,
-                            arguments: {
-                              AppArguments.courseEntity: courseEntity,
-                            },
-                          );
+                          if (isTeacher == ProfesorType.none) {
+                            Navigator.pushNamed(
+                              context,
+                              AppRouteConst.attendanceDetailPage,
+                              arguments: {
+                                AppArguments.courseEntity: courseEntity,
+                              },
+                            );
+                          } else {
+                            Navigator.pushNamed(
+                              context,
+                              AppRouteConst.viewStudents,
+                              arguments: {
+                                AppArguments.courseId: courseEntity.id,
+                                AppArguments.isTeacher: isTeacher,
+                                AppArguments.clickType: ClickType.attendance,
+                                AppArguments.courseLenght:
+                                    courseEntity.numberOfCourses,
+                              },
+                            );
+                          }
                         },
                       ),
                     ],
