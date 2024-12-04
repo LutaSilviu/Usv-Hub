@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 
 part 'home_state.dart';
 
@@ -9,6 +10,6 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
 
   void triggerDrawer({bool isDrawerOpen = false}) {
-    emit(TriggerDrawer(isDrawerOpen: isDrawerOpen));
+    safeEmit(TriggerDrawer(isDrawerOpen: isDrawerOpen));
   }
 }

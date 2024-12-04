@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:usv_hub/core/utils/consts.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 
 import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
 import 'package:usv_hub/features/attendance/domain/usecases/get_attendance_for_student.dart';
@@ -20,16 +21,16 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   ) : super(AttendanceInitial());
 
   Future<void> getAttendance(String courseId) async {
-    emit(LoadingState());
+    safeEmit(LoadingState());
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
     (await _attendance.call(params: GetStudentsParams(userId, courseId))).fold(
       (l) {
-        emit(AttendanceError(errorMessage: l.message));
+        safeEmit(AttendanceError(errorMessage: l.message));
       },
       (r) {
         ///CAN BE EMPTY!
-        emit(AttendanceLoaded(attendance: r));
+        safeEmit(AttendanceLoaded(attendance: r));
       },
     );
   }

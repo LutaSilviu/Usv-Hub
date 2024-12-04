@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
 import 'package:usv_hub/features/chat/domain/entities/user.dart';
 import 'package:usv_hub/features/chat/domain/usecases/create_contact.dart';
@@ -17,23 +18,23 @@ class PotentialContactsCubit extends Cubit<PotentialContactsState> {
   final CreateContact _createContact;
 
   Future<void> getPotentialContacts(List<String> contacts) async {
-    emit(PotentialContactsLoading());
+    safeEmit(PotentialContactsLoading());
 
     (await _getPotentialContacts.call(params: contacts)).fold(
-      (failure) => emit(PotentialContactsError(failure.message)),
-      (contacts) => emit(PotentialContactsLoaded(contacts)),
+      (failure) => safeEmit(PotentialContactsError(failure.message)),
+      (contacts) => safeEmit(PotentialContactsLoaded(contacts)),
     );
   }
 
   Future<void> createContact(
       ContactEntity contact, PotentialContactsLoaded state) async {
-    emit(PotentialContactsLoading());
+    safeEmit(PotentialContactsLoading());
 
     (await _createContact.call(params: contact)).fold(
-      (failure) => emit(PotentialContactsError(failure.message)),
+      (failure) => safeEmit(PotentialContactsError(failure.message)),
       (succes) {
         state.contacts.clear();
-        emit(
+        safeEmit(
           PotentialContactsLoaded(
             state.contacts,
           ),

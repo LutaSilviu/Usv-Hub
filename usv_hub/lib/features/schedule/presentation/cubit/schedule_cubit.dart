@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 import 'package:usv_hub/features/schedule/domain/entities/schedule_entity.dart';
 
 import 'package:injectable/injectable.dart';
@@ -12,14 +13,14 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   ScheduleCubit(this._getStudentSchedule) : super(ScheduleInitial());
   final GetStudentSchedule _getStudentSchedule;
   Future<void> getSchedule(bool isTeacher) async {
-    emit(LoadingState());
+    safeEmit(LoadingState());
 
     (await _getStudentSchedule.call(params: isTeacher)).fold(
       (l) {
-        emit(ErrorState(message: l.message));
+        safeEmit(ErrorState(message: l.message));
       },
       (r) {
-        emit(ScheduleLoaded(schedule: r));
+        safeEmit(ScheduleLoaded(schedule: r));
       },
     );
   }

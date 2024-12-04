@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:usv_hub/core/utils/consts.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 
 import 'package:usv_hub/features/adresses/domain/repositories/addresses_repo.dart';
 
@@ -15,11 +16,11 @@ class AddressesCubit extends Cubit<AddressesState> {
   ) : super(AdressesInitial());
 
   Future<void> getAddresses() async {
-    emit(LoadingState());
+    safeEmit(LoadingState());
 
     (await _addressesRepo.getAddresses()).fold(
-      (l) => emit(ErrorState(l.message)),
-      (r) => emit(SuccessState(r)),
+      (l) => safeEmit(ErrorState(l.message)),
+      (r) => safeEmit(SuccessState(r)),
     );
   }
 
@@ -27,13 +28,13 @@ class AddressesCubit extends Cubit<AddressesState> {
     if (state is SuccessState) {
       List<Map<String, String>> addresses = (state as SuccessState).addresses;
 
-      emit(LoadingState());
+      safeEmit(LoadingState());
 
       (await _addressesRepo.postAddresses(address)).fold(
-        (l) => emit(ErrorState(l.message)),
+        (l) => safeEmit(ErrorState(l.message)),
         (r) {
           addresses.add(r);
-          emit(SuccessState(addresses));
+          safeEmit(SuccessState(addresses));
         },
       );
     }
@@ -43,16 +44,16 @@ class AddressesCubit extends Cubit<AddressesState> {
     if (state is SuccessState) {
       List<Map<String, String>> addresses = (state as SuccessState).addresses;
 
-      emit(LoadingState());
+      safeEmit(LoadingState());
 
       (await _addressesRepo.editAddresses(id, address)).fold(
-        (l) => emit(ErrorState(l.message)),
+        (l) => safeEmit(ErrorState(l.message)),
         (r) {
           addresses.removeWhere((element) => element[AppFields.id] == id);
           addresses.add(r);
           addresses.sort(
               (a, b) => a[AppFields.address]!.compareTo(b[AppFields.address]!));
-          emit(SuccessState(addresses));
+          safeEmit(SuccessState(addresses));
         },
       );
     }

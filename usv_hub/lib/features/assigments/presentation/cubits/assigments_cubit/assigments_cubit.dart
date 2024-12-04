@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/domain/usecases/get_assigments_usecase.dart';
 
@@ -15,11 +16,11 @@ class AssigmentsCubit extends Cubit<AssigmentsState> {
   ) : super(AssigmentsInitial());
 
   Future<void> getAssigments(String courseId) async {
-    emit(AssigmentsLoading());
+    safeEmit(AssigmentsLoading());
 
     (await _getAssigmentsUsecase.call(params: courseId)).fold(
-      (failure) => emit(AssigmentsError(failure.message)),
-      (assigments) => emit(AssigmentsLoaded(assigments)),
+      (failure) => safeEmit(AssigmentsError(failure.message)),
+      (assigments) => safeEmit(AssigmentsLoaded(assigments)),
     );
   }
 }

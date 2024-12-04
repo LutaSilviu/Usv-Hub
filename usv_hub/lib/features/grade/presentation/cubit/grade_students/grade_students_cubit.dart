@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:usv_hub/core/utils/consts.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 import 'package:usv_hub/features/chat/domain/entities/user.dart';
 import 'package:usv_hub/features/grade/domain/usecases/get_students_for_course.dart';
 
@@ -14,24 +15,24 @@ class GradeStudentsCubit extends Cubit<GradeStudentsState> {
   GradeStudentsCubit(this._gradeRepository) : super(GradeStudentsInitial());
 
   Future<void> getStudents(String courseId) async {
-    emit(LoadingState());
+    safeEmit(LoadingState());
 
     (await _gradeRepository.call(params: courseId)).fold(
       (l) => {
-        emit(
+        safeEmit(
           ErrorState(l.message),
         )
       },
       (r) => {
         if (r.isEmpty)
           {
-            emit(
+            safeEmit(
               const ErrorState(AppErrorMessages.noCoursesFound),
             )
           }
         else
           {
-            emit(
+            safeEmit(
               GradeStudentsLoaded(r),
             )
           },

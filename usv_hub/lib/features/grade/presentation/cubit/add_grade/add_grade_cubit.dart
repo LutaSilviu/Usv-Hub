@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/custom_snackbar.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 import 'package:usv_hub/features/grade/domain/entities/grade_entity.dart';
 import 'package:usv_hub/features/grade/domain/usecases/add_student_grade.dart';
 import 'package:usv_hub/features/grade/domain/usecases/get_student_grade.dart';
@@ -18,15 +19,15 @@ class AddGradeCubit extends Cubit<AddGradeState> {
       : super(AddGradeInitial());
 
   Future<void> getGrade(String studentId, String courseId) async {
-    emit(LoadingState());
+    safeEmit(LoadingState());
     (await _getStudentGrade.call(
       params: GetStudentsParams(studentId, courseId),
     ))
         .fold(
-            (ifLeft) => emit(
+            (ifLeft) => safeEmit(
                   ErrorState(ifLeft.message),
                 ), (r) {
-      emit(GradeLoaded(r));
+      safeEmit(GradeLoaded(r));
     });
   }
 

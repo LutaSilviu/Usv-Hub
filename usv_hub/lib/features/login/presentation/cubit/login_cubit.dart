@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/core/utils/extensions.dart';
 import 'package:usv_hub/features/login/domain/usecases/auth_usecase.dart';
 
 part 'login_state.dart';
@@ -12,14 +13,14 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit({required this.authUseCase}) : super(LoginInitial());
   //appStarted
   Future<void> checkLogin(BuildContext context) async {
-    emit(LoginLoading());
+    safeEmit(LoginLoading());
 
     final result = await authUseCase.isLoggedIn();
 
     if (result) {
-      emit(LoginSuccess());
+      safeEmit(LoginSuccess());
     } else {
-      emit(LoginInitial());
+      safeEmit(LoginInitial());
     }
   }
 
@@ -27,32 +28,32 @@ class LoginCubit extends Cubit<LoginState> {
       {required String email,
       required String password,
       required BuildContext context}) async {
-    emit(LoginLoading());
+    safeEmit(LoginLoading());
     try {
       await authUseCase.login(email: email, password: password).then((value) {
         value.fold(
-          (l) => emit(LoginFailure(l.toString())),
+          (l) => safeEmit(LoginFailure(l.toString())),
           (r) async {
-            emit(LoginSuccess());
+            safeEmit(LoginSuccess());
           },
         );
       });
     } catch (e) {
-      emit(LoginFailure(e.toString()));
+      safeEmit(LoginFailure(e.toString()));
     }
   }
 
   Future<void> logout() async {
-    emit(LoginLoading());
+    safeEmit(LoginLoading());
     try {
       await authUseCase.logout().then((value) {
         value.fold(
-          (l) => emit(LoginFailure(l.toString())),
-          (r) => emit(LoginInitial()),
+          (l) => safeEmit(LoginFailure(l.toString())),
+          (r) => safeEmit(LoginInitial()),
         );
       });
     } catch (e) {
-      emit(LoginFailure(e.toString()));
+      safeEmit(LoginFailure(e.toString()));
     }
   }
 }
