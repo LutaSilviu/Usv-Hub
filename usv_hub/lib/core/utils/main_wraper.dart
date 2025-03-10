@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/test.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_home_page.dart';
-import 'package:usv_hub/features/events/presentation/pages/events_home_page.dart';
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
 import 'package:usv_hub/features/login/presentation/providers/user_provider.dart';
+import 'package:usv_hub/features/schedule/presentation/pages/schedule_home_page.dart';
 import 'package:usv_hub/features/select_course/presentation/pages/select_course_page.dart';
 
 class MainWrapper extends StatefulWidget {
@@ -54,7 +53,7 @@ class _MainWrapperState extends State<MainWrapper> {
               ),
               GButton(
                 icon: Icons.calendar_month,
-                text: 'Events',
+                text: 'Schedule',
               ),
               GButton(
                 icon: Icons.map_outlined,
@@ -73,7 +72,7 @@ class _MainWrapperState extends State<MainWrapper> {
                 child: ChatHomePage(),
               ),
             2 => const Center(
-                child: EventsHomePage(),
+                child: ScheduleHomePage(),
               ),
             3 => const CampusImage(),
             _ => Container(),
@@ -178,40 +177,47 @@ class CustomDrawer extends StatelessWidget {
                 },
               ),
               DrawerItem(
+                text: AppTextConst.events,
+                icon: Icons.event,
+                onTap: () {
+                  Navigator.pushNamed(context, AppRouteConst.eventsHomePage);
+                },
+              ),
+              DrawerItem(
                 text: AppTextConst.addresses,
                 icon: Icons.location_on,
                 onTap: () {
                   Navigator.pushNamed(context, AppRouteConst.adresses);
                 },
               ),
-              const DrawerItem(
-                text: AppTextConst.emailAdress,
-                icon: Icons.email,
-              ),
-              const DrawerItem(
-                text: AppTextConst.phoneNumber,
-                icon: Icons.phone,
-              ),
-              const DrawerItem(
-                text: AppTextConst.languages,
-                icon: Icons.language,
-              ),
-              const DrawerItem(
-                text: AppTextConst.licenses,
-                icon: FontAwesomeIcons.file,
-              ),
-              const DrawerItem(
-                text: AppTextConst.publications,
-                icon: Icons.library_books,
-              ),
-              const DrawerItem(
-                text: AppTextConst.emergencyContacts,
-                icon: Icons.contact_phone,
-              ),
-              const DrawerItem(
-                text: AppTextConst.appSettings,
-                icon: Icons.settings,
-              ),
+              // const DrawerItem(
+              //   text: AppTextConst.emailAdress,
+              //   icon: Icons.email,
+              // ),
+              // const DrawerItem(
+              //   text: AppTextConst.phoneNumber,
+              //   icon: Icons.phone,
+              // ),
+              // const DrawerItem(
+              //   text: AppTextConst.languages,
+              //   icon: Icons.language,
+              // ),
+              // const DrawerItem(
+              //   text: AppTextConst.licenses,
+              //   icon: FontAwesomeIcons.file,
+              // ),
+              // const DrawerItem(
+              //   text: AppTextConst.publications,
+              //   icon: Icons.library_books,
+              // ),
+              // const DrawerItem(
+              //   text: AppTextConst.emergencyContacts,
+              //   icon: Icons.contact_phone,
+              // ),
+              // const DrawerItem(
+              //   text: AppTextConst.appSettings,
+              //   icon: Icons.settings,
+              // ),
               BlocBuilder<LoginCubit, LoginState>(
                 builder: (context, state) {
                   return DrawerItem(

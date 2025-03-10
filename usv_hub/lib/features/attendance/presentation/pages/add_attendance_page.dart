@@ -184,7 +184,7 @@ class EnterAttandanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AttendanceStatus _selectedAttendance = AttendanceStatus.empty;
+    AttendanceStatus selectedAttendance = AttendanceStatus.empty;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
       child: Column(
@@ -276,7 +276,7 @@ class EnterAttandanceWidget extends StatelessWidget {
                     border: InputBorder.none, // Elimină bordura implicită
                     isDense: true, // Reduce spațiul pentru a fi mai compact
                   ),
-                  value: _selectedAttendance,
+                  value: selectedAttendance,
                   icon: const Icon(Icons.arrow_drop_down,
                       color: Colors.grey), // Iconiță
                   items: AttendanceStatus.values.map((AttendanceStatus number) {
@@ -292,8 +292,8 @@ class EnterAttandanceWidget extends StatelessWidget {
                     );
                   }).toList(),
                   onChanged: (AttendanceStatus? newValue) {
-                    _selectedAttendance = newValue!;
-                    log(_selectedAttendance.toString());
+                    selectedAttendance = newValue!;
+                    log(selectedAttendance.toString());
                   },
                 ),
               ),
@@ -304,7 +304,7 @@ class EnterAttandanceWidget extends StatelessWidget {
                     textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.surface)),
                 onPressed: () {
-                  onSet(_selectedAttendance);
+                  onSet(selectedAttendance);
                 },
                 child: Text(
                   "Set",

@@ -55,6 +55,9 @@ class AssigmentInfoPage extends StatelessWidget {
               Consumer<PickedFilesProvider>(
                 builder: (BuildContext context, PickedFilesProvider value,
                     Widget? child) {
+                  if (value.loading) {
+                    return const CircularProgressIndicator();
+                  }
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,

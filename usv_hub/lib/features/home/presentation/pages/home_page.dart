@@ -117,16 +117,6 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       MainButton(
-                        title: AppTextConst.schedule,
-                        icon: Icons.calendar_today,
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRouteConst.schedule,
-                          );
-                        },
-                      ),
-                      MainButton(
                         title: AppTextConst.assigments,
                         icon: Icons.assignment_ind_outlined,
                         onPressed: () {
@@ -138,6 +128,16 @@ class HomePage extends StatelessWidget {
                               AppArguments.isTeacher: isTeacher,
                             },
                           );
+                        },
+                      ),
+                      MainButton(
+                        title: '',
+                        icon: null,
+                        onPressed: () {
+                          // Navigator.pushNamed(
+                          //   context,
+                          //   AppRouteConst.schedule,
+                          // );
                         },
                       ),
                     ],

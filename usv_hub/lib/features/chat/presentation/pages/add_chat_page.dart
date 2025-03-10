@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_course_widget.dart';
-import 'package:usv_hub/features/attendance/presentation/widgets/custom_search_field.dart';
 import 'package:usv_hub/features/chat/domain/entities/contact_entity.dart';
 import 'package:usv_hub/features/chat/presentation/cubit/potential_contacts/potential_contacts_cubit.dart';
 
@@ -51,7 +50,10 @@ class _AddChatPageState extends State<AddChatPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CustomSearchField(searchController: searchController),
+            // CustomSearchField(searchController: searchController),
+            SizedBox(
+              height: 40.h,
+            ),
             Padding(
               padding: EdgeInsets.all(20.w),
               child: Align(

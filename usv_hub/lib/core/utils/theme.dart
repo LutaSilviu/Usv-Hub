@@ -54,7 +54,7 @@ ThemeData darkTheme() {
         backgroundColor: WidgetStateProperty.resolveWith<Color>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.pressed)) {
-              return AppColors.primary.withOpacity(0.5);
+              return AppColors.primary.withValues(alpha: 0.5);
             }
             return AppColors.primary;
           },

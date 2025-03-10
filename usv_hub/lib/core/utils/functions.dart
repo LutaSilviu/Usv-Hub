@@ -30,16 +30,9 @@ Future<void> requestStoragePermission() async {
   if (status.isDenied) {
     // Request permission
     status = await Permission.storage.request();
-    if (status.isGranted) {
-      print("Storage permission granted.");
-    } else {
-      print("Storage permission denied.");
-    }
   } else if (status.isPermanentlyDenied) {
     // Handle the case where permission is permanently denied
     // and the user needs to go to settings
     openAppSettings();
-  } else {
-    print("Storage permission already granted.");
-  }
+  } else {}
 }

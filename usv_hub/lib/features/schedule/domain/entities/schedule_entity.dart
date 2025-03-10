@@ -34,34 +34,28 @@ class ScheduleEntity extends Equatable {
       ];
 }
 
-enum ClassType { curs, laborator, seminar }
+enum ClassType { course, laboratory }
 
 extension ClassTypeToString on ClassType {
   String get stringValue {
     switch (this) {
-      case ClassType.curs:
-        return 'Curs';
-      case ClassType.laborator:
-        return 'Laborator';
-      case ClassType.seminar:
-        return 'Seminar';
-      default:
-        return '';
+      case ClassType.course:
+        return 'Course';
+      case ClassType.laboratory:
+        return 'Laboratory';
     }
   }
 }
 
 extension StringToClassType on String {
-  ClassType? toClassType() {
+  ClassType get toClassType {
     switch (toLowerCase()) {
-      case 'curs':
-        return ClassType.curs;
-      case 'laborator':
-        return ClassType.laborator;
-      case 'seminar':
-        return ClassType.seminar;
+      case 'course':
+        return ClassType.course;
+      case 'laboratory':
+        return ClassType.laboratory;
       default:
-        return null;
+        return ClassType.course;
     }
   }
 }
@@ -77,8 +71,6 @@ extension CourseFrequencyToString on CourseFrequency {
         return 'Saptamani impare';
       case CourseFrequency.toateSaptamanile:
         return 'Toate saptamanile';
-      default:
-        return '';
     }
   }
 }

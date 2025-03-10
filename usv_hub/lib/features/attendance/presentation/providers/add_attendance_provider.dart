@@ -14,7 +14,7 @@ class AddAttendanceProvider extends ChangeNotifier {
   AddAttendanceProvider(this._getAttendanceForStudent, this._addAttandance);
 
   Map<int, AttendanceStatus> _listOfAttendancesLaboratory = {};
-  Map<int, AttendanceStatus> _listOfAttendancesCourse = {};
+  final Map<int, AttendanceStatus> _listOfAttendancesCourse = {};
 
   int _selectedLab = 1;
   int _selectedCourse = 1;

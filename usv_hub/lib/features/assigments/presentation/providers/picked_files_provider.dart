@@ -15,6 +15,7 @@ class PickedFilesProvider extends ChangeNotifier {
   PickedFilesProvider(this._postSubbmisionUsecase);
 
   final List<FilePickerResult> _pickedFiles = [];
+  bool loading = false;
 
   List<FilePickerResult> get pickedFiles => _pickedFiles;
 
@@ -35,6 +36,9 @@ class PickedFilesProvider extends ChangeNotifier {
     // Pick a file
 
     if (_pickedFiles.isNotEmpty) {
+      loading = true;
+      notifyListeners();
+
       for (final result in _pickedFiles) {
         // Get the file
         File file = File(result.files.single.path!);
@@ -59,10 +63,8 @@ class PickedFilesProvider extends ChangeNotifier {
             DateTime.now(),
           );
           _postSubbmisionUsecase.call(params: entity);
-          if (context.mounted) {
-            CustomSnackbar.show(context, "File uploaded successfully!");
-          }
-          _pickedFiles.remove(result);
+
+          //_pickedFiles.remove(result);
           notifyListeners();
         } on FirebaseException catch (e) {
           if (context.mounted) CustomSnackbar.show(context, e.message!);
@@ -70,6 +72,12 @@ class PickedFilesProvider extends ChangeNotifier {
           if (context.mounted) CustomSnackbar.show(context, "Unexpected error");
         }
       }
+      if (context.mounted) {
+        CustomSnackbar.show(context, "Files uploaded successfully!");
+      }
+      _pickedFiles.clear();
+      loading = false;
+      notifyListeners();
       if (context.mounted) Navigator.pop(context);
     } else {
       if (context.mounted) CustomSnackbar.show(context, "No file selected");
@@ -106,6 +114,8 @@ class PickedFilesProvider extends ChangeNotifier {
       String firebaseFilePath, String localFileName) async {
     try {
       // Reference to the file in Firebase Storage
+      loading = true;
+      notifyListeners();
       final ref = FirebaseStorage.instance.ref(firebaseFilePath);
 
       // Get the device's temporary directory
@@ -118,9 +128,10 @@ class PickedFilesProvider extends ChangeNotifier {
       // Download the file to the local file path
       await ref.writeToFile(file);
 
-      print("File downloaded to: ${file.path}");
+      loading = false;
+      notifyListeners();
     } catch (e) {
-      print("Error downloading file: $e");
+      // e.g, e.code == 'canceled'
     }
   }
 }

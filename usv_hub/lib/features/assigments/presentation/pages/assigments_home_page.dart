@@ -5,7 +5,6 @@ import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/presentation/cubits/assigments_cubit/assigments_cubit.dart';
-import 'package:usv_hub/features/attendance/presentation/widgets/custom_search_field.dart';
 import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 import 'package:usv_hub/injection.dart';
 
@@ -43,7 +42,10 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
                 if (state is AssigmentsLoaded) {
                   return Column(
                     children: [
-                      CustomSearchField(searchController: searchController),
+                      // CustomSearchField(searchController: searchController),
+                      SizedBox(
+                        height: 40.h,
+                      ),
                       Expanded(
                         child: ListView.builder(
                           itemCount: state.assigments.length,

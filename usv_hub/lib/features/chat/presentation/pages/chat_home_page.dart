@@ -50,15 +50,6 @@ class ChatHomePage extends StatelessWidget {
                             Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                    icon: const Icon(Icons.search),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                          backgroundColor: WidgetStateProperty.all<Color>(
-                            Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
                     icon: const Icon(Icons.notifications),
                     onPressed: () {},
                   ),

@@ -60,42 +60,45 @@ class _ViewStudentsState extends State<ViewStudents> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.h, horizontal: 30.w),
-                      child: TextField(
-                        controller: searchController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          prefixIconColor:
-                              Theme.of(context).colorScheme.primaryFixed,
-                          fillColor:
-                              Theme.of(context).colorScheme.primaryContainer,
-                          hintText: AppTextConst.search,
-                          prefixIcon: const Icon(Icons.search),
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.primaryFixed,
-                              ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(20.w),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          AppTextConst.viewCoursesStudents,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                      ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //       vertical: 30.h, horizontal: 30.w),
+                    //   child: TextField(
+                    //     controller: searchController,
+                    //     decoration: InputDecoration(
+                    //       filled: true,
+                    //       prefixIconColor:
+                    //           Theme.of(context).colorScheme.primaryFixed,
+                    //       fillColor:
+                    //           Theme.of(context).colorScheme.primaryContainer,
+                    //       hintText: AppTextConst.search,
+                    //       prefixIcon: const Icon(Icons.search),
+                    //       hintStyle: Theme.of(context)
+                    //           .textTheme
+                    //           .bodyMedium!
+                    //           .copyWith(
+                    //             color:
+                    //                 Theme.of(context).colorScheme.primaryFixed,
+                    //           ),
+                    //       border: OutlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.all(20.w),
+                    //   child: Align(
+                    //     alignment: Alignment.centerLeft,
+                    //     child: Text(
+                    //       AppTextConst.viewCoursesStudents,
+                    //       style: Theme.of(context).textTheme.titleSmall,
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 40.h,
                     ),
                     BlocConsumer<GradeStudentsCubit, GradeStudentsState>(
                       listener: (context, state) {

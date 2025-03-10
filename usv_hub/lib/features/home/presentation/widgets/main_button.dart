@@ -11,7 +11,7 @@ class MainButton extends StatelessWidget {
   });
 
   final String title;
-  final IconData icon;
+  final IconData? icon;
   final void Function()? onPressed;
 
   @override

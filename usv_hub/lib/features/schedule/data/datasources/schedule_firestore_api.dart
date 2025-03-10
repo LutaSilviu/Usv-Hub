@@ -36,14 +36,14 @@ class ScheduleFirestoreApi {
 
         for (final schedule in courseModel.scheduleMap) {
           String classTypeString = schedule[AppFields.classType];
-          final ClassType classType = classTypeString.toClassType()!;
+          final ClassType classType = classTypeString.toClassType;
           String teacherName = '';
 
           final teacher = await _firestore
               .collection(AppCollections.teacher)
               .where(
                 AppFields.id,
-                isEqualTo: classType == ClassType.curs
+                isEqualTo: classType == ClassType.course
                     ? courseModel.teacherId
                     : courseModel.assistentId,
               )
@@ -95,8 +95,8 @@ class ScheduleFirestoreApi {
 
         for (final schedule in courseModel.scheduleMap) {
           String classTypeString = schedule[AppFields.classType];
-          final ClassType classType = classTypeString.toClassType()!;
-          if (classType == ClassType.curs) {
+          final ClassType classType = classTypeString.toClassType;
+          if (classType == ClassType.course) {
             ScheduleEntity scheduleEntity = ScheduleEntity(
                 courseTitle: courseModel.title,
                 dayOfWeek: schedule[AppFields.dayOfWeek],
@@ -116,8 +116,8 @@ class ScheduleFirestoreApi {
 
         for (final schedule in courseModel.scheduleMap) {
           String classTypeString = schedule[AppFields.classType];
-          final ClassType classType = classTypeString.toClassType()!;
-          if (classType == ClassType.laborator) {
+          final ClassType classType = classTypeString.toClassType;
+          if (classType == ClassType.laboratory) {
             ScheduleEntity scheduleEntity = ScheduleEntity(
                 courseTitle: courseModel.title,
                 dayOfWeek: schedule[AppFields.dayOfWeek],

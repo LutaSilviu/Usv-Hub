@@ -186,7 +186,7 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: value[index].classType ==
-                                            ClassType.curs
+                                            ClassType.course
                                         ? Theme.of(context)
                                             .colorScheme
                                             .outlineVariant

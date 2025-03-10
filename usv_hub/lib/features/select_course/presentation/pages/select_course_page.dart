@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/attendance/presentation/widgets/custom_course_widget.dart';
-import 'package:usv_hub/features/attendance/presentation/widgets/custom_search_field.dart';
 import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 import 'package:usv_hub/features/login/presentation/providers/user_provider.dart';
 import 'package:usv_hub/features/select_course/presentation/cubit/select_course_cubit.dart';
@@ -70,7 +70,10 @@ class _SelectCoursePageState extends State<SelectCoursePage> {
             body: Background(
               child: Column(
                 children: [
-                  CustomSearchField(searchController: searchController),
+                  //CustomSearchField(searchController: searchController),
+                  SizedBox(
+                    height: 40.h,
+                  ),
                   BlocBuilder<SelectCourseCubit, SelectCourseState>(
                     builder: (context, state) {
                       if (state is CoursesLoading) {

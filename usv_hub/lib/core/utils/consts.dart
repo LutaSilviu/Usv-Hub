@@ -102,6 +102,8 @@ class AppTextConst {
 
   static String invalidNumber = "Numbers that you have submitted are invalid";
   static String emptyNumber = "You must enter numbers";
+
+  static String events = "Events";
 }
 
 class AppStringFailuresMessages {
@@ -294,9 +296,6 @@ extension ContactsStatusToString on ContactsStatus {
         return 'Pending';
       case ContactsStatus.inactive:
         return 'Inactive';
-
-      default:
-        return '';
     }
   }
 }
@@ -341,9 +340,6 @@ extension AttendanceStatusToString on AttendanceStatus {
         return 'Absent';
       case AttendanceStatus.empty:
         return 'Empty';
-
-      default:
-        return '';
     }
   }
 }
