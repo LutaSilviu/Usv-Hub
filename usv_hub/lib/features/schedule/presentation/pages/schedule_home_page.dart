@@ -262,7 +262,7 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                   ],
                 );
               }
-              return const SizedBox();
+              return const Center(child: SizedBox());
             },
           ),
         ),

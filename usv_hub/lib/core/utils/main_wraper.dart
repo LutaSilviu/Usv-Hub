@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:usv_hub/core/utils/background.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/test.dart';
 import 'package:usv_hub/features/chat/presentation/pages/chat_home_page.dart';
@@ -32,53 +33,55 @@ class _MainWrapperState extends State<MainWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavBarCubit, NavBarState>(
-      builder: (context, state) {
-        return Scaffold(
-          drawer: const CustomDrawer(),
-          bottomNavigationBar: GNav(
-            selectedIndex: state.index,
-            padding: const EdgeInsets.all(20),
-            activeColor: Theme.of(context).colorScheme.onSecondary,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            gap: 8,
-            tabs: const [
-              GButton(
-                icon: Icons.home,
-                text: 'Home',
-              ),
-              GButton(
-                icon: Icons.chat,
-                text: 'Chat',
-              ),
-              GButton(
-                icon: Icons.calendar_month,
-                text: 'Schedule',
-              ),
-              GButton(
-                icon: Icons.map_outlined,
-                text: 'Campus Map',
-              ),
-            ],
-            onTabChange: (index) {
-              context.read<NavBarCubit>().changeIndex(index);
+    return Background(
+      child: BlocBuilder<NavBarCubit, NavBarState>(
+        builder: (context, state) {
+          return Scaffold(
+            drawer: const CustomDrawer(),
+            bottomNavigationBar: GNav(
+              selectedIndex: state.index,
+              padding: const EdgeInsets.all(20),
+              activeColor: Theme.of(context).colorScheme.onSecondary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              gap: 8,
+              tabs: const [
+                GButton(
+                  icon: Icons.home,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: Icons.chat,
+                  text: 'Chat',
+                ),
+                GButton(
+                  icon: Icons.calendar_month,
+                  text: 'Schedule',
+                ),
+                GButton(
+                  icon: Icons.map_outlined,
+                  text: 'Campus Map',
+                ),
+              ],
+              onTabChange: (index) {
+                context.read<NavBarCubit>().changeIndex(index);
+              },
+            ),
+            body: switch (state.index) {
+              0 => const Center(
+                  child: SelectCoursePage(),
+                ),
+              1 => const Center(
+                  child: ChatHomePage(),
+                ),
+              2 => const Center(
+                  child: ScheduleHomePage(),
+                ),
+              3 => const CampusImage(),
+              _ => Container(),
             },
-          ),
-          body: switch (state.index) {
-            0 => const Center(
-                child: SelectCoursePage(),
-              ),
-            1 => const Center(
-                child: ChatHomePage(),
-              ),
-            2 => const Center(
-                child: ScheduleHomePage(),
-              ),
-            3 => const CampusImage(),
-            _ => Container(),
-          },
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -25,49 +25,50 @@ class _SelectCoursePageState extends State<SelectCoursePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(
-      builder: (BuildContext context, UserProvider provider, Widget? child) {
-        if (provider.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (provider.user == null) {
-          return const Center(
-            child: Text('No user found'),
-          );
-        }
-        return BlocProvider(
-          create: (context) =>
-              getData(provider.selectedType == SelectedType.teacher),
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text(AppTextConst.selectCourse),
-              leading: IconButton(
-                style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                      backgroundColor: WidgetStateProperty.all<Color>(
-                        Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              ),
-              actions: [
-                IconButton(
-                  style: Theme.of(context).iconButtonTheme.style!.copyWith(
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                  icon: const Icon(Icons.notifications),
-                  onPressed: () {},
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(AppTextConst.selectCourse),
+        leading: IconButton(
+          style: Theme.of(context).iconButtonTheme.style!.copyWith(
+                backgroundColor: WidgetStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary,
                 ),
-              ],
-            ),
-            body: Background(
+              ),
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        ),
+        actions: [
+          IconButton(
+            style: Theme.of(context).iconButtonTheme.style!.copyWith(
+                  backgroundColor: WidgetStateProperty.all<Color>(
+                    Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+            icon: const Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Background(
+        child: Consumer<UserProvider>(
+          builder:
+              (BuildContext context, UserProvider provider, Widget? child) {
+            if (provider.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (provider.user == null) {
+              return const Center(
+                child: Text('No user found'),
+              );
+            }
+            return BlocProvider(
+              create: (context) =>
+                  getData(provider.selectedType == SelectedType.teacher),
               child: Column(
                 children: [
                   //CustomSearchField(searchController: searchController),
@@ -77,7 +78,7 @@ class _SelectCoursePageState extends State<SelectCoursePage> {
                   BlocBuilder<SelectCourseCubit, SelectCourseState>(
                     builder: (context, state) {
                       if (state is CoursesLoading) {
-                        return const CircularProgressIndicator();
+                        return const Center(child: CircularProgressIndicator());
                       }
                       if (state is CoursesError) {
                         return Text(state.message);
@@ -120,10 +121,10 @@ class _SelectCoursePageState extends State<SelectCoursePage> {
                   ),
                 ],
               ),
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 }

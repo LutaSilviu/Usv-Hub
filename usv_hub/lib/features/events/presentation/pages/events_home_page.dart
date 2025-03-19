@@ -1,6 +1,9 @@
+import 'dart:developer' show log;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:usv_hub/core/utils/background.dart';
@@ -152,6 +155,9 @@ class _EventsHomePageState extends State<EventsHomePage> {
                         return ListView.builder(
                           itemCount: selectedList.length,
                           itemBuilder: (context, index) {
+                            DateFormat timeFormat =
+                                DateFormat('HH:mm a'); // 24-hour format
+
                             return Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 12.0,
@@ -184,7 +190,7 @@ class _EventsHomePageState extends State<EventsHomePage> {
                                 subtitle: Row(
                                   children: [
                                     Text(
-                                      '${selectedList[index].startTime.hour}:${selectedList[index].startTime.minute} - ${selectedList[index].endTime.hour}:${selectedList[index].endTime.minute}',
+                                      '${timeFormat.format(selectedList[index].startTime.toLocal())} - ${timeFormat.format(selectedList[index].endTime.toLocal())}',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,

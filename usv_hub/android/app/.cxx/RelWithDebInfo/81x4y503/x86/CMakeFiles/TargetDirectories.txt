@@ -1,0 +1,2 @@
+C:/Users/vasil/Desktop/Licenta/usv_hub/android/app/.cxx/RelWithDebInfo/81x4y503/x86/CMakeFiles/edit_cache.dir
+C:/Users/vasil/Desktop/Licenta/usv_hub/android/app/.cxx/RelWithDebInfo/81x4y503/x86/CMakeFiles/rebuild_cache.dir
