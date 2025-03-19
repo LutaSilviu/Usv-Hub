@@ -6,6 +6,7 @@ import 'package:usv_hub/features/attendance/data/models/attendance_model.dart';
 import 'package:usv_hub/features/attendance/domain/entities/attendance_entity.dart';
 import 'package:usv_hub/features/attendance/domain/repositories/attendance_repository.dart';
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/features/chat/domain/entities/user.dart';
 
 @LazySingleton(as: AttendanceRepository)
 class AttendanceRepoImpl implements AttendanceRepository {
@@ -39,6 +40,17 @@ class AttendanceRepoImpl implements AttendanceRepository {
           studentId,
           courseId,
         ),
+      );
+    } on MediumException catch (e) {
+      return Left(MediumFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getStudentAfterName(String name) async {
+    try {
+      return Right(
+        await _attendanceApiService.getStudentAfterName(name),
       );
     } on MediumException catch (e) {
       return Left(MediumFailure(message: e.message));

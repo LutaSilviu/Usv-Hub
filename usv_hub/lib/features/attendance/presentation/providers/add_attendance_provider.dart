@@ -18,10 +18,26 @@ class AddAttendanceProvider extends ChangeNotifier {
 
   int _selectedLab = 1;
   int _selectedCourse = 1;
+
+  AttendanceStatus _selectedLabStatus = AttendanceStatus.empty;
+  AttendanceStatus _selectedCourseStatus = AttendanceStatus.empty;
   late String attendanceId;
 
   int get selectedLab => _selectedLab;
   int get selectedCourse => _selectedCourse;
+
+  AttendanceStatus get selectedLabStatus => _selectedLabStatus;
+  AttendanceStatus get selectedCourseStatus => _selectedCourseStatus;
+
+  set selectedLabStatus(AttendanceStatus value) {
+    _selectedLabStatus = value;
+    notifyListeners();
+  }
+
+  set selectedCourseStatus(AttendanceStatus value) {
+    _selectedCourseStatus = value;
+    notifyListeners();
+  }
 
   set selectedLab(int value) {
     _selectedLab = value;

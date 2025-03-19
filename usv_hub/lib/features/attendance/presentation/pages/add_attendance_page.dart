@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -40,121 +38,139 @@ class _AddAttandancePageState extends State<AddAttandancePage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Background(
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider<AddAttendanceProvider>(
-                create: (_) => getIt<AddAttendanceProvider>()),
-          ],
-          child: Builder(builder: (context) {
-            return FutureBuilder(
-              future: Provider.of<AddAttendanceProvider>(context, listen: false)
-                  .getAttendance(widget.student.id, widget.courseId, context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text(snapshot.error.toString()));
-                }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.h, horizontal: 30.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.arrow_back,
-                          size: 40.h,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
+        child: Align(
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider<AddAttendanceProvider>(
+                  create: (_) => getIt<AddAttendanceProvider>()),
+            ],
+            child: Builder(builder: (context) {
+              return FutureBuilder(
+                future: Provider.of<AddAttendanceProvider>(context,
+                        listen: false)
+                    .getAttendance(widget.student.id, widget.courseId, context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text(snapshot.error.toString()));
+                  }
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 30.h, horizontal: 30.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 40.h,
                             ),
-                      ),
-                    ),
-                    SizedBox(height: 68.h),
-                    DetailWidget(
-                        title: "Student name: ${widget.student.name}",
-                        height: 30.h),
-                    DetailWidget(
-                        title: "Student email: ${widget.student.email}",
-                        height: 30.h),
-                    DetailWidget(
-                        title:
-                            "Student phone number: ${widget.student.phoneNumber}",
-                        height: 30.h),
-                    Consumer<AddAttendanceProvider>(
-                      builder: (BuildContext context,
-                          AddAttendanceProvider value, Widget? child) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (widget.isTeacher != ProfesorType.teacher)
-                              EnterAttandanceWidget(
-                                labController: labController,
-                                title: AppTextConst.labAttendance,
-                                courseLenght: widget.courseLenght,
-                                listOfAttendancesCourse:
-                                    value.listOfAttendancesLaboratory,
-                                selectedNumber: value.selectedLab,
-                                onPressed: (int index) {
-                                  value.selectedLab = index;
-                                },
-                                onSet: (AttendanceStatus attendanceStatus) {
-                                  if (attendanceStatus ==
-                                      AttendanceStatus.empty) {
-                                    value.removeAttendanceLab();
-                                  } else {
-                                    value.setAttendanceLab(attendanceStatus);
-                                  }
-                                },
-                              ),
-                            if (widget.isTeacher != ProfesorType.assistent)
-                              EnterAttandanceWidget(
-                                labController: courseController,
-                                title: AppTextConst.courseAttandance,
-                                courseLenght: widget.courseLenght,
-                                listOfAttendancesCourse:
-                                    value.listOfAttendancesCourse,
-                                selectedNumber: value.selectedCourse,
-                                onPressed: (int index) {
-                                  value.selectedCourse = index;
-                                },
-                                onSet: (AttendanceStatus attendanceStatus) {
-                                  if (attendanceStatus ==
-                                      AttendanceStatus.empty) {
-                                    value.removeAttendanceCourse();
-                                  } else {
-                                    value.setAttendanceCourse(attendanceStatus);
-                                  }
-                                },
-                              ),
-                            Center(
-                                child: CustomElevatedButton(
-                                    onPressed: () {
-                                      Provider.of<AddAttendanceProvider>(
-                                              context,
-                                              listen: false)
-                                          .addAttendance(widget.student.id,
-                                              widget.courseId, context);
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                          ),
+                        ),
+                        SizedBox(height: 50.h),
+                        DetailWidget(
+                            title: "Student name: ${widget.student.name}",
+                            height: 30.h),
+                        DetailWidget(
+                            title: "Student email: ${widget.student.email}",
+                            height: 30.h),
+                        DetailWidget(
+                            title:
+                                "Student phone number: ${widget.student.phoneNumber}",
+                            height: 30.h),
+                        Consumer<AddAttendanceProvider>(
+                          builder: (BuildContext context,
+                              AddAttendanceProvider value, Widget? child) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (widget.isTeacher != ProfesorType.teacher)
+                                  EnterAttandanceWidget(
+                                    labController: labController,
+                                    title: AppTextConst.labAttendance,
+                                    courseLenght: widget.courseLenght,
+                                    listOfAttendancesCourse:
+                                        value.listOfAttendancesLaboratory,
+                                    selectedNumber: value.selectedLab,
+                                    selectedAttendance: value.selectedLabStatus,
+                                    onPressed: (int index) {
+                                      value.selectedLab = index;
                                     },
-                                    text: AppTextConst.add)),
-                          ],
-                        );
-                      },
+                                    onSet: (AttendanceStatus attendanceStatus) {
+                                      if (attendanceStatus ==
+                                          AttendanceStatus.empty) {
+                                        value.removeAttendanceLab();
+                                      } else {
+                                        value
+                                            .setAttendanceLab(attendanceStatus);
+                                      }
+                                    },
+                                    onChanged: (p0) =>
+                                        value.selectedLabStatus = p0,
+                                  ),
+                                if (widget.isTeacher != ProfesorType.assistent)
+                                  EnterAttandanceWidget(
+                                    labController: courseController,
+                                    title: AppTextConst.courseAttandance,
+                                    courseLenght: widget.courseLenght,
+                                    listOfAttendancesCourse:
+                                        value.listOfAttendancesCourse,
+                                    selectedNumber: value.selectedCourse,
+                                    selectedAttendance:
+                                        value.selectedCourseStatus,
+                                    onPressed: (int index) {
+                                      value.selectedCourse = index;
+                                    },
+                                    onSet: (AttendanceStatus attendanceStatus) {
+                                      if (attendanceStatus ==
+                                          AttendanceStatus.empty) {
+                                        value.removeAttendanceCourse();
+                                      } else {
+                                        value.setAttendanceCourse(
+                                            attendanceStatus);
+                                      }
+                                    },
+                                    onChanged: (p0) =>
+                                        value.selectedCourseStatus = p0,
+                                  ),
+                                Center(
+                                    child: CustomElevatedButton(
+                                        onPressed: () {
+                                          Provider.of<AddAttendanceProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .addAttendance(widget.student.id,
+                                                  widget.courseId, context);
+                                        },
+                                        text: AppTextConst.add)),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                );
-              },
-            );
-          }),
+                  );
+                },
+              );
+            }),
+          ),
         ),
       ),
     );
@@ -172,6 +188,8 @@ class EnterAttandanceWidget extends StatelessWidget {
     required this.selectedNumber,
     required this.onPressed,
     required this.onSet,
+    required this.selectedAttendance,
+    required this.onChanged,
   });
 
   final TextEditingController labController;
@@ -181,10 +199,11 @@ class EnterAttandanceWidget extends StatelessWidget {
   int selectedNumber;
   Function(int) onPressed;
   Function(AttendanceStatus) onSet;
+  Function(AttendanceStatus) onChanged;
+  AttendanceStatus selectedAttendance;
 
   @override
   Widget build(BuildContext context) {
-    AttendanceStatus selectedAttendance = AttendanceStatus.empty;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
       child: Column(
@@ -224,7 +243,7 @@ class EnterAttandanceWidget extends StatelessWidget {
                 return Padding(
                   padding: EdgeInsets.all(5.w),
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       onPressed(index + 1);
                     },
                     child: Container(
@@ -264,7 +283,8 @@ class EnterAttandanceWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                width: 120.w, // Dimensiune mică pentru dropdown
+                width: 120.w,
+                height: 50.h, // Dimensiune mică pentru dropdown
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   color: Colors.white, // Fundal alb
@@ -272,30 +292,29 @@ class EnterAttandanceWidget extends StatelessWidget {
                   border: Border.all(color: Colors.grey),
                 ),
                 child: DropdownButtonFormField<AttendanceStatus>(
-                  decoration: const InputDecoration(
-                    border: InputBorder.none, // Elimină bordura implicită
-                    isDense: true, // Reduce spațiul pentru a fi mai compact
-                  ),
-                  value: selectedAttendance,
-                  icon: const Icon(Icons.arrow_drop_down,
-                      color: Colors.grey), // Iconiță
-                  items: AttendanceStatus.values.map((AttendanceStatus number) {
-                    return DropdownMenuItem<AttendanceStatus>(
-                      value: number,
-                      child: Text(
-                        number.stringValue.toString(),
-                        style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 14,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none, // Elimină bordura implicită
+                      isDense: true, // Reduce spațiul pentru a fi mai compact
+                    ),
+                    value: selectedAttendance,
+                    icon: const Icon(Icons.arrow_drop_down,
+                        color: Colors.grey), // Iconiță
+                    items:
+                        AttendanceStatus.values.map((AttendanceStatus number) {
+                      return DropdownMenuItem<AttendanceStatus>(
+                        value: number,
+                        child: Text(
+                          number.stringValue.toString(),
+                          style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (AttendanceStatus? newValue) {
-                    selectedAttendance = newValue!;
-                    log(selectedAttendance.toString());
-                  },
-                ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      onChanged(value!);
+                    }),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

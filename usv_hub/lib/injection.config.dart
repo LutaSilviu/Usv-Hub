@@ -44,6 +44,7 @@ import 'features/attendance/domain/repositories/attendance_repository.dart'
 import 'features/attendance/domain/usecases/add_attandance.dart' as _i181;
 import 'features/attendance/domain/usecases/get_attendance_for_student.dart'
     as _i186;
+import 'features/attendance/domain/usecases/get_student_by_name.dart' as _i986;
 import 'features/attendance/presentation/cubit/attendance_cubit.dart' as _i61;
 import 'features/attendance/presentation/providers/add_attendance_provider.dart'
     as _i564;
@@ -78,6 +79,8 @@ import 'features/grade/presentation/cubit/grade_courses/grade_cubit.dart'
     as _i442;
 import 'features/grade/presentation/cubit/grade_students/grade_students_cubit.dart'
     as _i52;
+import 'features/grade/presentation/provider/add_attendance_file_provider.dart'
+    as _i1037;
 import 'features/home/presentation/cubit/home_cubit/home_cubit.dart' as _i604;
 import 'features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart'
     as _i105;
@@ -162,8 +165,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i181.AddAttandance(gh<_i114.AttendanceRepository>()));
     gh.lazySingleton<_i186.GetAttendanceForStudent>(
         () => _i186.GetAttendanceForStudent(gh<_i114.AttendanceRepository>()));
+    gh.lazySingleton<_i986.GetStudentByName>(
+        () => _i986.GetStudentByName(gh<_i114.AttendanceRepository>()));
     gh.factory<_i774.LoginCubit>(
         () => _i774.LoginCubit(authUseCase: gh<_i864.AuthUseCase>()));
+    gh.factory<_i1037.AddAttendanceFileProvider>(
+        () => _i1037.AddAttendanceFileProvider(
+              gh<_i181.AddAttandance>(),
+              gh<_i986.GetStudentByName>(),
+              gh<_i186.GetAttendanceForStudent>(),
+            ));
     gh.lazySingleton<_i548.GetAssigmentsUsecase>(
         () => _i548.GetAssigmentsUsecase(gh<_i12.AssigmentsRepo>()));
     gh.lazySingleton<_i631.GetSubmissionsUsecase>(
