@@ -104,6 +104,9 @@ class AppTextConst {
   static String emptyNumber = "You must enter numbers";
 
   static String events = "Events";
+
+  static String succes = "Succes";
+  static String error = "Error";
 }
 
 class AppStringFailuresMessages {

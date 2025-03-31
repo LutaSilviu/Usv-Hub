@@ -32,13 +32,14 @@ class PickedFilesProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> uploadFiles(BuildContext context, String assigmentId) async {
+  Future<String> uploadFiles(BuildContext context, String assigmentId) async {
     // Pick a file
 
     if (_pickedFiles.isNotEmpty) {
+      context.mounted;
       loading = true;
       notifyListeners();
-
+      context.mounted;
       for (final result in _pickedFiles) {
         // Get the file
         File file = File(result.files.single.path!);
@@ -63,24 +64,23 @@ class PickedFilesProvider extends ChangeNotifier {
             DateTime.now(),
           );
           _postSubbmisionUsecase.call(params: entity);
-
+          loading = false;
           //_pickedFiles.remove(result);
           notifyListeners();
         } on FirebaseException catch (e) {
-          if (context.mounted) CustomSnackbar.show(context, e.message!);
+          return e.message!;
+          //  if (context.mounted) CustomSnackbar.show(context, );
         } catch (e) {
-          if (context.mounted) CustomSnackbar.show(context, "Unexpected error");
+          return "e.message!";
+          //if (context.mounted) ;
         }
       }
-      if (context.mounted) {
-        CustomSnackbar.show(context, "Files uploaded successfully!");
-      }
+
       _pickedFiles.clear();
-      loading = false;
-      notifyListeners();
-      if (context.mounted) Navigator.pop(context);
+
+      return "Files uploaded successfully!";
     } else {
-      if (context.mounted) CustomSnackbar.show(context, "No file selected");
+      return "No file selected";
     }
   }
 
@@ -88,27 +88,6 @@ class PickedFilesProvider extends ChangeNotifier {
     _pickedFiles.remove(file);
     notifyListeners();
   }
-
-  // Future<void> downloadFile(String path, BuildContext context) async {
-  //   final ref = FirebaseStorage.instance.ref(path);
-
-  //   final Directory appDocDir = await getApplicationDocumentsDirectory();
-  //   final String appDocPath = appDocDir.path;
-  //   final File tempFile = File(appDocPath);
-  //   try {
-  //     await ref.writeToFile(tempFile);
-  //     await tempFile.create();
-  //     await OpenFile.open(tempFile.path);
-  //   } on FirebaseException catch (e) {
-  //     if (context.mounted) {
-  //       CustomSnackbar.show(context, "Error downloading file: ${e.message}");
-  //     }
-  //   } catch (e) {
-  //     if (context.mounted) {
-  //       CustomSnackbar.show(context, "Error downloading file: $e");
-  //     }
-  //   }
-  // }
 
   Future<void> downloadFile(
       String firebaseFilePath, String localFileName) async {

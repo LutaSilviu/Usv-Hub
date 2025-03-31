@@ -44,7 +44,9 @@ class AttendanceApiService {
           .collection(AppCollections.student)
           .where(AppFields.name, isEqualTo: name)
           .get();
-
+      if (result.docs.isEmpty) {
+        throw MediumException(runtimeType, 'No student found with name $name');
+      }
       final UserModel userModel = UserModel.fromJson(result.docs.first.data());
 
       return userModel;

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:usv_hub/core/utils/functions.dart';
@@ -18,6 +19,7 @@ import 'package:usv_hub/features/chat/presentation/cubit/potential_contacts/pote
 import 'package:usv_hub/features/grade/presentation/cubit/add_grade/add_grade_cubit.dart';
 import 'package:usv_hub/features/grade/presentation/cubit/grade_courses/grade_cubit.dart';
 import 'package:usv_hub/features/grade/presentation/cubit/grade_students/grade_students_cubit.dart';
+import 'package:usv_hub/features/grade/presentation/provider/add_attendance_file_provider.dart';
 import 'package:usv_hub/features/home/presentation/cubit/home_cubit/home_cubit.dart';
 import 'package:usv_hub/features/home/presentation/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 import 'package:usv_hub/features/login/presentation/cubit/login_cubit.dart';
@@ -29,6 +31,7 @@ import 'package:usv_hub/injection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
   configureDependencies();
   Bloc.observer = GlobalBlocObserver();
@@ -93,6 +96,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => getIt<UserProvider>(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => getIt<AddAttendanceFileProvider>(),
           ),
         ],
         child: SafeArea(

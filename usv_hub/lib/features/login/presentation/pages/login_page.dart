@@ -62,17 +62,17 @@ class _LoginPageState extends State<LoginPage> {
                       controller: passwordController,
                       isPassword: true,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        //TODO: add onPressed from bloc
-                      },
-                      child: Text(
-                        AppTextConst.forgotPassword,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: AppColors.grey,
-                            ),
-                      ),
-                    ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     //TODO: add onPressed from bloc
+                    //   },
+                    //   child: Text(
+                    //     AppTextConst.forgotPassword,
+                    //     style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    //           color: AppColors.grey,
+                    //         ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(height: 100.h),
