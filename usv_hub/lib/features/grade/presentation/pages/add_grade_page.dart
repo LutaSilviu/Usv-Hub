@@ -45,103 +45,110 @@ class _AddGradePageState extends State<AddGradePage> {
             } else if (snapshot.hasError) {
               return Center(child: Text(snapshot.error.toString()));
             }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      size: 40.h,
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
+            return Align(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 30.h, horizontal: 30.w),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          size: 40.h,
                         ),
-                  ),
-                ),
-                SizedBox(height: 68.h),
-                DetailWidget(
-                    title: "Student name: ${widget.student.name}",
-                    height: 30.h),
-                DetailWidget(
-                    title: "Student email: ${widget.student.email}",
-                    height: 30.h),
-                DetailWidget(
-                    title:
-                        "Student phone number: ${widget.student.phoneNumber}",
-                    height: 30.h),
-                BlocConsumer<AddGradeCubit, AddGradeState>(
-                    listener: (context, state) {
-                  if (state is ErrorState) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(state.message)));
-                  }
-                }, builder: (context, state) {
-                  if (state is LoadingState) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (state is GradeLoaded) {
-                    if (state.grade != null && state.grade!.labGrade != null) {
-                      labController.text = state.grade!.labGrade.toString();
-                    }
-                    if (state.grade != null &&
-                        state.grade!.courseGrade != null) {
-                      courseController.text =
-                          state.grade!.courseGrade.toString();
-                    }
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                      ),
+                    ),
+                    SizedBox(height: 68.h),
+                    DetailWidget(
+                        title: "Student name: ${widget.student.name}",
+                        height: 30.h),
+                    DetailWidget(
+                        title: "Student email: ${widget.student.email}",
+                        height: 30.h),
+                    DetailWidget(
+                        title:
+                            "Student phone number: ${widget.student.phoneNumber}",
+                        height: 30.h),
+                    BlocConsumer<AddGradeCubit, AddGradeState>(
+                        listener: (context, state) {
+                      if (state is ErrorState) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)));
+                      }
+                    }, builder: (context, state) {
+                      if (state is LoadingState) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (state is GradeLoaded) {
+                        if (state.grade != null &&
+                            state.grade!.labGrade != null) {
+                          labController.text = state.grade!.labGrade.toString();
+                        }
+                        if (state.grade != null &&
+                            state.grade!.courseGrade != null) {
+                          courseController.text =
+                              state.grade!.courseGrade.toString();
+                        }
 
-                    return Column(
-                      children: [
-                        if (widget.isTeacher != ProfesorType.teacher)
-                          EnterGradeWidget(
-                            labController: labController,
-                            title: AppTextConst.labGrade,
-                          ),
-                        if (widget.isTeacher != ProfesorType.teacher)
-                          EnterGradeWidget(
-                            labController: courseController,
-                            title: AppTextConst.courseGrade,
-                          ),
-                        Center(
-                            child: CustomElevatedButton(
-                                onPressed: () {
-                                  String gradeId;
-                                  if (state.grade == null) {
-                                    gradeId = "";
-                                  } else {
-                                    gradeId = state.grade!.id;
-                                  }
-                                  Provider.of<AddGradeCubit>(context,
-                                          listen: false)
-                                      .addGrade(
-                                    widget.student.id,
-                                    widget.courseId,
-                                    double.tryParse(labController.text),
-                                    double.tryParse(courseController.text),
-                                    context,
-                                    gradeId,
-                                  );
-                                },
-                                text: AppTextConst.add)),
-                      ],
-                    );
-                  }
-                  return const SizedBox();
-                }),
-                SizedBox(
-                  height: 30.h,
-                )
-              ],
+                        return Column(
+                          children: [
+                            if (widget.isTeacher != ProfesorType.teacher)
+                              EnterGradeWidget(
+                                labController: labController,
+                                title: AppTextConst.labGrade,
+                              ),
+                            if (widget.isTeacher != ProfesorType.teacher)
+                              EnterGradeWidget(
+                                labController: courseController,
+                                title: AppTextConst.courseGrade,
+                              ),
+                            Center(
+                                child: CustomElevatedButton(
+                                    onPressed: () {
+                                      String gradeId;
+                                      if (state.grade == null) {
+                                        gradeId = "";
+                                      } else {
+                                        gradeId = state.grade!.id;
+                                      }
+                                      Provider.of<AddGradeCubit>(context,
+                                              listen: false)
+                                          .addGrade(
+                                        widget.student.id,
+                                        widget.courseId,
+                                        double.tryParse(labController.text),
+                                        double.tryParse(courseController.text),
+                                        context,
+                                        gradeId,
+                                      );
+                                    },
+                                    text: AppTextConst.add)),
+                          ],
+                        );
+                      }
+                      return const SizedBox();
+                    }),
+                    SizedBox(
+                      height: 30.h,
+                    )
+                  ],
+                ),
+              ),
             );
           },
         ),

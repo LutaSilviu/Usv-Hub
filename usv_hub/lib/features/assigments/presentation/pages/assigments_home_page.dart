@@ -40,6 +40,11 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
                   return Text(state.message);
                 }
                 if (state is AssigmentsLoaded) {
+                  if (state.assigments.isEmpty) {
+                    return const Center(
+                      child: Text('No assignments found'),
+                    );
+                  }
                   return Column(
                     children: [
                       // CustomSearchField(searchController: searchController),

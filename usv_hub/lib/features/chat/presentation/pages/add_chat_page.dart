@@ -42,7 +42,7 @@ class _AddChatPageState extends State<AddChatPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Attendance',
+          AppTextConst.potentialContacts,
           style: Theme.of(context).textTheme.titleSmall,
         ),
       ),
@@ -54,16 +54,16 @@ class _AddChatPageState extends State<AddChatPage> {
             SizedBox(
               height: 40.h,
             ),
-            Padding(
-              padding: EdgeInsets.all(20.w),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Potential contacts',
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.all(20.w),
+            //   child: Align(
+            //     alignment: Alignment.centerLeft,
+            //     child: Text(
+            //       ,
+            //       style: Theme.of(context).textTheme.titleSmall,
+            //     ),
+            //   ),
+            // ),
             BlocBuilder<PotentialContactsCubit, PotentialContactsState>(
               builder: (context, state) {
                 if (state is PotentialContactsLoading) {

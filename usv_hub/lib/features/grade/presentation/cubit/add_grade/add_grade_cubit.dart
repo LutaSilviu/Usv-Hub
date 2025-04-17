@@ -41,8 +41,8 @@ class AddGradeCubit extends Cubit<AddGradeState> {
   ) async {
     if (labGrade == null && courseGrade == null) {
       CustomSnackbar.show(context, AppTextConst.emptyNumber);
-    } else if (labGrade != null && labGrade > 0 && labGrade <= 10 ||
-        courseGrade != null && courseGrade > 0 && courseGrade <= 10) {
+    } else if ((labGrade != null && labGrade > 0 && labGrade <= 10) &&
+        (courseGrade != null && courseGrade > 0 && courseGrade <= 10)) {
       GradeEntity grade = GradeEntity(
         id: gradeId,
         studentId: studentId,

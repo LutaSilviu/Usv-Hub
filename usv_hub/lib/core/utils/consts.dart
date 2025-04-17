@@ -46,9 +46,9 @@ class AppTextConst {
   static const attendance = 'Attendance';
   static const schedule = 'Schedule';
   static const assigments = 'Assigments';
-
+  static const assigmentsInfo = 'Assigment Info';
   //pages names
-  static const home = 'Home Page';
+  static const home = 'Home';
 
   //drawer items
   static const personalData = 'Personal Data';
@@ -62,19 +62,19 @@ class AppTextConst {
   static const appSettings = 'App Settings';
   static const logout = 'Logout';
   static const settings = 'Settings';
-
+  static const attendanceDetail = 'Attendance Detail';
   static const search = 'Search';
 
   static const chat = 'Chat';
-  static const chatInfoPage = 'Chat Info Page';
+  static const chatInfoPage = 'Chat Info';
   static const message = 'Message';
   static const selectCourse = 'Select Course';
   static const viewCoursesStudents = 'View Course\'s Students';
   static const viewStudents = 'View Students';
   static const courses = 'Courses';
-  static const gradeDetailPage = 'Grade Detail Page';
-  static const addGradePage = 'Add Grade Page';
-  static const addAttandancePage = 'Add Attandance Page';
+  static const gradeDetailPage = 'Grade Detail ';
+  static const addGradePage = 'Add Grade';
+  static const addAttandancePage = 'Add Attandance';
 
   static String phoneNumberDescription =
       "Your current phone number is displayed below. You can easily update it by tapping the \"Edit\" button. Please ensure your number is correct to stay connected. ";
@@ -96,6 +96,7 @@ class AppTextConst {
 
   static String courseGrade = "Course Grade";
   static String labGrade = "Laboratory Grade";
+  static String laboratory = "Laboratory";
 
   static String courseAttandance = "Course attendance:";
   static String labAttendance = "Laboratory attendance:";
@@ -107,6 +108,8 @@ class AppTextConst {
 
   static String succes = "Succes";
   static String error = "Error";
+
+  static String potentialContacts = 'Potential contacts';
 }
 
 class AppStringFailuresMessages {

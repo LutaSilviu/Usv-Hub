@@ -40,7 +40,11 @@ class CustomCourseWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 30.h),
-                    Text(title),
+                    Text(
+                      title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ],
                 );
               },

@@ -10,7 +10,7 @@ import 'package:usv_hub/features/select_course/domain/entities/course_entity.dar
 
 class AttendanceDetailsPage extends StatelessWidget {
   const AttendanceDetailsPage({super.key, required this.course});
-  final String title = 'Attendance Detail Page';
+
   final CourseEntity course;
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class AttendanceDetailsPage extends StatelessWidget {
                               ),
                               Center(
                                 child: Text(
-                                  title,
+                                  AppTextConst.attendanceDetail,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleSmall!

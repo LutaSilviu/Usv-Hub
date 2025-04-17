@@ -114,6 +114,7 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                                       .colorScheme
                                       .primaryContainer,
                                   width: 2)),
+                          child: Center(child: Text(date.day.toString())),
                         ),
                         selectedBuilder: (context, date, events) => Container(
                           height: 40.h,
@@ -129,6 +130,7 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                                     .onPrimaryContainer,
                                 width: 2,
                               )),
+                          child: Center(child: Text(date.day.toString())),
                         ),
                         todayBuilder: (context, date, focusedDay) => Container(
                           height: 40.h,
@@ -139,6 +141,7 @@ class _ScheduleHomePageState extends State<ScheduleHomePage> {
                               border: Border.all(
                                   color: Theme.of(context).colorScheme.primary,
                                   width: 2)),
+                          child: Center(child: Text(date.day.toString())),
                         ),
                       ),
                       firstDay: kFirstDay,

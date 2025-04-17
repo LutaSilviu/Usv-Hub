@@ -51,7 +51,7 @@ class _ViewSubmissionPageState extends State<ViewSubmissionPage> {
                   BlocBuilder<SubmissionCubit, SubmissionState>(
                     builder: (context, state) {
                       if (state is SubmissionLoading) {
-                        return const CircularProgressIndicator();
+                        return const Center(child: CircularProgressIndicator());
                       }
                       if (state is SubmissionError) {
                         return Center(child: Text(state.message));

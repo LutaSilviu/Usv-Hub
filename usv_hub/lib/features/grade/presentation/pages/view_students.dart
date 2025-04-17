@@ -55,11 +55,13 @@ class _ViewStudentsState extends State<ViewStudents> {
           ? Consumer(
               builder: (context, AddAttendanceFileProvider provider, child) {
                 return FloatingActionMenu(
+                  isTeacher: widget.isTeacher,
                   onDissmised: () {
                     provider.resetProvider();
                   },
                   courseLength: widget.courseLenght!,
                   onSelected: (bool courseList) async {
+                    Navigator.pop(context);
                     await provider.pickFile();
                     if (provider.file != null) {
                       if (provider.file!.path.endsWith('.csv')) {
@@ -85,25 +87,38 @@ class _ViewStudentsState extends State<ViewStudents> {
                   },
                   photoSelected: (bool isCourse) async {
                     Navigator.pop(context); // close the dialog
-                    await provider.pickImage(
+                    final bool imagePicked = await provider.pickImage(
                         ImageSource.camera, widget.courseId, isCourse);
-                    if (provider.errorMessage != null && context.mounted) {
-                      CustomSnackbar.show(context, provider.errorMessage!);
+                    if (imagePicked) {
+                      if (provider.errorMessage != null && context.mounted) {
+                        CustomSnackbar.show(context, provider.errorMessage!);
+                      } else {
+                        if (provider.extractedText != null && context.mounted) {
+                          CustomSnackbar.show(context, AppTextConst.succes);
+                        }
+                      }
                     } else {
-                      if (provider.extractedText != null && context.mounted) {
-                        CustomSnackbar.show(context, AppTextConst.succes);
+                      if (context.mounted) {
+                        CustomSnackbar.show(context, "No image picked");
                       }
                     }
                   },
                   galerySelected: (bool isCourse) async {
                     Navigator.pop(context); // close the dialog
-                    await provider.pickImage(
+
+                    bool imagePicked = await provider.pickImage(
                         ImageSource.gallery, widget.courseId, isCourse);
-                    if (provider.errorMessage != null && context.mounted) {
-                      CustomSnackbar.show(context, provider.errorMessage!);
+                    if (imagePicked) {
+                      if (provider.errorMessage != null && context.mounted) {
+                        CustomSnackbar.show(context, provider.errorMessage!);
+                      } else {
+                        if (provider.extractedText != null && context.mounted) {
+                          CustomSnackbar.show(context, AppTextConst.succes);
+                        }
+                      }
                     } else {
-                      if (provider.extractedText != null && context.mounted) {
-                        CustomSnackbar.show(context, AppTextConst.succes);
+                      if (context.mounted) {
+                        CustomSnackbar.show(context, "No image picked");
                       }
                     }
                   },
@@ -260,14 +275,14 @@ class _ViewStudentsState extends State<ViewStudents> {
 }
 
 class FloatingActionMenu extends StatefulWidget {
-  const FloatingActionMenu({
-    super.key,
-    required this.onSelected,
-    required this.photoSelected,
-    required this.galerySelected,
-    required this.courseLength,
-    required this.onDissmised,
-  });
+  const FloatingActionMenu(
+      {super.key,
+      required this.onSelected,
+      required this.photoSelected,
+      required this.galerySelected,
+      required this.courseLength,
+      required this.onDissmised,
+      required this.isTeacher});
   @override
   FloatingActionMenuState createState() => FloatingActionMenuState();
 
@@ -276,6 +291,7 @@ class FloatingActionMenu extends StatefulWidget {
   final Function(bool) galerySelected;
   final int courseLength;
   final Function() onDissmised;
+  final ProfesorType isTeacher;
 }
 
 class FloatingActionMenuState extends State<FloatingActionMenu>
@@ -286,43 +302,50 @@ class FloatingActionMenuState extends State<FloatingActionMenu>
       activeChild: const Icon(Icons.close),
       animatedIconTheme: const IconThemeData(size: 22.0),
       curve: Curves.bounceIn,
+      onOpen: () {
+        widget.onDissmised();
+      },
       children: [
-        SpeedDialChild(
-          child: const Icon(Icons.school),
-          backgroundColor: Theme.of(context).colorScheme.primaryFixed,
-          label: 'Curs',
-          labelStyle: const TextStyle(fontSize: 18.0),
-          onTap: () async {
-            _showImageSourceDialog(
-              context,
-              true,
-              widget.onSelected,
-              widget.galerySelected,
-              widget.photoSelected,
-              widget.courseLength,
-              widget.onDissmised,
-            );
-            //await widget.onSelected(true);
-          },
-        ),
-        SpeedDialChild(
-          child: const Icon(Icons.science),
-          backgroundColor: Theme.of(context).colorScheme.primaryFixed,
-          label: 'Laborator',
-          labelStyle: const TextStyle(fontSize: 18.0),
-          onTap: () async {
-            _showImageSourceDialog(
-              context,
-              false,
-              widget.onSelected,
-              widget.galerySelected,
-              widget.photoSelected,
-              widget.courseLength,
-              widget.onDissmised,
-            );
-            // await widget.onSelected(false);
-          },
-        ),
+        if (widget.isTeacher == ProfesorType.teacher ||
+            widget.isTeacher == ProfesorType.both)
+          SpeedDialChild(
+            child: const Icon(Icons.school),
+            backgroundColor: Theme.of(context).colorScheme.primaryFixed,
+            label: AppTextConst.courses,
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () async {
+              _showImageSourceDialog(
+                context,
+                true,
+                widget.onSelected,
+                widget.galerySelected,
+                widget.photoSelected,
+                widget.courseLength,
+                widget.onDissmised,
+              );
+              //await widget.onSelected(true);
+            },
+          ),
+        if (widget.isTeacher == ProfesorType.assistent ||
+            widget.isTeacher == ProfesorType.both)
+          SpeedDialChild(
+            child: const Icon(Icons.science),
+            backgroundColor: Theme.of(context).colorScheme.primaryFixed,
+            label: AppTextConst.laboratory,
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () async {
+              _showImageSourceDialog(
+                context,
+                false,
+                widget.onSelected,
+                widget.galerySelected,
+                widget.photoSelected,
+                widget.courseLength,
+                widget.onDissmised,
+              );
+              // await widget.onSelected(false);
+            },
+          ),
       ],
       child: const Icon(Icons.add),
     );

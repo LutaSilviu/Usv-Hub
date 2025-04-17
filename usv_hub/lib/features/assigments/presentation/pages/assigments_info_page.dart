@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:usv_hub/core/utils/background.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/custom_snackbar.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/presentation/info_provider.dart';
@@ -12,7 +13,7 @@ import 'package:usv_hub/injection.dart';
 
 class AssigmentInfoPage extends StatelessWidget {
   const AssigmentInfoPage({super.key, required this.assigmentEntity});
-  final String title = 'Assigment Info Page';
+
   final AssigmentEntity assigmentEntity;
 
   @override
@@ -49,7 +50,7 @@ class AssigmentInfoPage extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    title,
+                    assigmentEntity.title,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                         ),

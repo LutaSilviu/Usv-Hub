@@ -136,61 +136,71 @@ class AddAttendanceFileProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> proccesStudentName(
+  Future<void> processStudentName(
       String name, String courseId, bool courseList) async {
-    (await getStudentAfterName.call(
-      params: name,
-    ))
-        .fold(
-      (l) {
-        isLoading = false;
-        return false;
-      },
-      (student) async {
-        (await getAttendanceForStudent.call(
-                params: GetStudentsParams(student.id, courseId)))
-            .fold(
-          (l) {
-            isLoading = false;
-            return false;
-          },
-          (attendance) async {
-            Map<String, bool> attendanceMap = courseList
-                ? attendance.courseAttendance
-                : attendance.labortoryAttendance;
-            attendanceMap.update(
-              _selectedIndex.toString(),
-              (value) => true,
-              ifAbsent: () => true,
-            );
-            (await addAttandance.call(
-              params: AttendanceEntity(
-                id: attendance.id,
-                courseId: courseId,
-                studentId: student.id,
-                courseAttendance:
-                    courseList ? attendanceMap : attendance.courseAttendance,
-                labortoryAttendance:
-                    courseList ? attendance.labortoryAttendance : attendanceMap,
-              ),
-            ))
-                .fold(
-              (l) {
-                isLoading = false;
-                return false;
-              },
-              (r) {
-                isLoading = false;
-                return true;
-              },
-            );
-          },
-        );
-      },
-    );
+    try {
+      final studentResult = await getStudentAfterName.call(params: name);
+
+      // Handle failure case
+      final student = studentResult.fold((l) {
+        debugPrint("❌ Error fetching student for name: $name");
+        return null;
+      }, (student) => student);
+
+      if (student == null) return;
+
+      final attendanceResult = await getAttendanceForStudent.call(
+        params: GetStudentsParams(student.id, courseId),
+      );
+
+      // Handle failure case
+      final attendance = attendanceResult.fold((l) {
+        debugPrint("❌ Error fetching attendance for student ID: ${student.id}");
+        return null;
+      }, (attendance) => attendance);
+
+      if (attendance == null) return;
+
+      Map<String, bool> attendanceMap = courseList
+          ? attendance.courseAttendance
+          : attendance.labortoryAttendance;
+
+      // Update attendance map
+      attendanceMap.update(
+        _selectedIndex.toString(),
+        (value) => true,
+        ifAbsent: () => true,
+      );
+
+      final attendanceEntity = AttendanceEntity(
+        id: attendance.id,
+        courseId: courseId,
+        studentId: student.id,
+        courseAttendance:
+            courseList ? attendanceMap : attendance.courseAttendance,
+        labortoryAttendance:
+            courseList ? attendance.labortoryAttendance : attendanceMap,
+      );
+
+      final addAttendanceResult =
+          await addAttandance.call(params: attendanceEntity);
+
+      // Handle add attendance failure
+      addAttendanceResult.fold(
+        (l) => debugPrint(
+            "❌ Error adding attendance for student ID: ${student.id}"),
+        (r) =>
+            debugPrint("✅ Attendance updated successfully for ${student.id}"),
+      );
+    } catch (e) {
+      debugPrint("❌ Exception in processStudentName: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
-  Future<void> pickImage(
+  Future<bool> pickImage(
       ImageSource source, String courseId, bool courseList) async {
     try {
       final pickedFile = await _picker.pickImage(source: source);
@@ -199,11 +209,16 @@ class AddAttendanceFileProvider extends ChangeNotifier {
         _extractedText = ''; // Clear previous text
 
         await analyzeDocument(_image!, courseId, courseList);
-        // log('GALERIE ${_extractedText}');
         notifyListeners();
+        return true;
       }
+      return false; // No image selected
     } catch (e) {
       log('ERROR: $e');
+      _errorMessage = "❌ Exception: $e";
+      debugPrint(_errorMessage);
+      notifyListeners();
+      return false; // Error occurred while picking image
     }
   }
 
@@ -224,9 +239,11 @@ class AddAttendanceFileProvider extends ChangeNotifier {
     isLoading = true;
 
     notifyListeners();
+
     try {
       final url = Uri.parse(
-          "$_endpoint/documentintelligence/documentModels/$_modelId:analyze?api-version=2024-11-30");
+        "$_endpoint/documentintelligence/documentModels/$_modelId:analyze?api-version=2024-11-30",
+      );
 
       final bytes = await file.readAsBytes();
 
@@ -240,51 +257,82 @@ class AddAttendanceFileProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 202) {
-        final operationLocation = response.headers['operation-location'] ?? '';
+        final operationLocation = response.headers['operation-location'];
+
+        if (operationLocation == null || operationLocation.isEmpty) {
+          throw Exception(
+              "❌ Error: Missing operation-location header in response.");
+        }
+
         await fetchResult(operationLocation, courseId, courseList);
       } else {
         _errorMessage = "❌ Error: ${response.statusCode}\n${response.body}";
+        debugPrint(_errorMessage);
       }
     } catch (e) {
       _errorMessage = "❌ Exception: $e";
+      debugPrint(_errorMessage);
     } finally {
       isLoading = false;
-      resetProvider();
       notifyListeners();
     }
   }
 
   Future<void> fetchResult(
-      String operationLocation, String courseId, bool courseList) async {
-    await Future.delayed(const Duration(seconds: 5));
-    final response = await http.get(
-      Uri.parse(operationLocation),
-      headers: {"Ocp-Apim-Subscription-Key": _subscriptionKey},
-    );
+      String operationLocation, String courseId, bool courseList,
+      {int retryCount = 0}) async {
+    const int maxRetries = 5; // Prevent infinite loops
+    int delaySeconds = (retryCount + 1) * 5; // Exponential backoff
 
-    if (response.statusCode == 200) {
-      final jsonResult = json.decode(response.body);
+    await Future.delayed(Duration(seconds: delaySeconds));
 
-      if (jsonResult["status"] == "running") {
-        await fetchResult(operationLocation, courseId, courseList);
-      } else {
+    try {
+      final response = await http.get(
+        Uri.parse(operationLocation),
+        headers: {"Ocp-Apim-Subscription-Key": _subscriptionKey},
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResult = json.decode(response.body);
+
+        if (jsonResult["status"] == "running") {
+          if (retryCount < maxRetries) {
+            await fetchResult(operationLocation, courseId, courseList,
+                retryCount: retryCount + 1);
+          } else {
+            _errorMessage = "❌ Error: Max retries reached for fetching result.";
+            debugPrint(_errorMessage);
+          }
+          return;
+        }
+
         _extractedText = const JsonEncoder.withIndent('  ')
             .convert(jsonResult["analyzeResult"]);
 
-        for (var document in jsonResult["analyzeResult"]['documents'][0]
-            ['fields']['Names']['valueArray']) {
-          // Căutăm câmpul "Nume Student" în fiecare document
-          if (document['valueObject']['Nume Student']['valueString'] != null) {
-            final name = document['valueObject']['Nume Student']['valueString'];
-
-            await proccesStudentName(name, courseId, courseList);
+        final documents = jsonResult["analyzeResult"]?['documents'];
+        if (documents is List && documents.isNotEmpty) {
+          final fields = documents[0]['fields'];
+          if (fields != null &&
+              fields['Names'] != null &&
+              fields['Names']['valueArray'] is List) {
+            for (var document in fields['Names']['valueArray']) {
+              final name =
+                  document['valueObject']?['Nume Student']?['valueString'];
+              if (name != null) {
+                await processStudentName(name, courseId, courseList);
+              }
+            }
           }
         }
         notifyListeners();
+      } else {
+        _errorMessage =
+            "❌ Error fetching result: ${response.statusCode} ${response.body}";
+        debugPrint(_errorMessage);
       }
-    } else {
-      _errorMessage =
-          "❌ Error fetching result: ${response.statusCode} ${response.body}";
+    } catch (e) {
+      _errorMessage = "❌ Exception while fetching result: $e";
+      debugPrint(_errorMessage);
     }
   }
 

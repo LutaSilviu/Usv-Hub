@@ -17,7 +17,6 @@
 //     super.key,
 //   });
 
-
 //   final ProfesorType isTeacher;
 //   final String courseId;
 

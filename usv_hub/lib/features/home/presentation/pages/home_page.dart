@@ -16,7 +16,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppTextConst.home),
+        title: Text(
+          courseEntity.title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
         actions: [
           IconButton(
             style: Theme.of(context).iconButtonTheme.style!.copyWith(
