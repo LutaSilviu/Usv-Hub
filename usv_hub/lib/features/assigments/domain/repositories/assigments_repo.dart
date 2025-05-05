@@ -9,4 +9,5 @@ abstract class AssigmentsRepo {
   Future<Either<Failure, bool>> hasSubbmision(String assigmentId);
   Future<Either<Failure, Map<SubmisionEntity, String>>> getSubbmisions(
       String assigmentId);
+  Future<Either<Failure, void>> postAssigment(AssigmentEntity assigmentEntity);
 }

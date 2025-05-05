@@ -33,6 +33,24 @@ class AssigmentsModel extends AssigmentEntity {
       endTime: (map[AppFields.endTime] as Timestamp).toDate(),
     );
   }
+
+  AssigmentsModel copyWith({
+    String? id,
+    String? courseId,
+    String? title,
+    String? description,
+    DateTime? startTime,
+    DateTime? endTime,
+  }) {
+    return AssigmentsModel(
+      id: id ?? this.id,
+      courseId: courseId ?? this.courseId,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+    );
+  }
 }
 
   //ToMap with timestamp-datetime conversion

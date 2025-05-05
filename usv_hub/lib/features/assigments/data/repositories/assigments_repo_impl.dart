@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:usv_hub/core/errors/exceptions.dart';
 import 'package:usv_hub/core/errors/failures.dart';
 import 'package:usv_hub/features/assigments/data/datasources/assigments_api_service.dart';
+import 'package:usv_hub/features/assigments/data/models/assigments_model.dart';
 import 'package:usv_hub/features/assigments/data/models/subbmision_model.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/domain/entities/submision_entity.dart';
@@ -55,6 +56,25 @@ class AssigmentsRepoImpl extends AssigmentsRepo {
       String assigmentId) async {
     try {
       return Right(await _assigmentsApiService.getSubbmisions(assigmentId));
+    } on MediumException catch (e) {
+      return Left(MediumFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> postAssigment(
+      AssigmentEntity assigmentEntity) async {
+    try {
+      AssigmentsModel assigmentsModel = AssigmentsModel(
+        id: assigmentEntity.id,
+        courseId: assigmentEntity.courseId,
+        title: assigmentEntity.title,
+        description: assigmentEntity.description,
+        startTime: assigmentEntity.startTime,
+        endTime: assigmentEntity.endTime,
+      );
+
+      return Right(_assigmentsApiService.postAssigment(assigmentsModel));
     } on MediumException catch (e) {
       return Left(MediumFailure(message: e.message));
     }

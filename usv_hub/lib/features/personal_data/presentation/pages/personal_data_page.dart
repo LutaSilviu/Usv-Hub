@@ -33,7 +33,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Text(
+                    const Text(
                       AppTextConst.personalDataDescriprion,
                     ),
                     SizedBox(

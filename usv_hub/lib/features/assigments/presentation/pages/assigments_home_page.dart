@@ -29,6 +29,20 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
         appBar: AppBar(
           title: const Text('Assignments'),
         ),
+        floatingActionButton: widget.isTeacher == ProfesorType.none
+            ? null
+            : FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRouteConst.addAssigment,
+                    arguments: {
+                      AppArguments.courseId: widget.courseEntity.id,
+                    },
+                  );
+                },
+                child: const Icon(Icons.add),
+              ),
         body: Background(
           child: Center(
             child: BlocBuilder<AssigmentsCubit, AssigmentsState>(
@@ -45,26 +59,33 @@ class _AssigmentsHomePageState extends State<AssigmentsHomePage> {
                       child: Text('No assignments found'),
                     );
                   }
-                  return Column(
-                    children: [
-                      // CustomSearchField(searchController: searchController),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: state.assigments.length,
-                          itemBuilder: (context, index) {
-                            return AssigmentsWidget(
-                              assigmentEntity:
-                                  state.assigments.elementAt(index),
-                              course: widget.courseEntity,
-                              isTeacher: widget.isTeacher,
-                            );
-                          },
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await context.read<AssigmentsCubit>().getAssigments(
+                            widget.courseEntity.id,
+                          );
+                    },
+                    child: Column(
+                      children: [
+                        // CustomSearchField(searchController: searchController),
+                        SizedBox(
+                          height: 40.h,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: state.assigments.length,
+                            itemBuilder: (context, index) {
+                              return AssigmentsWidget(
+                                assigmentEntity:
+                                    state.assigments.elementAt(index),
+                                course: widget.courseEntity,
+                                isTeacher: widget.isTeacher,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
                 return Container();

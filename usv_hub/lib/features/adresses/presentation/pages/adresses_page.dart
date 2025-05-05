@@ -37,7 +37,7 @@ class _AdressesPageState extends State<AdressesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 AppTextConst.addressesDescriprion,
               ),
               SizedBox(
@@ -56,7 +56,7 @@ class _AdressesPageState extends State<AdressesPage> {
                   }
                   if (state is SuccessState) {
                     if (state.addresses.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Text(AppTextConst.noAddressesFound),
                       );
                     } else {
@@ -106,7 +106,7 @@ class _AdressesPageState extends State<AdressesPage> {
                           );
                         });
                   },
-                  child: Text(AppTextConst.add),
+                  child: const Text(AppTextConst.add),
                 ),
               ),
             ],

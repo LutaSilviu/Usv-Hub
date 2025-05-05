@@ -4,6 +4,11 @@ import 'package:usv_hub/core/utils/consts.dart';
 
 ThemeData darkTheme() {
   return ThemeData(
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white, // Cursor color
+      selectionColor: Colors.grey, // Highlight background
+      selectionHandleColor: Colors.black, // Drag handle
+    ),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primary,
       elevation: 0,

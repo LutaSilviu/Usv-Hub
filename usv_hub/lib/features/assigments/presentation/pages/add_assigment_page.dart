@@ -1,182 +1,218 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:provider/provider.dart';
-// import 'package:usv_hub/core/utils/background.dart';
-// import 'package:usv_hub/core/utils/consts.dart';
-// import 'package:usv_hub/features/grade/presentation/cubit/add_grade/add_grade_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:usv_hub/core/utils/background.dart';
+import 'package:usv_hub/core/utils/consts.dart';
+import 'package:usv_hub/core/utils/custom_snackbar.dart';
+import 'package:usv_hub/features/assigments/presentation/providers/add_assigment_provider.dart';
+import 'package:usv_hub/injection.dart';
 
-// import 'package:usv_hub/features/grade/presentation/pages/grade_detail_page.dart';
-// import 'package:usv_hub/features/login/presentation/widgets/custom_elevated_button.dart';
-// import 'package:usv_hub/features/login/presentation/widgets/custom_text_field.dart';
+class AddAssigmentPage extends StatefulWidget {
+  const AddAssigmentPage({
+    required this.courseId,
+    super.key,
+  });
 
-// class AddAssigmentPage extends StatefulWidget {
-//   const AddAssigmentPage({
-//     required this.isTeacher,
-//     required this.courseId,
-//     super.key,
-//   });
+  final String courseId;
+  @override
+  State<AddAssigmentPage> createState() => _AddAssigmentPageState();
+}
 
-//   final ProfesorType isTeacher;
-//   final String courseId;
+class _AddAssigmentPageState extends State<AddAssigmentPage> {
+  final String title = AppTextConst.addGradePage;
+  final TextEditingController labController = TextEditingController();
+  final TextEditingController courseController = TextEditingController();
 
-//   @override
-//   State<AddAssigmentPage> createState() => _AddAssigmentPageState();
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(AppTextConst.addAssigment),
+        centerTitle: true,
+      ),
+      body: Background(
+        child: ChangeNotifierProvider(
+          create: (context) => getIt<AddAssigmentProvider>(),
+          builder: (context, child) => Formular(
+            courseId: widget.courseId,
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-// class _AddAssigmentPageState extends State<AddAssigmentPage> {
-//   final String title = AppTextConst.addGradePage;
-//   final TextEditingController labController = TextEditingController();
-//   final TextEditingController courseController = TextEditingController();
+class Formular extends StatefulWidget {
+  @override
+  _FormularState createState() => _FormularState();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Background(
-//         child: FutureBuilder(
-//           future: Provider.of<AddGradeCubit>(context, listen: false)
-//               .getGrade(widget.student.id, widget.courseId),
-//           builder: (context, snapshot) {
-//             if (snapshot.connectionState == ConnectionState.waiting) {
-//               return const Center(child: CircularProgressIndicator());
-//             } else if (snapshot.hasError) {
-//               return Center(child: Text(snapshot.error.toString()));
-//             }
-//             return Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Padding(
-//                   padding:
-//                       EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
-//                   child: GestureDetector(
-//                     onTap: () {
-//                       Navigator.pop(context);
-//                     },
-//                     child: Icon(
-//                       Icons.arrow_back,
-//                       size: 40.h,
-//                     ),
-//                   ),
-//                 ),
-//                 Center(
-//                   child: Text(
-//                     title,
-//                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-//                           color: Theme.of(context).colorScheme.onSurface,
-//                         ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 68.h),
-//                 DetailWidget(
-//                     title: "Student name: ${widget.student.name}",
-//                     height: 30.h),
-//                 DetailWidget(
-//                     title: "Student email: ${widget.student.email}",
-//                     height: 30.h),
-//                 DetailWidget(
-//                     title:
-//                         "Student phone number: ${widget.student.phoneNumber}",
-//                     height: 30.h),
-//                 BlocConsumer<AddGradeCubit, AddGradeState>(
-//                     listener: (context, state) {
-//                   if (state is ErrorState) {
-//                     ScaffoldMessenger.of(context)
-//                         .showSnackBar(SnackBar(content: Text(state.message)));
-//                   }
-//                 }, builder: (context, state) {
-//                   if (state is LoadingState) {
-//                     return const CircularProgressIndicator();
-//                   }
-//                   if (state is GradeLoaded) {
-//                     if (state.grade != null && state.grade!.labGrade != null) {
-//                       labController.text = state.grade!.labGrade.toString();
-//                     }
-//                     if (state.grade != null &&
-//                         state.grade!.courseGrade != null) {
-//                       courseController.text =
-//                           state.grade!.courseGrade.toString();
-//                     }
+  const Formular({super.key, required this.courseId});
+  final String courseId;
+}
 
-//                     return Column(
-//                       children: [
-//                         if (widget.isTeacher != ProfesorType.teacher)
-//                           EnterGradeWidget(
-//                             labController: labController,
-//                             title: AppTextConst.labGrade,
-//                           ),
-//                         if (widget.isTeacher != ProfesorType.teacher)
-//                           EnterGradeWidget(
-//                             labController: courseController,
-//                             title: AppTextConst.courseGrade,
-//                           ),
-//                         Center(
-//                             child: CustomElevatedButton(
-//                                 onPressed: () {
-//                                   String gradeId;
-//                                   if (state.grade == null) {
-//                                     gradeId = "";
-//                                   } else {
-//                                     gradeId = state.grade!.id;
-//                                   }
-//                                   Provider.of<AddGradeCubit>(context,
-//                                           listen: false)
-//                                       .addGrade(
-//                                     widget.student.id,
-//                                     widget.courseId,
-//                                     double.tryParse(labController.text),
-//                                     double.tryParse(courseController.text),
-//                                     context,
-//                                     gradeId,
-//                                   );
-//                                 },
-//                                 text: AppTextConst.add)),
-//                       ],
-//                     );
-//                   }
-//                   return const SizedBox();
-//                 }),
-//                 SizedBox(
-//                   height: 30.h,
-//                 )
-//               ],
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
+class _FormularState extends State<Formular> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _titluController = TextEditingController();
+  final TextEditingController _descriereController = TextEditingController();
 
-// class EnterGradeWidget extends StatelessWidget {
-//   const EnterGradeWidget({
-//     super.key,
-//     required this.labController,
-//     required this.title,
-//   });
+  Future<void> _selectDate(BuildContext context, bool isStartDate,
+      AddAssigmentProvider provider) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              surface: AppColors.secondary,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
 
-//   final TextEditingController labController;
-//   final String title;
+    if (picked != null) {
+      if (isStartDate) {
+        provider.setStartDate(picked);
+      } else {
+        provider.setEndDate(picked);
+      }
+    }
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             title,
-//             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-//                   color: Theme.of(context).colorScheme.surface,
-//                 ),
-//           ),
-//           CustomTextField(
-//             hintText: "Course grade",
-//             controller: labController,
-//             keyboardType: TextInputType.number,
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Form(
+                  key: _formKey,
+                  child: Consumer<AddAssigmentProvider>(
+                    builder: (_, provider, child) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          controller: _titluController,
+                          decoration: const InputDecoration(
+                            labelText: AppTextConst.title,
+                            labelStyle: TextStyle(
+                              color: AppColors.white,
+                            ),
+                          ),
+                          validator: (value) => value == null || value.isEmpty
+                              ? AppTextConst.titleError
+                              : null,
+                        ),
+                        TextFormField(
+                          controller: _descriereController,
+                          decoration: const InputDecoration(
+                            labelText: AppTextConst.description,
+                            labelStyle: TextStyle(
+                              color: AppColors.white,
+                            ),
+                          ),
+                          maxLines: 3,
+                          minLines: 1,
+                          validator: (value) => value == null || value.isEmpty
+                              ? AppTextConst.descriptionError
+                              : null,
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(provider.startDate == null
+                                  ? AppTextConst.startTime
+                                  : 'Start: ${provider.startDate!.toLocal().toString().split(' ')[0]}'),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                              ),
+                              onPressed: () =>
+                                  _selectDate(context, true, provider),
+                              child: const Text(AppTextConst.startTime),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(provider.endDate == null
+                                  ? AppTextConst.endTime
+                                  : 'Finish: ${provider.endDate!.toLocal().toString().split(' ')[0]}'),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                              ),
+                              onPressed: () =>
+                                  _selectDate(context, false, provider),
+                              child: const Text(AppTextConst.endTime),
+                            ),
+                          ],
+                        ),
+                        const Spacer(), // 👈 Push button to bottom
+                        Center(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 16),
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                provider.setTitle(_titluController.text);
+                                provider
+                                    .setDescription(_descriereController.text);
+                                await provider.postAssigment(
+                                  widget.courseId,
+                                );
+                                if (provider.errorMessage == null) {
+                                  if (context.mounted) {
+                                    CustomSnackbar.show(
+                                      context,
+                                      AppTextConst.formSubmitted,
+                                    );
+                                    provider.clearFields();
+                                    Navigator.pop(context);
+                                  }
+                                } else {
+                                  if (context.mounted) {
+                                    CustomSnackbar.show(
+                                      context,
+                                      provider.errorMessage!,
+                                    );
+                                  }
+                                }
+                              }
+                            },
+                            child: const Text(AppTextConst.add),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

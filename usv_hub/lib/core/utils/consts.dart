@@ -76,40 +76,54 @@ class AppTextConst {
   static const addGradePage = 'Add Grade';
   static const addAttandancePage = 'Add Attandance';
 
-  static String phoneNumberDescription =
+  static const String phoneNumberDescription =
       "Your current phone number is displayed below. You can easily update it by tapping the \"Edit\" button. Please ensure your number is correct to stay connected. ";
-  static String addressesDescriprion =
+  static const String addressesDescriprion =
       "Your saved addresses are listed below for easy access and updates. You can add a new address or edit existing ones by long pressing the respective address. Keeping your addresses up-to-date ensures smooth deliveries and communication.";
-  static String personalDataDescriprion =
+  static const String personalDataDescriprion =
       "Your saved personal information is listed down below.Each name has associated a type reprezenting the name's indicative.";
 
-  static String add = 'Add';
-  static String fatherName = 'Father name';
-  static String userName = 'Your name';
-  static String motherName = 'Mother name';
+  static const String add = 'Add';
+  static const String fatherName = 'Father name';
+  static const String userName = 'Your name';
+  static const String motherName = 'Mother name';
 
-  static String addAddresses = "Add a new Address";
+  static const String addAddresses = "Add a new Address";
 
   static var newAddress = "New Address";
 
-  static String noAddressesFound = "No addresses found";
+  static const String noAddressesFound = "No addresses found";
 
-  static String courseGrade = "Course Grade";
-  static String labGrade = "Laboratory Grade";
-  static String laboratory = "Laboratory";
+  static const String courseGrade = "Course Grade";
+  static const String labGrade = "Laboratory Grade";
+  static const String laboratory = "Laboratory";
 
-  static String courseAttandance = "Course attendance:";
-  static String labAttendance = "Laboratory attendance:";
+  static const String courseAttandance = "Course attendance:";
+  static const String labAttendance = "Laboratory attendance:";
 
-  static String invalidNumber = "Numbers that you have submitted are invalid";
-  static String emptyNumber = "You must enter numbers";
+  static const String invalidNumber =
+      "Numbers that you have submitted are invalid";
+  static const String emptyNumber = "You must enter numbers";
 
-  static String events = "Events";
+  static const String events = "Events";
 
-  static String succes = "Succes";
-  static String error = "Error";
+  static const String succes = "Succes";
+  static const String error = "Error";
 
-  static String potentialContacts = 'Potential contacts';
+  static const String potentialContacts = 'Potential contacts';
+
+  static const String title = "Title";
+  static const String startTime = "Start time";
+  static const String endTime = "End time";
+  static const String classWhereHeld = "Class where held";
+  static const String description = "Description";
+
+  static const String titleError = "Title is required";
+  static const String descriptionError = "Description is required";
+
+  static const String addAssigment = "Add Assigment";
+
+  static String formSubmitted = "Form submitted successfully";
 }
 
 class AppStringFailuresMessages {
@@ -160,6 +174,7 @@ class AppRouteConst {
 
   static const String addGrade = '/addGrade';
   static const String addAttandance = '/addAttandance';
+  static const String addAssigment = '/addAssigment';
 
   static const String coursesPage = '/coursesPage';
 }
@@ -284,9 +299,9 @@ class AppCollections {
   static const String contacts = 'Contacts';
   static const String events = 'Events';
 
-  static String addresses = "Addresses";
+  static const String addresses = "Addresses";
 
-  static String submission = "Submission";
+  static const String submission = "Submission";
 }
 
 enum ContactsStatus { active, pending, inactive }

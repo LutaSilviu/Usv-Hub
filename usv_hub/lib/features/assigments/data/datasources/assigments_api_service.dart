@@ -98,4 +98,16 @@ class AssigmentsApiService {
       throw MediumException(runtimeType, "Ups, something went wrong");
     }
   }
+
+  Future<void> postAssigment(AssigmentsModel assigmentsModel) async {
+    try {
+      final docRef =
+          _firestore.collection(AppCollections.assignmentCollection).doc();
+      docRef.set(assigmentsModel.copyWith(id: docRef.id).toMap());
+    } on FirebaseException catch (e) {
+      throw MediumException(runtimeType, e.message!);
+    } catch (e) {
+      throw MediumException(runtimeType, "Ups, something went wrong");
+    }
+  }
 }

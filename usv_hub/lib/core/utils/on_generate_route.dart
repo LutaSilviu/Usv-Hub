@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
+import 'package:usv_hub/features/assigments/presentation/pages/add_assigment_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_home_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/assigments_info_page.dart';
 import 'package:usv_hub/features/assigments/presentation/pages/view_submissions_page.dart';
@@ -75,6 +76,16 @@ class OnGenerateRoute {
             student: arg[AppArguments.studentEntity],
             courseId: arg[AppArguments.courseId],
             courseLenght: arg[AppArguments.courseLenght],
+          ));
+        } else {
+          return routeBuilder(const ErrorPage());
+        }
+      case AppRouteConst.addAssigment:
+        if (settings.arguments != null) {
+          Map arg = settings.arguments as Map;
+
+          return routeBuilder(AddAssigmentPage(
+            courseId: arg[AppArguments.courseId],
           ));
         } else {
           return routeBuilder(const ErrorPage());

@@ -9,7 +9,6 @@ import 'package:usv_hub/core/utils/main_wraper.dart';
 import 'package:usv_hub/core/utils/on_generate_route.dart';
 import 'package:usv_hub/core/utils/theme.dart';
 import 'package:usv_hub/features/adresses/presentation/cubit/adresses_cubit.dart';
-import 'package:usv_hub/features/assigments/presentation/cubits/assigments_cubit/assigments_cubit.dart';
 import 'package:usv_hub/features/assigments/presentation/cubits/subbmision_cubit/submission_cubit.dart';
 import 'package:usv_hub/features/assigments/presentation/providers/picked_files_provider.dart';
 import 'package:usv_hub/features/attendance/presentation/cubit/attendance_cubit.dart';
@@ -69,9 +68,6 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<SubmissionCubit>(
             create: (context) => getIt<SubmissionCubit>(),
-          ),
-          BlocProvider<AssigmentsCubit>(
-            create: (context) => getIt<AssigmentsCubit>(),
           ),
           BlocProvider<PotentialContactsCubit>(
             create: (context) => getIt<PotentialContactsCubit>(),
