@@ -84,6 +84,7 @@ class AppTextConst {
       "Your saved personal information is listed down below.Each name has associated a type reprezenting the name's indicative.";
 
   static const String add = 'Add';
+  static const String cancel = 'Cancel';
   static const String fatherName = 'Father name';
   static const String userName = 'Your name';
   static const String motherName = 'Mother name';
@@ -123,7 +124,13 @@ class AppTextConst {
 
   static const String addAssigment = "Add Assigment";
 
-  static String formSubmitted = "Form submitted successfully";
+  static const String formSubmitted = "Form submitted successfully";
+
+  static const String currentAddressList = "Current Addresses:";
+
+  static const String submit = "Submit";
+
+  static const String filesUploaded = "Files uploaded successfully!";
 }
 
 class AppStringFailuresMessages {
@@ -193,6 +200,10 @@ class AppErrorMessages {
 
   static const String ups = "Ups, something went wrong";
   static const String firebaseError = "Ups, something went wrong with Firebase";
+
+  static String noFilesSelected = "No files selected";
+
+  static String allFieldsRequired = "All fields are required";
 }
 
 class AppFields {

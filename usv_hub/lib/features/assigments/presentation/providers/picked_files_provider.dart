@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/custom_snackbar.dart';
 import 'package:usv_hub/features/assigments/domain/entities/submision_entity.dart';
 import 'package:usv_hub/features/assigments/domain/usecases/post_subbmision_usecase.dart';
@@ -28,7 +29,8 @@ class PickedFilesProvider extends ChangeNotifier {
       _pickedFiles.add(result);
       notifyListeners();
     } else {
-      if (context.mounted) CustomSnackbar.show(context, "No file selected");
+      if (context.mounted)
+        CustomSnackbar.show(context, AppErrorMessages.noFilesSelected);
     }
   }
 
@@ -78,9 +80,9 @@ class PickedFilesProvider extends ChangeNotifier {
 
       _pickedFiles.clear();
 
-      return "Files uploaded successfully!";
+      return AppTextConst.filesUploaded;
     } else {
-      return "No file selected";
+      return AppErrorMessages.noFilesSelected;
     }
   }
 

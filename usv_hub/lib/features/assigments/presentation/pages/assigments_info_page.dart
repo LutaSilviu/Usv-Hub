@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:usv_hub/core/utils/background.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/core/utils/custom_snackbar.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/presentation/providers/info_provider.dart';
@@ -140,11 +141,11 @@ class AssigmentInfoPage extends StatelessWidget {
                                         CustomSnackbar.show(context, result);
                                       }
                                       if (result ==
-                                          "Files uploaded successfully!") {
+                                          AppTextConst.filesUploaded) {
                                         provider.hasSubbmision = true;
                                       }
                                     },
-                                    text: 'Submit',
+                                    text: AppTextConst.submit,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .secondaryContainer,

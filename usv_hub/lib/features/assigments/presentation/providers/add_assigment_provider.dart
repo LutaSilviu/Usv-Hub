@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/assigments/domain/entities/assigment_entity.dart';
 import 'package:usv_hub/features/assigments/domain/usecases/post_assigment_usecase.dart';
 
@@ -60,7 +61,7 @@ class AddAssigmentProvider extends ChangeNotifier {
         _description == null ||
         _startDate == null ||
         _endDate == null) {
-      setErrorMessage("All fields are required");
+      setErrorMessage(AppErrorMessages.allFieldsRequired);
       return;
     }
 

@@ -43,7 +43,7 @@ class _AdressesPageState extends State<AdressesPage> {
               SizedBox(
                 height: 50.h,
               ),
-              const Text("Current Addresses:"),
+              const Text(AppTextConst.currentAddressList),
               BlocBuilder<AddressesCubit, AddressesState>(
                 builder: (context, state) {
                   if (state is LoadingState) {
@@ -198,7 +198,7 @@ class _AddDialogState extends State<AddDialog> {
                       Theme.of(context).colorScheme.error),
                 ),
                 child: const Text(
-                  "Cancel",
+                  AppTextConst.cancel,
                 ),
               ),
               SizedBox(
@@ -212,7 +212,7 @@ class _AddDialogState extends State<AddDialog> {
                   backgroundColor: WidgetStateProperty.all(
                       Theme.of(context).colorScheme.onTertiaryContainer),
                 ),
-                child: const Text("Add"),
+                child: const Text(AppTextConst.add),
               ),
             ],
           ),
