@@ -115,11 +115,11 @@ class CustomDrawer extends StatelessWidget {
                       icon: Icons.logout,
                       onTap: () {
                         context.read<LoginCubit>().logout();
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRouteConst.login,
-                          (route) => false,
-                        );
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //   context,
+                        //   AppRouteConst.login,
+                        //   (route) => false,
+                        // );
                       },
                     );
                   },
@@ -228,11 +228,11 @@ class CustomDrawer extends StatelessWidget {
                     icon: Icons.logout,
                     onTap: () {
                       context.read<LoginCubit>().logout();
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        AppRouteConst.login,
-                        (route) => false,
-                      );
+                      // Navigator.pushNamedAndRemoveUntil(
+                      //   context,
+                      //   AppRouteConst.login,
+                      //   (route) => false,
+                      // );
                     },
                   );
                 },

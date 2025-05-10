@@ -12,9 +12,15 @@ class SelectCourseInitial extends SelectCourseState {}
 class CoursesLoading extends SelectCourseState {}
 
 class CoursesLoaded extends SelectCourseState {
-  final Map<ProfesorType, CourseEntity> courses;
+  final List<Map<ProfesorType, CourseEntity>> courses = [];
 
-  const CoursesLoaded(this.courses);
+  CoursesLoaded(Map<ProfesorType, List<CourseEntity>> courses) {
+    for (var entry in courses.entries) {
+      for (var course in entry.value) {
+        this.courses.add({entry.key: course});
+      }
+    }
+  }
 
   @override
   List<Object> get props => [courses];

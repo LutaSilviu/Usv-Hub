@@ -43,13 +43,13 @@ class _AddAssigmentPageState extends State<AddAssigmentPage> {
 
 class Formular extends StatefulWidget {
   @override
-  _FormularState createState() => _FormularState();
+  FormularState createState() => FormularState();
 
   const Formular({super.key, required this.courseId});
   final String courseId;
 }
 
-class _FormularState extends State<Formular> {
+class FormularState extends State<Formular> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titluController = TextEditingController();
   final TextEditingController _descriereController = TextEditingController();

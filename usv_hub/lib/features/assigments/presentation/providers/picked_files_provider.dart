@@ -29,8 +29,9 @@ class PickedFilesProvider extends ChangeNotifier {
       _pickedFiles.add(result);
       notifyListeners();
     } else {
-      if (context.mounted)
+      if (context.mounted) {
         CustomSnackbar.show(context, AppErrorMessages.noFilesSelected);
+      }
     }
   }
 

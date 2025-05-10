@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     // TextButton(
                     //   onPressed: () {
-                    //     //TODO: add onPressed from bloc
+                    //    tODO: add onPressed from bloc
                     //   },
                     //   child: Text(
                     //     AppTextConst.forgotPassword,

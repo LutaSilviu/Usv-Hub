@@ -11,9 +11,10 @@ class CourseApiService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _firebaseAuth = FirebaseAuth.instance;
 
-  Future<Map<ProfesorType, CourseModel>> getAllCoursesForStudent() async {
+  Future<Map<ProfesorType, List<CourseModel>>> getAllCoursesForStudent() async {
     try {
-      Map<ProfesorType, CourseModel> coursesAndAttendance = {};
+      Map<ProfesorType, List<CourseModel>> coursesAndAttendance = {};
+      coursesAndAttendance.putIfAbsent(ProfesorType.none, () => []);
       final result = await _firestore
           .collection(AppCollections.attendanceCollection)
           .where(AppFields.studentId, isEqualTo: _firebaseAuth.currentUser!.uid)
@@ -32,7 +33,7 @@ class CourseApiService {
         final CourseModel courseModel = CourseModel.fromMap(
           courseDocs.docs.first.data(),
         );
-        coursesAndAttendance.putIfAbsent(ProfesorType.none, () => courseModel);
+        coursesAndAttendance[ProfesorType.none]!.add(courseModel);
       }
       return coursesAndAttendance;
     } on FirebaseException catch (e) {
@@ -40,10 +41,10 @@ class CourseApiService {
     }
   }
 
-  Future<Map<ProfesorType, CourseModel>> getAllCoursesForTeacher() async {
+  Future<Map<ProfesorType, List<CourseModel>>> getAllCoursesForTeacher() async {
     try {
       String userId = _firebaseAuth.currentUser!.uid;
-      Map<ProfesorType, CourseModel> coursesAndGrades = {};
+      Map<ProfesorType, List<CourseModel>> coursesAndGrades = {};
 
       final response1 = await _firestore
           .collection(AppCollections.courseCollection)
@@ -53,9 +54,11 @@ class CourseApiService {
       for (var doc in response1.docs) {
         final course = CourseModel.fromMap(doc.data());
         if (course.assistentId != course.teacherId) {
-          coursesAndGrades.putIfAbsent(ProfesorType.teacher, () => course);
+          coursesAndGrades.putIfAbsent(ProfesorType.teacher, () => []);
+          coursesAndGrades[ProfesorType.teacher]!.add(course);
         } else {
-          coursesAndGrades.putIfAbsent(ProfesorType.both, () => course);
+          coursesAndGrades.putIfAbsent(ProfesorType.both, () => []);
+          coursesAndGrades[ProfesorType.both]!.add(course);
         }
       }
 
@@ -67,8 +70,8 @@ class CourseApiService {
       for (var doc in response2.docs) {
         final course = CourseModel.fromMap(doc.data());
         if (course.assistentId != course.teacherId) {
-          coursesAndGrades.putIfAbsent(
-              ProfesorType.assistent, () => CourseModel.fromMap(doc.data()));
+          coursesAndGrades.putIfAbsent(ProfesorType.assistent, () => []);
+          coursesAndGrades[ProfesorType.assistent]!.add(course);
         }
       }
 

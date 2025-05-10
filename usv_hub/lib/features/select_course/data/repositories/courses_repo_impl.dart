@@ -15,7 +15,7 @@ class CoursesRepoImpl extends CoursesRepository {
   CoursesRepoImpl(this._courseApiService);
 
   @override
-  Future<Either<Failure, Map<ProfesorType, CourseEntity>>>
+  Future<Either<Failure, Map<ProfesorType, List<CourseEntity>>>>
       getAllCoursesForStudents() async {
     try {
       return Right(await _courseApiService.getAllCoursesForStudent());
@@ -25,7 +25,7 @@ class CoursesRepoImpl extends CoursesRepository {
   }
 
   @override
-  Future<Either<Failure, Map<ProfesorType, CourseEntity>>>
+  Future<Either<Failure, Map<ProfesorType, List<CourseEntity>>>>
       getAllCoursesForTeachers() async {
     try {
       return Right(await _courseApiService.getAllCoursesForTeacher());

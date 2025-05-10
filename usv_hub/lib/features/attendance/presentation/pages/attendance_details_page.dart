@@ -15,6 +15,9 @@ class AttendanceDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(AppTextConst.attendanceDetail),
+      ),
       body: Background(
         child: Align(
           alignment: Alignment.topLeft,
@@ -62,33 +65,7 @@ class AttendanceDetailsPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 30.h, horizontal: 30.w),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    size: 40.h,
-                                  ),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  AppTextConst.attendanceDetail,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                      ),
-                                ),
-                              ),
-                              SizedBox(height: 68.h),
+                              Center(child: SizedBox(height: 68.h)),
                               Padding(
                                 padding: EdgeInsets.only(left: 30.w),
                                 child: Text(

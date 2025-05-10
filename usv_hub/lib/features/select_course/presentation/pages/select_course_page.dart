@@ -89,9 +89,9 @@ class _SelectCoursePageState extends State<SelectCoursePage> {
                             itemCount: state.courses.length,
                             itemBuilder: (context, index) {
                               ProfesorType isTeacher =
-                                  state.courses.keys.elementAt(index);
+                                  state.courses.elementAt(index).keys.first;
                               CourseEntity course =
-                                  state.courses.values.elementAt(index);
+                                  state.courses.elementAt(index).values.first;
                               return CustomCourseWidget(
                                 image: AppImages.image1,
                                 onTap: () {
@@ -104,8 +104,11 @@ class _SelectCoursePageState extends State<SelectCoursePage> {
                                     },
                                   );
                                 },
-                                title:
-                                    state.courses.values.elementAt(index).title,
+                                title: state.courses
+                                    .elementAt(index)
+                                    .values
+                                    .first
+                                    .title,
                               );
                             },
                             gridDelegate:

@@ -10,7 +10,8 @@ import 'package:usv_hub/features/select_course/domain/repositories/courses_repos
 
 @lazySingleton
 class GetAllCoursesForTeacher
-    implements Usecase<Either<Failure, Map<ProfesorType, CourseEntity>>, void> {
+    implements
+        Usecase<Either<Failure, Map<ProfesorType, List<CourseEntity>>>, void> {
   final CoursesRepository _courseRepository;
 
   GetAllCoursesForTeacher(
@@ -18,7 +19,8 @@ class GetAllCoursesForTeacher
   );
 
   @override
-  Future<Either<Failure, Map<ProfesorType, CourseEntity>>> call({void params}) {
+  Future<Either<Failure, Map<ProfesorType, List<CourseEntity>>>> call(
+      {void params}) {
     return _courseRepository.getAllCoursesForTeachers();
   }
 }
