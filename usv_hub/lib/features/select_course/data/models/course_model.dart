@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:usv_hub/core/utils/consts.dart';
 import 'package:usv_hub/features/select_course/domain/entities/course_entity.dart';
 
@@ -48,9 +46,4 @@ class CourseModel extends CourseEntity {
       }).toList(),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory CourseModel.fromJson(String source) =>
-      CourseModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

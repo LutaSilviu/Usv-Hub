@@ -261,16 +261,16 @@ class AddAttendanceFileProvider extends ChangeNotifier {
 
         if (operationLocation == null || operationLocation.isEmpty) {
           throw Exception(
-              "❌ Error: Missing operation-location header in response.");
+              "Error: Missing operation-location header in response.");
         }
 
         await fetchResult(operationLocation, courseId, courseList);
       } else {
-        _errorMessage = "❌ Error: ${response.statusCode}\n${response.body}";
+        _errorMessage = "Error: ${response.statusCode}\n${response.body}";
         debugPrint(_errorMessage);
       }
     } catch (e) {
-      _errorMessage = "❌ Exception: $e";
+      _errorMessage = "Exception: $e";
       debugPrint(_errorMessage);
     } finally {
       isLoading = false;
